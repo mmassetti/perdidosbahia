@@ -1,0 +1,26 @@
+{
+  "name": "perdidosbahia",
+  "version": "1.0.0",
+  "description": "Objetos perdidos y encontrados en Bahia Blanca",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmassetti/perdidosbahia.git"
+  },
+  "author": "Matias Massetti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmassetti/perdidosbahia/issues"
+  },
+  "homepage": "https://github.com/mmassetti/perdidosbahia#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
