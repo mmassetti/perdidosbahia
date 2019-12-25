@@ -59,14 +59,43 @@ class Login extends React.Component {
     const { target } = event;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const { name } = target;
-    await this.setState({
+    this.setState({
       [name]: value
     });
   };
 
   async submitForm(e) {
     e.preventDefault();
-    console.log("Success");
+    let requestBody = {
+      query: `
+        query {
+          login(email: "${this.state.email}", password: "${this.state.password}") {
+            userId
+            token
+            tokenExpiration
+          }
+        }
+      `
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -185,7 +214,7 @@ class Login extends React.Component {
                           <Button
                             className='my-4'
                             color='primary'
-                            type='button'
+                            type='submit'
                           >
                             Iniciar sesión
                           </Button>

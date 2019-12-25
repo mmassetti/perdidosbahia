@@ -17,8 +17,6 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { setAlert } from "../actions/alert";
 
 // reactstrap components
 import {
@@ -87,10 +85,41 @@ class Register extends React.Component {
   async submitForm(e) {
     e.preventDefault();
 
+    console.log("TCL: Register -> constructor -> this.state", this.state);
+
     if (this.state.password !== this.state.password2) {
-      this.props.setAlert("Las contraseñas no coinciden", "danger");
+      console.log("Las contraseñas no coinciden");
     } else {
-      console.log("las contraseñas coinciden");
+      const requestBody = {
+        query: `
+        mutation {
+          createUser(userInput: {email: "${this.state.email}", password: "${this.state.password}"}) {
+            _id
+            email
+          }
+        }
+      `
+      };
+
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log(resData);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 
@@ -183,13 +212,7 @@ class Register extends React.Component {
                           </InputGroup>
                         </FormGroup>
                         {/* Email */}
-                        {/*<FormGroup className='has-success'>
-                          <Input
-                            className='is-valid'
-                            placeholder='Success'
-                            type='text'
-                          />
-                        </FormGroup>*/}
+
                         <FormGroup>
                           <InputGroup className='input-group-alternative mb-3'>
                             <InputGroupAddon addonType='prepend'>
@@ -267,6 +290,13 @@ class Register extends React.Component {
                             </small>
                           </div>
                         }
+                        <FormGroup className='has-danger'>
+                          <Input
+                            className='is-invalid'
+                            placeholder='Error Input'
+                            type='email'
+                          />
+                        </FormGroup>
 
                         <Row className='my-4'>
                           <Col xs='12'>
@@ -327,7 +357,4 @@ class Register extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { setAlert }
-)(Register);
+export default Register;

@@ -28,38 +28,29 @@ import Landing from "views/examples/Landing.jsx";
 import Login from "views/Login.jsx";
 import Profile from "views/examples/Profile.jsx";
 import Register from "views/Register.jsx";
-//Redux
-import { Provider } from "react-redux";
-import store from "./store";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route path='/' exact render={props => <Index {...props} />} />
-        <Route
-          path='/landing-page'
-          exact
-          render={props => <Landing {...props} />}
-        />
-        <Route
-          path='/login-page'
-          exact
-          render={props => <Login {...props} />}
-        />
-        <Route
-          path='/profile-page'
-          exact
-          render={props => <Profile {...props} />}
-        />
-        <Route
-          path='/register-page'
-          exact
-          render={props => <Register {...props} />}
-        />
-        <Redirect to='/' />
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
+  <BrowserRouter>
+    <Switch>
+      <Route path='/' exact render={props => <Index {...props} />} />
+      <Route
+        path='/landing-page'
+        exact
+        render={props => <Landing {...props} />}
+      />
+      <Route path='/login-page' exact render={props => <Login {...props} />} />
+      <Route
+        path='/profile-page'
+        exact
+        render={props => <Profile {...props} />}
+      />
+      <Route
+        path='/register-page'
+        exact
+        render={props => <Register {...props} />}
+      />
+      <Redirect to='/' />
+    </Switch>
+  </BrowserRouter>,
   document.getElementById("root")
 );

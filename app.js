@@ -1,17 +1,19 @@
 const express = require("express");
 const graphqlHttp = require("express-graphql");
 const moongose = require("mongoose");
+const cors = require("cors");
 
-const graphQlSchema = require('./graphql/schema/index');
-const graphQlResolvers = require('./graphql/resolvers/index');
-const isAuth = require('./middleware/is-auth');
+const graphQlSchema = require("./graphql/schema/index");
+const graphQlResolvers = require("./graphql/resolvers/index");
+const isAuth = require("./middleware/is-auth");
 const app = express();
 express.json();
+app.use(cors());
 
 app.use(isAuth);
 
 app.use(
-  '/graphql',
+  "/graphql",
   graphqlHttp({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
@@ -28,7 +30,7 @@ moongose
     }
   )
   .then(() => {
-    app.listen(3000);
+    app.listen(8000);
   })
   .catch(err => {
     console.log(err);
