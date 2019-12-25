@@ -1,0 +1,70 @@
+{
+  "name": "lost-and-found",
+  "version": "1.0.0",
+  "description": "Objetos encontrados y perdidos en Bahia Blanca",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "reactjs",
+    "argon",
+    "argon-react",
+    "design",
+    "design-react",
+    "argon-design",
+    "argon-design-react",
+    "kit",
+    "react-kit",
+    "argon-design-system",
+    "argon-design-system-react",
+    "design-system-react"
+  ],
+  "homepage": "https://demos.creative-tim.com/argon-design-system-react/",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "compile-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
+    "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
+    "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "axios": "^0.19.0",
+    "classnames": "2.2.6",
+    "config": "^3.2.3",
+    "headroom.js": "0.9.4",
+    "moment": "^2.24.0",
+    "node-sass": "4.12.0",
+    "nouislider": "13.1.5",
+    "react": "16.8.6",
+    "react-datetime": "2.16.3",
+    "react-dom": "16.8.6",
+    "react-moment": "^0.9.6",
+    "react-redux": "^7.1.1",
+    "react-router": "5.0.0",
+    "react-router-dom": "5.0.0",
+    "react-scripts": "3.0.0",
+    "reactstrap": "8.0.0",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/googlemaps": "3.30.19",
+    "@types/markerclustererplus": "2.1.33",
+    "@types/react": "16.8.16",
+    "typescript": "3.4.5"
+  },
+  "proxy": "http://localhost:5000"
+}
