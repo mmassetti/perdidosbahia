@@ -45,6 +45,7 @@ import Carousel from "./IndexSections/Carousel.jsx";
 import Icons from "./IndexSections/Icons.jsx";
 import Login from "./IndexSections/Login.jsx";
 import Download from "./IndexSections/Download.jsx";
+import AuthContext from "../context/auth-context";
 
 class Index extends React.Component {
   componentDidMount() {
@@ -52,43 +53,46 @@ class Index extends React.Component {
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
   }
+
   render() {
     return (
       <>
         <DemoNavbar />
         <main ref='main'>
           <Hero />
-          <Buttons />
-          <Inputs />
-          <section className='section'>
-            <Container>
-              <CustomControls />
-              <Menus />
-            </Container>
-          </section>
-          <Navbars />
-          <section className='section section-components'>
-            <Container>
-              <Tabs />
-              <Row className='row-grid justify-content-between align-items-center mt-lg'>
-                <Progress />
-                <Pagination />
-              </Row>
-              <Row className='row-grid justify-content-between'>
-                <Pills />
-                <Labels />
-              </Row>
-              <Alerts />
-              <Typography />
-              <Modals />
-              <Datepicker />
-              <TooltipPopover />
-            </Container>
-          </section>
-          <Carousel />
-          <Icons />
-          <Login />
-          <Download />
+          {/*
+              <Buttons />
+            <Inputs />
+            <section className='section'>
+              <Container>
+                <CustomControls />
+                <Menus />
+              </Container>
+            </section>
+            <Navbars />
+            <section className='section section-components'>
+              <Container>
+                <Tabs />
+                <Row className='row-grid justify-content-between align-items-center mt-lg'>
+                  <Progress />
+                  <Pagination />
+                </Row>
+                <Row className='row-grid justify-content-between'>
+                  <Pills />
+                  <Labels />
+                </Row>
+                <Alerts />
+                <Typography />
+                <Modals />
+                <Datepicker />
+                <TooltipPopover />
+              </Container>
+            </section>
+            <Carousel />
+            <Icons />
+            <Login />
+            <Download />
+             */}
         </main>
         <CardsFooter />
       </>

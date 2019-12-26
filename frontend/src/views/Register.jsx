@@ -85,8 +85,6 @@ class Register extends React.Component {
   async submitForm(e) {
     e.preventDefault();
 
-    console.log("TCL: Register -> constructor -> this.state", this.state);
-
     if (this.state.password !== this.state.password2) {
       console.log("Las contraseñas no coinciden");
     } else {

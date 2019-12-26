@@ -15,7 +15,18 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
 import React from "react";
+import ReactDOM from "react-dom";
+
+import App from "./App";
+
+ReactDOM.render(<App />, document.getElementById("root"));
+
+{
+  /*
+
+ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
@@ -28,29 +39,60 @@ import Landing from "views/examples/Landing.jsx";
 import Login from "views/Login.jsx";
 import Profile from "views/examples/Profile.jsx";
 import Register from "views/Register.jsx";
+import AuthContext from "./context/auth-context";
+
+state = {
+  token: null,
+  userId: null
+};
+
+login = (token, userId, tokenExpiration) => {
+  this.setState({ token: token, userId: userId });
+};
+
+logout = () => {
+  this.setState({ token: null, userId: null });
+};
 
 ReactDOM.render(
   <BrowserRouter>
-    <Switch>
-      <Route path='/' exact render={props => <Index {...props} />} />
-      <Route
-        path='/landing-page'
-        exact
-        render={props => <Landing {...props} />}
-      />
-      <Route path='/login-page' exact render={props => <Login {...props} />} />
-      <Route
-        path='/profile-page'
-        exact
-        render={props => <Profile {...props} />}
-      />
-      <Route
-        path='/register-page'
-        exact
-        render={props => <Register {...props} />}
-      />
-      <Redirect to='/' />
-    </Switch>
+    <AuthContext.Provider
+      value={{
+        token: this.state.token,
+        userId: this.state.userId,
+        login: this.login,
+        logout: this.logout
+      }}
+    >
+      <Switch>
+        <Route path='/' exact render={props => <Index {...props} />} />
+        <Route
+          path='/landing-page'
+          exact
+          render={props => <Landing {...props} />}
+        />
+        <Route
+          path='/login-page'
+          exact
+          render={props => <Login {...props} />}
+        />
+        <Route
+          path='/profile-page'
+          exact
+          render={props => <Profile {...props} />}
+        />
+        <Route
+          path='/register-page'
+          exact
+          render={props => <Register {...props} />}
+        />
+        <Redirect to='/' />
+      </Switch>
+    </AuthContext.Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );
+
+
+ */
+}
