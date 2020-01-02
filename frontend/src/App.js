@@ -6,10 +6,11 @@ import "assets/scss/argon-design-system-react.scss";
 
 import Index from "views/Index.jsx";
 import Landing from "views/examples/Landing.jsx";
-import Login from "views/Login.jsx";
+import Login from "views/auth/Login";
 import Profile from "views/examples/Profile.jsx";
-import Register from "views/Register.jsx";
+import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
+import LostItem from "views/items/LostItem";
 
 class App extends Component {
   state = {
@@ -44,6 +45,11 @@ class App extends Component {
                   path='/landing-page'
                   exact
                   render={props => <Landing {...props} />}
+                />
+                <Route
+                  path='/objeto-perdido'
+                  exact
+                  render={props => <LostItem {...props} />}
                 />
                 {!this.state.token && (
                   <Route

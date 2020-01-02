@@ -1,4 +1,4 @@
-const { buildSchema } = require('graphql');
+const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
 
@@ -12,7 +12,6 @@ module.exports = buildSchema(`
         
     type Item {
         _id: ID!
-        title: String!
         description: String!
         type: String!
         category: String!
@@ -34,7 +33,6 @@ module.exports = buildSchema(`
     }
 
     input ItemInput {
-        title: String!
         description: String!
         type: String!
         category: String!

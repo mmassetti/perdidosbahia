@@ -17,7 +17,6 @@ module.exports = {
       throw new Error("Unauthenticated!");
     }
     const item = new Item({
-      title: args.itemInput.title,
       description: args.itemInput.description,
       type: args.itemInput.type,
       category: args.itemInput.category,
@@ -32,7 +31,7 @@ module.exports = {
       const creator = await User.findById(req.userId);
 
       if (!creator) {
-        throw new Error('User not found.');
+        throw new Error("User not found.");
       }
       creator.createdItems.push(item);
       await creator.save();
@@ -43,6 +42,4 @@ module.exports = {
       throw err;
     }
   }
-
-
-}
+};

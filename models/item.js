@@ -3,19 +3,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-  title: {
-    type: String,
-    required: true
-  },
   description: {
     type: String,
     required: true
   },
   type: {
+    //Llaves, documentos,etc
     type: String,
     required: true
   },
   category: {
+    //Perdido o encontrado
     type: String,
     required: true
   },
@@ -26,7 +24,7 @@ const itemSchema = new Schema({
   },
   creator: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: "User"
   }
 });
 

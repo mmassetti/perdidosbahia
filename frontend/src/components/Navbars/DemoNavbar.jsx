@@ -121,8 +121,8 @@ class DemoNavbar extends React.Component {
                             <div className='dropdown-menu-inner'>
                               <Media
                                 className='d-flex align-items-center'
-                                href='https://google.com'
-                                target='_blank'
+                                to='/objeto-perdido'
+                                tag={Link}
                               >
                                 <div className='icon icon-shape bg-gradient-primary rounded-circle text-white'>
                                   <i className='ni ni-spaceship' />
@@ -197,11 +197,8 @@ class DemoNavbar extends React.Component {
                         </UncontrolledDropdown>
                       </Nav>
                       {/* Iniciar sesion */}
-                      {!context.token && (
-                        <Nav
-                          className='align-items-lg-center ml-lg-auto'
-                          navbar
-                        >
+                      <Nav className='align-items-lg-center ml-lg-auto' navbar>
+                        {!context.token && (
                           <NavItem className='d-none d-lg-block ml-lg-4'>
                             <Button
                               className='btn-neutral btn-icon'
@@ -220,8 +217,28 @@ class DemoNavbar extends React.Component {
                               </span>
                             </Button>
                           </NavItem>
-                        </Nav>
-                      )}
+                        )}
+                        {/* Cerrar sesion */}
+                        {context.token && (
+                          <NavItem className='d-none d-lg-block ml-lg-4'>
+                            <Button
+                              className='btn-neutral btn-icon'
+                              color='default'
+                              onClick={context.logout}
+                            >
+                              <span className='btn-inner--icon'>
+                                <i
+                                  className='fa fa-sign-out mr-2'
+                                  aria-hidden='true'
+                                />
+                              </span>
+                              <span className='nav-link-inner--text ml-1'>
+                                Cerrar sesión
+                              </span>
+                            </Button>
+                          </NavItem>
+                        )}
+                      </Nav>
                     </UncontrolledCollapse>
                   </Container>
                 </Navbar>
