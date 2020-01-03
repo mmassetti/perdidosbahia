@@ -11,6 +11,7 @@ import Profile from "views/examples/Profile.jsx";
 import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";
+import RegisterForm from "forms/RegisterForm";
 
 const App = props => {
   const [token, setToken] = useState(null);
@@ -69,7 +70,7 @@ const App = props => {
                 <Route
                   path='/register-page'
                   exact
-                  render={props => <Register {...props} />}
+                  render={props => <RegisterForm {...props} />}
                 />
               )}
 
