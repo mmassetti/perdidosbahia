@@ -17,7 +17,8 @@
 */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+//import useForm from "../../forms/useForm";
+import validate from "../../forms/LoginFormValidationRules";
 // reactstrap components
 import {
   Button,
@@ -36,19 +37,49 @@ import {
   FormFeedback
 } from "reactstrap";
 
+import * as yup from "yup";
+
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
-const Register = props => {
-  const [name, setName] = useInput("");
-  const [email, setEmail] = useInput("");
-  const [password, setPassword] = useInput("");
-  const [password2, setPassword2] = useInput("");
-  const [validate, setValidate] = useInput({ emailState: "" });
-  const [validateFormEmail, setValidateFormEmail] = useInput("has-sucess");
+import { useForm, Controller } from "react-hook-form";
 
-  function useInput(initialValue) {
+const Register = props => {
+  const SignupSchema = yup.object().shape({
+    FirstName: yup
+      .string()
+      .min(3, "Your name must have at least 3 characters")
+      .required("Please enter your first name"),
+    firstName: yup
+      .string()
+      .required()
+      .min(3),
+    email: yup
+      .string()
+      .email()
+      .required()
+  });
+
+  const { handleSubmit, register, reset, control, errors } = useForm({
+    mode: "onChange",
+    validationSchema: SignupSchema
+  });
+  const [data, setData] = useState(null);
+
+  //const [name, setName] = useInput("");
+  //const [email, setEmail] = useInput("");
+  //const [password, setPassword] = useInput("");
+  //const [password2, setPassword2] = useInput("");
+  //const [validate, setValidate] = useInput({ emailState: "" });
+  //const [validateFormEmail, setValidateFormEmail] = useInput("has-sucess");
+
+  /*const { values, errors, handleChange, handleSubmit } = useForm(
+    login,
+    validate
+  );*/
+
+  /*function useInput(initialValue) {
     const [value, setValue] = useState(initialValue);
 
     function handleChange(e) {
@@ -56,7 +87,7 @@ const Register = props => {
     }
 
     return [value, handleChange];
-  }
+  }*/
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -82,7 +113,7 @@ const Register = props => {
     });
   };*/
 
-  const submitForm = async e => {
+  /*const submitForm = async e => {
     e.preventDefault();
 
     if (password !== password2) {
@@ -119,14 +150,25 @@ const Register = props => {
           console.log(err);
         });
     }
-  };
+  };*/
+
+  function firstNameErrors() {
+    var msg = "";
+    if (errors.FirstName) {
+      errors.FirstName.map((item, i) => {
+        msg += item.message;
+      });
+    }
+
+    return <p>{msg}</p>;
+  }
 
   return (
     <>
       <DemoNavbar />
       <main>
-        <section className='section section-shaped section-lg'>
-          <div className='shape shape-style-1 bg-gradient-default'>
+        <section className="section section-shaped section-lg">
+          <div className="shape shape-style-1 bg-gradient-default">
             <span />
             <span />
             <span />
@@ -136,191 +178,132 @@ const Register = props => {
             <span />
             <span />
           </div>
-          <Container className='pt-lg-md'>
-            <Row className='justify-content-center'>
-              <Col lg='5'>
-                <Card className='bg-secondary shadow border-0'>
-                  <CardHeader className='bg-white pb-5'>
-                    <div className='text-muted text-center mb-3'>
+          <Container className="pt-lg-md">
+            <Row className="justify-content-center">
+              <Col lg="5">
+                <Card className="bg-secondary shadow border-0">
+                  <CardHeader className="bg-white pb-5">
+                    <div className="text-muted text-center mb-3">
                       <small>Registrate con</small>
                     </div>
-                    <div className='text-center'>
+                    <div className="text-center">
                       <Button
-                        className='btn-neutral btn-icon mr-4'
-                        color='default'
-                        href='#pablo'
+                        className="btn-neutral btn-icon mr-4"
+                        color="default"
+                        href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
-                        <span className='btn-inner--icon mr-1'>
+                        <span className="btn-inner--icon mr-1">
                           <img
-                            alt='...'
+                            alt="..."
                             src={require("assets/img/icons/common/github.svg")}
                           />
                         </span>
-                        <span className='btn-inner--text'>Github</span>
+                        <span className="btn-inner--text">Github</span>
                       </Button>
                       <Button
-                        className='btn-neutral btn-icon ml-1'
-                        color='default'
-                        href='#pablo'
+                        className="btn-neutral btn-icon ml-1"
+                        color="default"
+                        href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
-                        <span className='btn-inner--icon mr-1'>
+                        <span className="btn-inner--icon mr-1">
                           <img
-                            alt='...'
+                            alt="..."
                             src={require("assets/img/icons/common/google.svg")}
                           />
                         </span>
-                        <span className='btn-inner--text'>Google</span>
+                        <span className="btn-inner--text">Google</span>
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardBody className='px-lg-5 py-lg-5'>
-                    <div className='text-center text-muted mb-4'>
+                  <CardBody className="px-lg-5 py-lg-5">
+                    <div className="text-center text-muted mb-4">
                       {/* Registro usando email */}
                       <small>O registrate usando tu email</small>
                     </div>
-                    <Form noValidate role='form' onSubmit={submitForm}>
-                      {/* Nombre */}
-                      <FormGroup>
-                        <InputGroup className='input-group-alternative mb-3'>
-                          <InputGroupAddon addonType='prepend'>
-                            <InputGroupText>
-                              <i className='ni ni-hat-3' />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            autoFocus
-                            name='name'
-                            placeholder='Nombre'
-                            type='text'
-                            value={name}
-                            onChange={setName}
-                            required
-                          />
-                        </InputGroup>
-                      </FormGroup>
-                      {/* Email */}
-
-                      <FormGroup>
-                        <InputGroup className='input-group-alternative mb-3'>
-                          <InputGroupAddon addonType='prepend'>
-                            <InputGroupText>
-                              <i className='ni ni-email-83' />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            name='email'
-                            placeholder='Email'
-                            type='email'
-                            value={email}
-                            onChange={setEmail}
-                            valid={validate.emailState === "has-success"}
-                            invalid={validate.emailState === "has-danger"}
-                          />
-                          <FormFeedback valid>Email correcto.</FormFeedback>
-                          <FormFeedback>
-                            El formato de email no es correcto.
-                          </FormFeedback>
-                        </InputGroup>
-                      </FormGroup>
-                      {/* Contraseña */}
-                      <FormGroup>
-                        <InputGroup className='input-group-alternative'>
-                          <InputGroupAddon addonType='prepend'>
-                            <InputGroupText>
-                              <i className='ni ni-lock-circle-open' />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            name='password'
-                            placeholder='Contraseña'
-                            type='password'
-                            autoComplete='off'
-                            value={password}
-                            onChange={setPassword}
-                            required
-                          />
-                        </InputGroup>
-                      </FormGroup>
-                      {/* Contraseña 2 */}
-                      <FormGroup>
-                        <InputGroup className='input-group-alternative'>
-                          <InputGroupAddon addonType='prepend'>
-                            <InputGroupText>
-                              <i className='ni ni-lock-circle-open' />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            name='password2'
-                            placeholder='Confirmar contraseña '
-                            type='password'
-                            autoComplete='off'
-                            value={password2}
-                            onChange={setPassword2}
-                            required
-                          />
-                        </InputGroup>
-                      </FormGroup>
-                      {
-                        <div className='text-muted font-italic'>
-                          <small>
-                            password strength:{" "}
-                            <span className='text-success font-weight-700'>
-                              strong
-                            </span>
-                          </small>
-                        </div>
-                      }
-                      <FormGroup className='has-danger'>
-                        <Input
-                          className='is-invalid'
-                          placeholder='Error Input'
-                          type='email'
+                    <Form
+                      noValidate
+                      role="form"
+                      onSubmit={handleSubmit(data => setData(data))}
+                    >
+                      {/* //* Name */}
+                      <FormGroup
+                        className={
+                          errors.FirstName ? "has-danger" : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              autoFocus
+                              ref={register()}
+                              autoComplete="off"
+                              name="FirstName"
+                              placeholder={
+                                errors.FirstName
+                                  ? "Please enter your name"
+                                  : "Name"
+                              }
+                              className={
+                                errors.FirstName ? "is-invalid" : "is-valid"
+                              }
+                            />
+                          }
+                          name="FirstName"
+                          control={control}
                         />
                       </FormGroup>
 
-                      <Row className='my-4'>
-                        <Col xs='12'>
-                          <div className='custom-control custom-control-alternative custom-checkbox'>
-                            <input
-                              className='custom-control-input'
-                              id='customCheckRegister'
-                              type='checkbox'
+                      {/* <div className="container"> */}
+                      {/* <section>
+                          <label>Native Input:</label>
+                          <input
+                            name="firstName"
+                            style={
+                              errors.firstName
+                                ? { backgroundColor: "pink" }
+                                : { backgroundColor: "yellow" }
+                            }
+                            placeholder={
+                              errors.firstName
+                                ? "Please enter your name"
+                                : "ex: John"
+                            }
+                            ref={register({ required: true, minLength: 10 })}
+                          />
+                        </section> */}
+                      {/* //* Email */}
+                      <FormGroup
+                        className={errors.email ? "has-danger" : "has-success"}
+                      >
+                        {/* <label htmlFor="email">Email (Reactstrap) </label> */}
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder={
+                                errors.email
+                                  ? "Please enter your email"
+                                  : "ex: johndoe@gmail.com"
+                              }
+                              className={
+                                errors.email ? "is-invalid" : "is-valid"
+                              }
                             />
-                            <label
-                              className='custom-control-label'
-                              htmlFor='customCheckRegister'
-                            >
-                              <span>
-                                Estoy de acuerdo con los{" "}
-                                <a
-                                  href='#pablo'
-                                  onClick={e => e.preventDefault()}
-                                >
-                                  términos y condiciones
-                                </a>
-                              </span>
-                            </label>
-                          </div>
-                        </Col>
-                      </Row>
-
-                      <div className='text-center'>
-                        <Button className='mt-4' color='primary' type='submit'>
-                          Crear cuenta
-                        </Button>
-                      </div>
-                      <br></br>
-                      <small className='text-center'>
-                        <p>
-                          {" "}
-                          Ya tenes una cuenta?{" "}
-                          <Link className='label' to='/login-page'>
-                            Iniciar sesión
-                          </Link>
-                        </p>
-                      </small>
+                          }
+                          name="email"
+                          control={control}
+                        />
+                      </FormGroup>
+                      {/* </div> */}
+                      {data && (
+                        <pre style={{ textAlign: "left" }}>
+                          {JSON.stringify(data, null, 2)}
+                        </pre>
+                      )}
+                      <button>submit</button>
                     </Form>
                   </CardBody>
                 </Card>

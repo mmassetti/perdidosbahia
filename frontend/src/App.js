@@ -11,7 +11,6 @@ import Profile from "views/examples/Profile.jsx";
 import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";
-import RegisterForm from "forms/RegisterForm";
 
 const App = props => {
   const [token, setToken] = useState(null);
@@ -40,41 +39,41 @@ const App = props => {
             logout: logout
           }}
         >
-          <main className='main-content'>
+          <main className="main-content">
             <Switch>
-              <Route path='/' exact render={props => <Index {...props} />} />
+              <Route path="/" exact render={props => <Index {...props} />} />
               <Route
-                path='/landing-page'
+                path="/landing-page"
                 exact
                 render={props => <Landing {...props} />}
               />
               <Route
-                path='/objeto-perdido'
+                path="/objeto-perdido"
                 exact
                 render={props => <LostItem {...props} />}
               />
               {!token && (
                 <Route
-                  path='/login-page'
+                  path="/login-page"
                   exact
                   render={props => <Login {...props} />}
                 />
               )}
 
               <Route
-                path='/profile-page'
+                path="/profile-page"
                 exact
                 render={props => <Profile {...props} />}
               />
               {!token && (
                 <Route
-                  path='/register-page'
+                  path="/register-page"
                   exact
-                  render={props => <RegisterForm {...props} />}
+                  render={props => <Register {...props} />}
                 />
               )}
 
-              <Redirect to='/' />
+              <Redirect to="/" />
             </Switch>
           </main>
         </AuthContext.Provider>
