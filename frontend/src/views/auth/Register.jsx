@@ -18,7 +18,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 //import useForm from "../../forms/useForm";
-import validate from "../../forms/LoginFormValidationRules";
 // reactstrap components
 import {
   Button,
@@ -47,14 +46,10 @@ import { useForm, Controller } from "react-hook-form";
 
 const Register = props => {
   const SignupSchema = yup.object().shape({
-    FirstName: yup
+    firstName: yup
       .string()
       .min(3, "Your name must have at least 3 characters")
       .required("Please enter your first name"),
-    firstName: yup
-      .string()
-      .required()
-      .min(3),
     email: yup
       .string()
       .email()
@@ -154,8 +149,8 @@ const Register = props => {
 
   function firstNameErrors() {
     var msg = "";
-    if (errors.FirstName) {
-      errors.FirstName.map((item, i) => {
+    if (errors.firstName) {
+      errors.firstName.map((item, i) => {
         msg += item.message;
       });
     }
@@ -230,7 +225,7 @@ const Register = props => {
                       {/* //* Name */}
                       <FormGroup
                         className={
-                          errors.FirstName ? "has-danger" : "has-success"
+                          errors.firstName ? "has-danger" : "has-success"
                         }
                       >
                         <Controller
@@ -239,18 +234,18 @@ const Register = props => {
                               autoFocus
                               ref={register()}
                               autoComplete="off"
-                              name="FirstName"
+                              name="firstName"
                               placeholder={
-                                errors.FirstName
+                                errors.firstName
                                   ? "Please enter your name"
                                   : "Name"
                               }
                               className={
-                                errors.FirstName ? "is-invalid" : "is-valid"
+                                errors.firstName ? "is-invalid" : "is-valid"
                               }
                             />
                           }
-                          name="FirstName"
+                          name="firstName"
                           control={control}
                         />
                       </FormGroup>
@@ -303,7 +298,21 @@ const Register = props => {
                           {JSON.stringify(data, null, 2)}
                         </pre>
                       )}
-                      <button>submit</button>
+                      <div className="text-center">
+                        <Button className="mt-4" color="primary" type="submit">
+                          Crear cuenta
+                        </Button>
+                      </div>
+                      <br></br>
+                      <small className="text-center">
+                        <p>
+                          {" "}
+                          Ya tenes una cuenta?{" "}
+                          <Link className="label" to="/login-page">
+                            Iniciar sesión
+                          </Link>
+                        </p>
+                      </small>
                     </Form>
                   </CardBody>
                 </Card>
