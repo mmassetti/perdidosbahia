@@ -45,15 +45,24 @@ import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 import { useForm, Controller } from "react-hook-form";
 
 const Register = props => {
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const SignupSchema = yup.object().shape({
-    firstName: yup
-      .string()
-      .min(3, "Your name must have at least 3 characters")
-      .required("Please enter your first name"),
+    firstName: yup.string().required("Por favor ingresa tu nombre"),
+    lastName: yup.string().required("Por favor ingresa tu apellido"),
     email: yup
       .string()
       .email()
-      .required()
+      .required(),
+    password: yup
+      .string()
+      .required("Por favor ingresa una constraseña de al menos 8 caracteres.")
+      .min(8, "La contraseña debe tener al menos 8 caracteres.")
+      .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+    phoneNumber: yup.string().matches(phoneRegExp, {
+      excludeEmptyString: true,
+      message: "El número contiene caracteres inválidos"
+    })
   });
 
   const { handleSubmit, register, reset, control, errors } = useForm({
@@ -62,51 +71,10 @@ const Register = props => {
   });
   const [data, setData] = useState(null);
 
-  //const [name, setName] = useInput("");
-  //const [email, setEmail] = useInput("");
-  //const [password, setPassword] = useInput("");
-  //const [password2, setPassword2] = useInput("");
-  //const [validate, setValidate] = useInput({ emailState: "" });
-  //const [validateFormEmail, setValidateFormEmail] = useInput("has-sucess");
-
-  /*const { values, errors, handleChange, handleSubmit } = useForm(
-    login,
-    validate
-  );*/
-
-  /*function useInput(initialValue) {
-    const [value, setValue] = useState(initialValue);
-
-    function handleChange(e) {
-      setValue(e.target.value);
-    }
-
-    return [value, handleChange];
-  }*/
-
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, []);
-
-  /*const validateEmail = e => {
-    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (emailRex.test(e.target.value)) {
-      validate.emailState = "has-success";
-    } else {
-      validate.emailState = "has-danger";
-    }
-    this.setState({ validate });
-  };*/
-
-  /*const handleChange = async event => {
-    const { target } = event;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const { name } = target;
-    await this.setState({
-      [name]: value
-    });
-  };*/
 
   /*const submitForm = async e => {
     e.preventDefault();
@@ -147,16 +115,18 @@ const Register = props => {
     }
   };*/
 
-  function firstNameErrors() {
-    var msg = "";
-    if (errors.firstName) {
-      errors.firstName.map((item, i) => {
-        msg += item.message;
-      });
-    }
+  // function firstNameErrors() {
+  //   var errorsMsgs = [];
+  //   if (errors.firstName) {
+  //     errors.firstName.map((item, i) => {
+  //       errorsMsgs.push(item.message);
+  //     });
+  //   }
 
-    return <p>{msg}</p>;
-  }
+  //   console.log("TCL: firstNameErrors -> errorsMsgs", errorsMsgs);
+
+  //   return <div>Hello World</div>;
+  // }
 
   return (
     <>
@@ -234,12 +204,7 @@ const Register = props => {
                               autoFocus
                               ref={register()}
                               autoComplete="off"
-                              name="firstName"
-                              placeholder={
-                                errors.firstName
-                                  ? "Please enter your name"
-                                  : "Name"
-                              }
+                              placeholder="Nombre"
                               className={
                                 errors.firstName ? "is-invalid" : "is-valid"
                               }
@@ -248,41 +213,52 @@ const Register = props => {
                           name="firstName"
                           control={control}
                         />
+
+                        {errors.firstName && (
+                          <small style={{ color: "red" }}>
+                            {errors.firstName.message}
+                          </small>
+                        )}
                       </FormGroup>
 
-                      {/* <div className="container"> */}
-                      {/* <section>
-                          <label>Native Input:</label>
-                          <input
-                            name="firstName"
-                            style={
-                              errors.firstName
-                                ? { backgroundColor: "pink" }
-                                : { backgroundColor: "yellow" }
-                            }
-                            placeholder={
-                              errors.firstName
-                                ? "Please enter your name"
-                                : "ex: John"
-                            }
-                            ref={register({ required: true, minLength: 10 })}
-                          />
-                        </section> */}
-                      {/* //* Email */}
+                      {/* //* Lastname */}
                       <FormGroup
-                        className={errors.email ? "has-danger" : "has-success"}
+                        className={
+                          errors.lastName ? "has-danger" : "has-success"
+                        }
                       >
-                        {/* <label htmlFor="email">Email (Reactstrap) </label> */}
                         <Controller
                           as={
                             <Input
                               ref={register()}
                               autoComplete="off"
-                              placeholder={
-                                errors.email
-                                  ? "Please enter your email"
-                                  : "ex: johndoe@gmail.com"
+                              placeholder="Apellido"
+                              className={
+                                errors.lastName ? "is-invalid" : "is-valid"
                               }
+                            />
+                          }
+                          name="lastName"
+                          control={control}
+                        />
+
+                        {errors.lastName && (
+                          <small style={{ color: "red" }}>
+                            {errors.lastName.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* //* Email */}
+                      <FormGroup
+                        className={errors.email ? "has-danger" : "has-success"}
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Email"
                               className={
                                 errors.email ? "is-invalid" : "is-valid"
                               }
@@ -291,8 +267,69 @@ const Register = props => {
                           name="email"
                           control={control}
                         />
+                        {errors.email && (
+                          <small style={{ color: "red" }}>
+                            Por favor ingresa un email válido
+                          </small>
+                        )}
                       </FormGroup>
-                      {/* </div> */}
+
+                      {/* //* Password */}
+                      <FormGroup
+                        className={
+                          errors.password ? "has-danger" : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Contraseña"
+                              className={
+                                errors.password ? "is-invalid" : "is-valid"
+                              }
+                            />
+                          }
+                          name="password"
+                          control={control}
+                        />
+
+                        {errors.password && (
+                          <small style={{ color: "red" }}>
+                            {errors.password.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* //* Phone number */}
+                      <FormGroup
+                        className={
+                          errors.phoneNumber ? "has-danger" : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Número de celular (opcional)"
+                              className={
+                                errors.phoneNumber ? "is-invalid" : "is-valid"
+                              }
+                            />
+                          }
+                          name="phoneNumber"
+                          control={control}
+                        />
+
+                        {errors.phoneNumber && (
+                          <small style={{ color: "red" }}>
+                            {errors.phoneNumber.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
                       {data && (
                         <pre style={{ textAlign: "left" }}>
                           {JSON.stringify(data, null, 2)}
