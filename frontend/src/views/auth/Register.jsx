@@ -44,9 +44,21 @@ import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
 import { useForm, Controller } from "react-hook-form";
 
-const Register = props => {
-  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+import libphonenumber from "google-libphonenumber";
+const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
 
+const Register = props => {
+  // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
+
+  const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
+
+  // helper for yup transform function
+  function emptyStringToNull(value, originalValue) {
+    if (typeof originalValue === "string" && originalValue === "") {
+      return null;
+    }
+    return value;
+  }
   const SignupSchema = yup.object().shape({
     firstName: yup.string().required("Por favor ingresa tu nombre"),
     lastName: yup.string().required("Por favor ingresa tu apellido"),
@@ -56,13 +68,26 @@ const Register = props => {
       .required(),
     password: yup
       .string()
-      .required("Por favor ingresa una constraseña de al menos 8 caracteres.")
-      .min(8, "La contraseña debe tener al menos 8 caracteres.")
-      .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
-    phoneNumber: yup.string().matches(phoneRegExp, {
-      excludeEmptyString: true,
-      message: "El número contiene caracteres inválidos"
-    })
+      .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
+      .min(8, "La contraseña debe tener al menos 8 caracteres."),
+    // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+
+    phoneNumber: yup
+      .string()
+      .notRequired()
+      .matches(phoneRegExp, {
+        excludeEmptyString: true,
+        message: "El número contiene caracteres inválidos"
+      })
+      .test("phoneNumber", "El número debe tener al menos 7 dígitos", function(
+        value
+      ) {
+        if (!!value) {
+          const schema = yup.string().min(7);
+          return schema.isValidSync(value);
+        }
+        return true;
+      })
   });
 
   const { handleSubmit, register, reset, control, errors } = useForm({
@@ -331,9 +356,14 @@ const Register = props => {
                       </FormGroup>
 
                       {data && (
-                        <pre style={{ textAlign: "left" }}>
-                          {JSON.stringify(data, null, 2)}
-                        </pre>
+                        <div>
+                          <pre style={{ textAlign: "left" }}>
+                            {JSON.stringify(data, null, 2)}
+                          </pre>
+
+                          <h3>Prueba extra </h3>
+                          {JSON.stringify(data.firstName)}
+                        </div>
                       )}
                       <div className="text-center">
                         <Button className="mt-4" color="primary" type="submit">
