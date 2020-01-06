@@ -44,21 +44,18 @@ import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
 import { useForm, Controller } from "react-hook-form";
 
-import libphonenumber from "google-libphonenumber";
-const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-
 const Register = props => {
   // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
 
   const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
 
-  // helper for yup transform function
-  function emptyStringToNull(value, originalValue) {
-    if (typeof originalValue === "string" && originalValue === "") {
-      return null;
-    }
-    return value;
-  }
+  const defaultValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  };
+
   const SignupSchema = yup.object().shape({
     firstName: yup.string().required("Por favor ingresa tu nombre"),
     lastName: yup.string().required("Por favor ingresa tu apellido"),
@@ -90,10 +87,13 @@ const Register = props => {
       })
   });
 
-  const { handleSubmit, register, reset, control, errors } = useForm({
-    mode: "onChange",
-    validationSchema: SignupSchema
-  });
+  const { handleSubmit, register, reset, control, errors, formState } = useForm(
+    {
+      mode: "onChange",
+      validationSchema: SignupSchema,
+      defaultValues
+    }
+  );
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -220,7 +220,12 @@ const Register = props => {
                       {/* //* Name */}
                       <FormGroup
                         className={
-                          errors.firstName ? "has-danger" : "has-success"
+                          !formState.touched.firstName &&
+                          formState.submitCount == 0
+                            ? ""
+                            : errors.firstName
+                            ? "has-danger"
+                            : "has-success"
                         }
                       >
                         <Controller
@@ -231,7 +236,12 @@ const Register = props => {
                               autoComplete="off"
                               placeholder="Nombre"
                               className={
-                                errors.firstName ? "is-invalid" : "is-valid"
+                                !formState.touched.firstName &&
+                                formState.submitCount == 0
+                                  ? ""
+                                  : errors.firstName
+                                  ? "is-invalid"
+                                  : "is-valid"
                               }
                             />
                           }
@@ -249,7 +259,12 @@ const Register = props => {
                       {/* //* Lastname */}
                       <FormGroup
                         className={
-                          errors.lastName ? "has-danger" : "has-success"
+                          !formState.touched.lastName &&
+                          formState.submitCount == 0
+                            ? ""
+                            : errors.lastName
+                            ? "has-danger"
+                            : "has-success"
                         }
                       >
                         <Controller
@@ -259,7 +274,12 @@ const Register = props => {
                               autoComplete="off"
                               placeholder="Apellido"
                               className={
-                                errors.lastName ? "is-invalid" : "is-valid"
+                                !formState.touched.lastName &&
+                                formState.submitCount == 0
+                                  ? ""
+                                  : errors.lastName
+                                  ? "is-invalid"
+                                  : "is-valid"
                               }
                             />
                           }
@@ -276,7 +296,13 @@ const Register = props => {
 
                       {/* //* Email */}
                       <FormGroup
-                        className={errors.email ? "has-danger" : "has-success"}
+                        className={
+                          !formState.touched.email && formState.submitCount == 0
+                            ? ""
+                            : errors.email
+                            ? "has-danger"
+                            : "has-success"
+                        }
                       >
                         <Controller
                           as={
@@ -285,7 +311,12 @@ const Register = props => {
                               autoComplete="off"
                               placeholder="Email"
                               className={
-                                errors.email ? "is-invalid" : "is-valid"
+                                !formState.touched.email &&
+                                formState.submitCount == 0
+                                  ? ""
+                                  : errors.email
+                                  ? "is-invalid"
+                                  : "is-valid"
                               }
                             />
                           }
@@ -302,7 +333,12 @@ const Register = props => {
                       {/* //* Password */}
                       <FormGroup
                         className={
-                          errors.password ? "has-danger" : "has-success"
+                          !formState.touched.pasword &&
+                          formState.submitCount == 0
+                            ? ""
+                            : errors.password
+                            ? "has-danger"
+                            : "has-success"
                         }
                       >
                         <Controller
@@ -312,7 +348,12 @@ const Register = props => {
                               autoComplete="off"
                               placeholder="Contraseña"
                               className={
-                                errors.password ? "is-invalid" : "is-valid"
+                                !formState.touched.password &&
+                                formState.submitCount == 0
+                                  ? ""
+                                  : errors.password
+                                  ? "is-invalid"
+                                  : "is-valid"
                               }
                             />
                           }
@@ -330,7 +371,11 @@ const Register = props => {
                       {/* //* Phone number */}
                       <FormGroup
                         className={
-                          errors.phoneNumber ? "has-danger" : "has-success"
+                          !formState.touched.phoneNumber
+                            ? ""
+                            : errors.phoneNumber
+                            ? "has-danger"
+                            : "has-success"
                         }
                       >
                         <Controller
@@ -340,7 +385,11 @@ const Register = props => {
                               autoComplete="off"
                               placeholder="Número de celular (opcional)"
                               className={
-                                errors.phoneNumber ? "is-invalid" : "is-valid"
+                                !formState.touched.phoneNumber
+                                  ? ""
+                                  : errors.phoneNumber
+                                  ? "is-invalid"
+                                  : "is-valid"
                               }
                             />
                           }
@@ -366,7 +415,13 @@ const Register = props => {
                         </div>
                       )}
                       <div className="text-center">
-                        <Button className="mt-4" color="primary" type="submit">
+                        <Button
+                          disabled={formState.isValid ? false : true}
+                          className="mt-4"
+                          color="primary"
+                          type="submit"
+                          onClick={() => reset()}
+                        >
                           Crear cuenta
                         </Button>
                       </div>
@@ -380,6 +435,7 @@ const Register = props => {
                           </Link>
                         </p>
                       </small>
+                      <pre>{JSON.stringify(formState, null, 2)}</pre>
                     </Form>
                   </CardBody>
                 </Card>
