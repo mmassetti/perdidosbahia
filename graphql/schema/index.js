@@ -21,8 +21,11 @@ module.exports = buildSchema(`
 
     type User {
         _id: ID!
+        firstName: String!
+        lastName: String!
         email: String!
         password: String
+        phoneNumber: String
         createdItems: [Item!]
     }
 
@@ -41,7 +44,10 @@ module.exports = buildSchema(`
 
     input UserInput {
         email: String!
+        firstName: String!
+        lastName: String!
         password: String!
+        phoneNumber: String
     }
 
     type RootQuery {
