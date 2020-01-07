@@ -68,6 +68,11 @@ const Register = props => {
       .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
       .min(8, "La contraseña debe tener al menos 8 caracteres."),
     // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+    passwordCheck: yup
+      .string()
+      .required("Por favor escribe nuevamente tu contraseña.")
+      .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
+      .min(8, "La contraseña debe tener al menos 8 caracteres."),
 
     phoneNumber: yup
       .string()
@@ -215,13 +220,23 @@ const Register = props => {
                     <Form
                       noValidate
                       role="form"
-                      onSubmit={handleSubmit(data => setData(data))}
+                      onSubmit={handleSubmit(data => {
+                        setData(data);
+                        reset({
+                          firstName: "",
+                          lastName: "",
+                          email: "",
+                          password: "",
+                          passwordCheck: "",
+                          phoneNumber: ""
+                        });
+                      })}
                     >
                       {/* //* Name */}
                       <FormGroup
                         className={
                           !formState.touched.firstName &&
-                          formState.submitCount == 0
+                          (formState.submitCount == 0 || formState.isSubmitted)
                             ? ""
                             : errors.firstName
                             ? "has-danger"
@@ -237,7 +252,8 @@ const Register = props => {
                               placeholder="Nombre"
                               className={
                                 !formState.touched.firstName &&
-                                formState.submitCount == 0
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
                                   ? ""
                                   : errors.firstName
                                   ? "is-invalid"
@@ -260,7 +276,7 @@ const Register = props => {
                       <FormGroup
                         className={
                           !formState.touched.lastName &&
-                          formState.submitCount == 0
+                          (formState.submitCount == 0 || formState.isSubmitted)
                             ? ""
                             : errors.lastName
                             ? "has-danger"
@@ -275,7 +291,8 @@ const Register = props => {
                               placeholder="Apellido"
                               className={
                                 !formState.touched.lastName &&
-                                formState.submitCount == 0
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
                                   ? ""
                                   : errors.lastName
                                   ? "is-invalid"
@@ -297,7 +314,8 @@ const Register = props => {
                       {/* //* Email */}
                       <FormGroup
                         className={
-                          !formState.touched.email && formState.submitCount == 0
+                          !formState.touched.email &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
                             ? ""
                             : errors.email
                             ? "has-danger"
@@ -312,7 +330,8 @@ const Register = props => {
                               placeholder="Email"
                               className={
                                 !formState.touched.email &&
-                                formState.submitCount == 0
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
                                   ? ""
                                   : errors.email
                                   ? "is-invalid"
@@ -334,7 +353,7 @@ const Register = props => {
                       <FormGroup
                         className={
                           !formState.touched.pasword &&
-                          formState.submitCount == 0
+                          (formState.submitCount == 0 || formState.isSubmitted)
                             ? ""
                             : errors.password
                             ? "has-danger"
@@ -344,12 +363,14 @@ const Register = props => {
                         <Controller
                           as={
                             <Input
+                              type="password"
                               ref={register()}
                               autoComplete="off"
                               placeholder="Contraseña"
                               className={
                                 !formState.touched.password &&
-                                formState.submitCount == 0
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
                                   ? ""
                                   : errors.password
                                   ? "is-invalid"
@@ -364,6 +385,46 @@ const Register = props => {
                         {errors.password && (
                           <small style={{ color: "red" }}>
                             {errors.password.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* //* Confirmacion Password */}
+                      <FormGroup
+                        className={
+                          !formState.touched.paswordCheck &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.passwordCheck
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              type="password"
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Escribir nuevamente la contraseña"
+                              className={
+                                !formState.touched.passwordCheck &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.passwordCheck
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                            />
+                          }
+                          name="passwordCheck"
+                          control={control}
+                        />
+
+                        {errors.passwordCheck && (
+                          <small style={{ color: "red" }}>
+                            {errors.passwordCheck.message}
                           </small>
                         )}
                       </FormGroup>
@@ -420,7 +481,6 @@ const Register = props => {
                           className="mt-4"
                           color="primary"
                           type="submit"
-                          onClick={() => reset()}
                         >
                           Crear cuenta
                         </Button>
