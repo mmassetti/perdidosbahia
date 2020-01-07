@@ -44,8 +44,6 @@ import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
 import { useForm, Controller } from "react-hook-form";
 
-import zxcvbn from "zxcvbn";
-
 const Register = props => {
   // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
 
@@ -57,9 +55,6 @@ const Register = props => {
     email: "",
     password: ""
   };
-
-  const [type, setType] = useState("input");
-  const [score, setScore] = useState("null");
 
   const SignupSchema = yup.object().shape({
     firstName: yup.string().required("Por favor ingresa tu nombre"),
@@ -111,44 +106,50 @@ const Register = props => {
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  /*const submitForm = async e => {
-    e.preventDefault();
+  const submitForm = async data => {
+    //e.preventDefault();
+    setData(data);
 
-    if (password !== password2) {
-      console.log("Las contraseñas no coinciden");
-    } else {
-      const requestBody = {
-        query: `
+    const requestBody = {
+      query: `
         mutation {
-          createUser(userInput: {email: "${email}", password: "${password}"}) {
+          createUser(userInput: {email: "${data.email}", password: "${data.password}", firstName: "${data.firstName}", lastName: "${data.lastName} , "phoneNumber: "${data.phoneNumber}" }) {
             _id
             email
           }
         }
       `
-      };
+    };
 
-      fetch("http://localhost:8000/graphql", {
-        method: "POST",
-        body: JSON.stringify(requestBody),
-        headers: {
-          "Content-Type": "application/json"
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
         }
+        return res.json();
       })
-        .then(res => {
-          if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
-          }
-          return res.json();
-        })
-        .then(resData => {
-          console.log(resData);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-  };*/
+      .then(resData => {
+        console.log(resData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    reset({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      passwordCheck: "",
+      phoneNumber: ""
+    });
+  };
 
   // function firstNameErrors() {
   //   var errorsMsgs = [];
@@ -162,21 +163,6 @@ const Register = props => {
 
   //   return <div>Hello World</div>;
   // }
-
-  const showHide = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    setType(type === "input" ? "password" : "input");
-  };
-
-  const passwordStrength = e => {
-    if (e.target.value === "") {
-      setScore("null");
-    } else {
-      var pw = zxcvbn(e.target.value);
-      setScore(pw.score);
-    }
-  };
 
   return (
     <>
@@ -238,20 +224,21 @@ const Register = props => {
                       <small>O registrate usando tu email</small>
                     </div>
                     <Form
-                      autoComplete="off"
                       noValidate
                       role="form"
-                      onSubmit={handleSubmit(data => {
-                        setData(data);
-                        reset({
-                          firstName: "",
-                          lastName: "",
-                          email: "",
-                          password: "",
-                          passwordCheck: "",
-                          phoneNumber: ""
-                        });
-                      })}
+                      onSubmit={handleSubmit(submitForm)}
+                      // onSubmit={handleSubmit(data => {
+                      //   setData(data);
+                      //   submitForm();
+                      //   reset({
+                      //     firstName: "",
+                      //     lastName: "",
+                      //     email: "",
+                      //     password: "",
+                      //     passwordCheck: "",
+                      //     phoneNumber: ""
+                      //   });
+                      // })}
                     >
                       {/* //* Name */}
                       <FormGroup
@@ -381,44 +368,33 @@ const Register = props => {
                             : "has-success"
                         }
                       >
-                        {" "}
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <span
-                              toggle="#password-field"
-                              class="fa fa-fw fa-eye field-icon toggle-password"
-                            ></span>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <InputGroup className="mb-4">
-                          <Controller
-                            as={
-                              <Input
-                                type="password"
-                                ref={register()}
-                                autoComplete="off"
-                                placeholder="Contraseña"
-                                className={
-                                  !formState.touched.password &&
-                                  (formState.submitCount == 0 ||
-                                    formState.isSubmitted)
-                                    ? ""
-                                    : errors.password
-                                    ? "is-invalid"
-                                    : "is-valid"
-                                }
-                              />
-                            }
-                            name="password"
-                            control={control}
-                          />
+                        <Controller
+                          as={
+                            <Input
+                              type="password"
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Contraseña"
+                              className={
+                                !formState.touched.password &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.password
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                            />
+                          }
+                          name="password"
+                          control={control}
+                        />
 
-                          {errors.password && (
-                            <small style={{ color: "red" }}>
-                              {errors.password.message}
-                            </small>
-                          )}
-                        </InputGroup>
+                        {errors.password && (
+                          <small style={{ color: "red" }}>
+                            {errors.password.message}
+                          </small>
+                        )}
                       </FormGroup>
 
                       {/* //* Confirmacion Password */}
@@ -434,25 +410,21 @@ const Register = props => {
                       >
                         <Controller
                           as={
-                            <>
-                              <Input
-                                id="password-field"
-                                type="password"
-                                value="secret"
-                                ref={register()}
-                                autoComplete="off"
-                                placeholder="Escribir nuevamente la contraseña"
-                                className={
-                                  !formState.touched.passwordCheck &&
-                                  (formState.submitCount == 0 ||
-                                    formState.isSubmitted)
-                                    ? ""
-                                    : errors.passwordCheck
-                                    ? "is-invalid"
-                                    : "is-valid"
-                                }
-                              />
-                            </>
+                            <Input
+                              type="password"
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Escribir nuevamente la contraseña"
+                              className={
+                                !formState.touched.passwordCheck &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.passwordCheck
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                            />
                           }
                           name="passwordCheck"
                           control={control}
@@ -501,39 +473,15 @@ const Register = props => {
                         )}
                       </FormGroup>
 
-                      {/* <FormGroup>
-                        <input
-                          id="password-field"
-                          type="password"
-                          class="form-control"
-                          name="password"
-                          value="secret"
-                        ></input>
-                        <span
-                          toggle="#password-field"
-                          class="fa fa-fw fa-eye field-icon toggle-password"
-                        ></span> */}
-                      {/* <InputGroupAddon addonType="append">
-                            <InputGroupText>
-                              <i className="ni ni-zoom-split-in" />
-                            </InputGroupText>
-                          </InputGroupAddon> */}
-                      {/* </FormGroup> */}
-                      <FormGroup>
-                        <input
-                          type={type}
-                          className="password__input"
-                          onChange={passwordStrength}
-                        />
-                        <span className="password__show" onClick={showHide}>
-                          {type === "input" ? "Hide" : "Show"}
-                        </span>
-                        <span
-                          className="password__strength"
-                          data-score={score}
-                        />
-                      </FormGroup>
+                      {/* {data && (
+                        <div>
+                          <pre style={{ textAlign: "left" }}>
+                            {JSON.stringify(data, null, 2)}
+                          </pre>
 
+                        
+                        </div>
+                      )} */}
                       <div className="text-center">
                         <Button
                           disabled={formState.isValid ? false : true}
@@ -554,6 +502,7 @@ const Register = props => {
                           </Link>
                         </p>
                       </small>
+                      {/* <pre>{JSON.stringify(formState, null, 2)}</pre> */}
                     </Form>
                   </CardBody>
                 </Card>
