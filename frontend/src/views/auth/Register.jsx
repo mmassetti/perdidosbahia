@@ -44,6 +44,8 @@ import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
 import { useForm, Controller } from "react-hook-form";
 
+import zxcvbn from "zxcvbn";
+
 const Register = props => {
   // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
 
@@ -55,6 +57,9 @@ const Register = props => {
     email: "",
     password: ""
   };
+
+  const [type, setType] = useState("input");
+  const [score, setScore] = useState("null");
 
   const SignupSchema = yup.object().shape({
     firstName: yup.string().required("Por favor ingresa tu nombre"),
@@ -158,6 +163,21 @@ const Register = props => {
   //   return <div>Hello World</div>;
   // }
 
+  const showHide = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    setType(type === "input" ? "password" : "input");
+  };
+
+  const passwordStrength = e => {
+    if (e.target.value === "") {
+      setScore("null");
+    } else {
+      var pw = zxcvbn(e.target.value);
+      setScore(pw.score);
+    }
+  };
+
   return (
     <>
       <DemoNavbar />
@@ -218,6 +238,7 @@ const Register = props => {
                       <small>O registrate usando tu email</small>
                     </div>
                     <Form
+                      autoComplete="off"
                       noValidate
                       role="form"
                       onSubmit={handleSubmit(data => {
@@ -360,33 +381,44 @@ const Register = props => {
                             : "has-success"
                         }
                       >
-                        <Controller
-                          as={
-                            <Input
-                              type="password"
-                              ref={register()}
-                              autoComplete="off"
-                              placeholder="Contraseña"
-                              className={
-                                !formState.touched.password &&
-                                (formState.submitCount == 0 ||
-                                  formState.isSubmitted)
-                                  ? ""
-                                  : errors.password
-                                  ? "is-invalid"
-                                  : "is-valid"
-                              }
-                            />
-                          }
-                          name="password"
-                          control={control}
-                        />
+                        {" "}
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <span
+                              toggle="#password-field"
+                              class="fa fa-fw fa-eye field-icon toggle-password"
+                            ></span>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <InputGroup className="mb-4">
+                          <Controller
+                            as={
+                              <Input
+                                type="password"
+                                ref={register()}
+                                autoComplete="off"
+                                placeholder="Contraseña"
+                                className={
+                                  !formState.touched.password &&
+                                  (formState.submitCount == 0 ||
+                                    formState.isSubmitted)
+                                    ? ""
+                                    : errors.password
+                                    ? "is-invalid"
+                                    : "is-valid"
+                                }
+                              />
+                            }
+                            name="password"
+                            control={control}
+                          />
 
-                        {errors.password && (
-                          <small style={{ color: "red" }}>
-                            {errors.password.message}
-                          </small>
-                        )}
+                          {errors.password && (
+                            <small style={{ color: "red" }}>
+                              {errors.password.message}
+                            </small>
+                          )}
+                        </InputGroup>
                       </FormGroup>
 
                       {/* //* Confirmacion Password */}
@@ -402,21 +434,25 @@ const Register = props => {
                       >
                         <Controller
                           as={
-                            <Input
-                              type="password"
-                              ref={register()}
-                              autoComplete="off"
-                              placeholder="Escribir nuevamente la contraseña"
-                              className={
-                                !formState.touched.passwordCheck &&
-                                (formState.submitCount == 0 ||
-                                  formState.isSubmitted)
-                                  ? ""
-                                  : errors.passwordCheck
-                                  ? "is-invalid"
-                                  : "is-valid"
-                              }
-                            />
+                            <>
+                              <Input
+                                id="password-field"
+                                type="password"
+                                value="secret"
+                                ref={register()}
+                                autoComplete="off"
+                                placeholder="Escribir nuevamente la contraseña"
+                                className={
+                                  !formState.touched.passwordCheck &&
+                                  (formState.submitCount == 0 ||
+                                    formState.isSubmitted)
+                                    ? ""
+                                    : errors.passwordCheck
+                                    ? "is-invalid"
+                                    : "is-valid"
+                                }
+                              />
+                            </>
                           }
                           name="passwordCheck"
                           control={control}
@@ -465,16 +501,39 @@ const Register = props => {
                         )}
                       </FormGroup>
 
-                      {data && (
-                        <div>
-                          <pre style={{ textAlign: "left" }}>
-                            {JSON.stringify(data, null, 2)}
-                          </pre>
+                      {/* <FormGroup>
+                        <input
+                          id="password-field"
+                          type="password"
+                          class="form-control"
+                          name="password"
+                          value="secret"
+                        ></input>
+                        <span
+                          toggle="#password-field"
+                          class="fa fa-fw fa-eye field-icon toggle-password"
+                        ></span> */}
+                      {/* <InputGroupAddon addonType="append">
+                            <InputGroupText>
+                              <i className="ni ni-zoom-split-in" />
+                            </InputGroupText>
+                          </InputGroupAddon> */}
+                      {/* </FormGroup> */}
+                      <FormGroup>
+                        <input
+                          type={type}
+                          className="password__input"
+                          onChange={passwordStrength}
+                        />
+                        <span className="password__show" onClick={showHide}>
+                          {type === "input" ? "Hide" : "Show"}
+                        </span>
+                        <span
+                          className="password__strength"
+                          data-score={score}
+                        />
+                      </FormGroup>
 
-                          <h3>Prueba extra </h3>
-                          {JSON.stringify(data.firstName)}
-                        </div>
-                      )}
                       <div className="text-center">
                         <Button
                           disabled={formState.isValid ? false : true}
@@ -495,7 +554,6 @@ const Register = props => {
                           </Link>
                         </p>
                       </small>
-                      <pre>{JSON.stringify(formState, null, 2)}</pre>
                     </Form>
                   </CardBody>
                 </Card>

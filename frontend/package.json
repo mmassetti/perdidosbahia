@@ -59,7 +59,8 @@
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.28.0"
+    "yup": "^0.28.0",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@types/googlemaps": "3.30.19",
