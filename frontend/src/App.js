@@ -19,13 +19,11 @@ const App = props => {
   const login = (token, userId, tokenExpiration) => {
     setToken(token);
     setUserId(userId);
-    // this.setState({ token: token, userId: userId });
   };
 
   const logout = () => {
     setToken(null);
     setUserId(null);
-    // this.setState({ token: null, userId: null });
   };
 
   return (

@@ -40,33 +40,53 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
+import * as yup from "yup";
+
+import { useForm, Controller } from "react-hook-form";
+
 const Login = props => {
   const context = useContext(AuthContext);
 
-  const [email, setEmail] = useInput("");
-  const [password, setPassword] = useInput("");
+  const defaultValues = {
+    email: "",
+    password: ""
+  };
 
-  function useInput(initialValue) {
-    const [value, setValue] = useState(initialValue);
+  const SigninSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email()
+      .required(),
+    password: yup
+      .string()
+      .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
+      .min(8, "La contraseña debe tener al menos 8 caracteres.")
+  });
 
-    function handleChange(e) {
-      setValue(e.target.value);
+  const { handleSubmit, register, reset, control, errors, formState } = useForm(
+    {
+      mode: "onChange",
+      validationSchema: SigninSchema,
+      defaultValues
     }
+  );
 
-    return [value, handleChange];
-  }
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  const submitForm = async e => {
-    e.preventDefault();
+  const submitForm = async data => {
+    console.log("TCL: data", data);
+
+    setData(data);
+
     let requestBody = {
       query: `
         query {
-          login(email: "${email}", password: "${password}") {
+          login(email: "${data.email}", password: "${data.password}") {
             userId
             token
             tokenExpiration
@@ -99,14 +119,19 @@ const Login = props => {
       .catch(err => {
         console.log(err);
       });
+
+    reset({
+      email: "",
+      password: ""
+    });
   };
 
   return (
     <>
       <DemoNavbar />
       <main>
-        <section className='section section-shaped section-lg'>
-          <div className='shape shape-style-1 bg-gradient-default'>
+        <section className="section section-shaped section-lg">
+          <div className="shape shape-style-1 bg-gradient-default">
             <span />
             <span />
             <span />
@@ -116,119 +141,206 @@ const Login = props => {
             <span />
             <span />
           </div>
-          <Container className='pt-lg-md'>
-            <Row className='justify-content-center'>
-              <Col lg='5'>
-                <Card className='bg-secondary shadow border-0'>
-                  <CardHeader className='bg-white pb-5'>
-                    <div className='text-muted text-center mb-3'>
+          <Container className="pt-lg-md">
+            <Row className="justify-content-center">
+              <Col lg="5">
+                <Card className="bg-secondary shadow border-0">
+                  <CardHeader className="bg-white pb-5">
+                    <div className="text-muted text-center mb-3">
                       <small>Iniciar sesión con</small>
                     </div>
-                    <div className='btn-wrapper text-center'>
+                    <div className="btn-wrapper text-center">
                       <Button
-                        className='btn-neutral btn-icon'
-                        color='default'
-                        href='#pablo'
+                        className="btn-neutral btn-icon"
+                        color="default"
+                        href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
-                        <span className='btn-inner--icon mr-1'>
+                        <span className="btn-inner--icon mr-1">
                           <img
-                            alt='...'
+                            alt="..."
                             src={require("assets/img/icons/common/github.svg")}
                           />
                         </span>
-                        <span className='btn-inner--text'>Github</span>
+                        <span className="btn-inner--text">Github</span>
                       </Button>
                       <Button
-                        className='btn-neutral btn-icon ml-1'
-                        color='default'
-                        href='#pablo'
+                        className="btn-neutral btn-icon ml-1"
+                        color="default"
+                        href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
-                        <span className='btn-inner--icon mr-1'>
+                        <span className="btn-inner--icon mr-1">
                           <img
-                            alt='...'
+                            alt="..."
                             src={require("assets/img/icons/common/google.svg")}
                           />
                         </span>
-                        <span className='btn-inner--text'>Google</span>
+                        <span className="btn-inner--text">Google</span>
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardBody className='px-lg-5 py-lg-5'>
-                    <div className='text-center text-muted mb-4'>
+                  <CardBody className="px-lg-5 py-lg-5">
+                    <div className="text-center text-muted mb-4">
                       <small>O inicia sesión con tu email</small>
                     </div>
-                    <Form role='form' onSubmit={submitForm}>
-                      <FormGroup className='mb-3'>
-                        <InputGroup className='input-group-alternative'>
-                          <InputGroupAddon addonType='prepend'>
+                    <Form
+                      noValidate
+                      role="form"
+                      onSubmit={handleSubmit(submitForm)}
+                    >
+                      {/* //* Email */}
+                      <FormGroup
+                        className={
+                          !formState.touched.email &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.email
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Email"
+                              className={
+                                !formState.touched.email &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.email
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                            />
+                          }
+                          name="email"
+                          control={control}
+                        />
+                        {errors.email && (
+                          <small style={{ color: "red" }}>
+                            Por favor ingresa un email válido
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* //* Password */}
+                      <FormGroup
+                        className={
+                          !formState.touched.pasword &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.password
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              type="password"
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Contraseña"
+                              className={
+                                !formState.touched.password &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.password
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                            />
+                          }
+                          name="password"
+                          control={control}
+                        />
+
+                        {errors.password && (
+                          <small style={{ color: "red" }}>
+                            {errors.password.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* <FormGroup className="mb-3">
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className='ni ni-email-83' />
+                              <i className="ni ni-email-83" />
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder='Email'
-                            type='email'
-                            name='email'
+                            placeholder="Email"
+                            type="email"
+                            name="email"
                             required
                             value={email}
                             onChange={setEmail}
                           />
                         </InputGroup>
-                      </FormGroup>
-                      <FormGroup>
-                        <InputGroup className='input-group-alternative'>
-                          <InputGroupAddon addonType='prepend'>
+                      </FormGroup> */}
+                      {/* <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className='ni ni-lock-circle-open' />
+                              <i className="ni ni-lock-circle-open" />
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder='Contraseña'
-                            type='password'
-                            autoComplete='off'
-                            name='password'
+                            placeholder="Contraseña"
+                            type="password"
+                            autoComplete="off"
+                            name="password"
                             value={password}
                             onChange={setPassword}
                             required
                           />
                         </InputGroup>
-                      </FormGroup>
-                      <div className='custom-control custom-control-alternative custom-checkbox'>
+                      </FormGroup> */}
+                      <div className="custom-control custom-control-alternative custom-checkbox">
                         <input
-                          className='custom-control-input'
-                          id=' customCheckLogin'
-                          type='checkbox'
+                          className="custom-control-input"
+                          id=" customCheckLogin"
+                          type="checkbox"
                         />
                         <label
-                          className='custom-control-label'
-                          htmlFor=' customCheckLogin'
+                          className="custom-control-label"
+                          htmlFor=" customCheckLogin"
                         >
                           <span>Recordarme</span>
                         </label>
                       </div>
-                      <div className='text-center'>
-                        <Button className='my-4' color='primary' type='submit'>
+                      <div className="text-center">
+                        <Button
+                          className="my-4"
+                          color="primary"
+                          disabled={formState.isValid ? false : true}
+                          type="submit"
+                        >
                           Iniciar sesión
                         </Button>
                       </div>
                     </Form>
                   </CardBody>
                 </Card>
-                <Row className='mt-3'>
-                  <Col xs='6'>
+                <Row className="mt-3">
+                  <Col xs="6">
                     <a
-                      className='text-light'
-                      href='#pablo'
+                      className="text-light"
+                      href="#pablo"
                       onClick={e => e.preventDefault()}
                     >
                       <small>Olvidé mi contraseña</small>
                     </a>
                   </Col>
-                  <Col className='text-right' xs='6'>
+                  <Col className="text-right" xs="6">
                     <small>
-                      <Link className='text-light' to='/register-page'>
+                      <Link className="text-light" to="/register-page">
                         Crear nueva cuenta
                       </Link>
                     </small>

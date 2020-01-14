@@ -53,7 +53,8 @@ const Register = props => {
     firstName: "",
     lastName: "",
     email: "",
-    password: ""
+    password: "",
+    phoneNumber: ""
   };
 
   const SignupSchema = yup.object().shape({
@@ -107,7 +108,6 @@ const Register = props => {
   }, []);
 
   const submitForm = async data => {
-    //e.preventDefault();
     setData(data);
 
     const requestBody = {
@@ -227,18 +227,6 @@ const Register = props => {
                       noValidate
                       role="form"
                       onSubmit={handleSubmit(submitForm)}
-                      // onSubmit={handleSubmit(data => {
-                      //   setData(data);
-                      //   submitForm();
-                      //   reset({
-                      //     firstName: "",
-                      //     lastName: "",
-                      //     email: "",
-                      //     password: "",
-                      //     passwordCheck: "",
-                      //     phoneNumber: ""
-                      //   });
-                      // })}
                     >
                       {/* //* Name */}
                       <FormGroup
