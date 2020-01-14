@@ -8,12 +8,12 @@ const itemSchema = new Schema({
     required: true
   },
   type: {
-    //Llaves, documentos,etc
+    //Perdido o encontrado
     type: String,
     required: true
   },
   category: {
-    //Perdido o encontrado
+    //Llaves, documentos, lentes, etc
     type: String,
     required: true
   },

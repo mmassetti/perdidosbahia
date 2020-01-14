@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 // nodejs library that concatenates classes
 import classnames from "classnames";
 
@@ -37,7 +37,14 @@ import {
   Row,
   Col,
   Label,
-  Modal
+  Modal,
+  ButtonGroup,
+  Dropdown,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Form
 } from "reactstrap";
 
 // core components
@@ -47,162 +54,293 @@ import CardsFooter from "components/Footers/CardsFooter.jsx";
 // index page sections
 import Download from "../IndexSections/Download.jsx";
 
-class LostItem extends React.Component {
-  state = {
-    exampleModal: false
+import AuthContext from "../../context/auth-context";
+
+import * as yup from "yup";
+
+import { useForm, Controller } from "react-hook-form";
+
+const LostItem = props => {
+  // state = {
+  //   exampleModal: false
+  // };
+  // toggleModal = state => {
+  //   this.setState({
+  //     [state]: !this.state[state]
+  //   });
+  // };
+
+  const context = useContext(AuthContext);
+
+  const defaultValues = {
+    description: "",
+    category: "",
+    date: ""
   };
-  toggleModal = state => {
-    this.setState({
-      [state]: !this.state[state]
-    });
-  };
-  componentDidMount() {
+
+  const ItemSchema = yup.object().shape({
+    description: yup
+      .string()
+      .required("Por favor ingresa una descripción del objeto"),
+    category: yup
+      .string()
+      .required("Por favor selecciona la categoría del objeto"),
+    date: yup
+      .string()
+      .required(
+        "Por favor selecciona la fecha en que perdiste/encontraste el objeto"
+      )
+  });
+
+  const { handleSubmit, register, reset, control, errors, formState } = useForm(
+    {
+      mode: "onChange",
+      validationSchema: ItemSchema,
+      defaultValues
+    }
+  );
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-  }
-  render() {
-    return (
-      <>
-        <DemoNavbar />
-        <main ref='main'>
-          <div className='position-relative'>
-            {/* shape Hero */}
-            <section className='section section-lg section-shaped pb-250'>
-              <div className='shape shape-style-1 shape-default'>
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <Container className='py-lg-md d-flex'>
-                <div className='col px-0'>
-                  <Row>
-                    <Col lg='6'>
-                      <h1 className='display-3 text-white'>
-                        Completá este formulario
-                        <span>
-                          y publicaremos tu objeto para que todos lo puedan ver
-                        </span>
-                      </h1>
-                    </Col>
-                  </Row>
-                </div>
-              </Container>
-            </section>
-          </div>
+  }, []);
 
-          <section className='section section-lg bg-gradient-default'>
-            <Container className='pt-lg pb-300'>
-              <Row className='text-center justify-content-center'>
-                <Col lg='10'>
-                  <h2 className='display-3 text-white'>¿Cómo funciona?</h2>
-                  <p className='lead text-white'>
-                    Consideramos que es importante garantizar la seguridad de
-                    nuestros usuarios a la hora de publicar de un objeto, por lo
-                    que te pediremos que nos proporciones información sobre lo
-                    que perdiste, además de una o más preguntas que alguien que
-                    pueda llegar a encontrar tu objeto deberá contestar
-                    correctamente. De esta forma buscamos evitar fraudes y
-                    riesgos de seguridad personal.
-                  </p>
-                </Col>
-              </Row>
-            </Container>
-            {/* SVG separator */}
-            <div className='separator separator-bottom separator-skew zindex-100'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                preserveAspectRatio='none'
-                version='1.1'
-                viewBox='0 0 2560 100'
-                x='0'
-                y='0'
-              >
-                <polygon
-                  className='fill-white'
-                  points='2560 0 2560 100 0 100'
-                />
-              </svg>
+  const submitForm = async data => {
+    setData(data);
+  };
+
+  const [category, setCategory] = useState(null);
+
+  const radio = i => {
+    console.log(i);
+    setCategory(i);
+  };
+
+  return (
+    <>
+      <DemoNavbar />
+      <main>
+        <div className="position-relative">
+          {/* shape Hero */}
+          <section className="section section-sm, section-shaped">
+            <div className="shape shape-style-1 shape-default">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
             </div>
+            <Container className="py-lg-md d-flex">
+              <div className="col px-0">
+                <Row>
+                  <Col lg="12">
+                    <h1 className="display-3 text-white">
+                      Completá el formulario de esta página
+                      <span>
+                        y publicaremos tu objeto para que todos lo puedan ver
+                      </span>
+                    </h1>
+                  </Col>
+                </Row>
+              </div>
+            </Container>
           </section>
-          <section className='section section-lg pt-lg-0 section-contact-us'>
-            <Container>
-              <Row className='justify-content-center mt--300'>
-                <Col lg='8'>
-                  <Card className='bg-gradient-secondary shadow'>
-                    <CardBody className='p-lg-5'>
-                      <h4 className='mb-1'>
-                        Información sobre el objeto perdido
-                      </h4>
-                      <p className='mt-0'>
-                        <b>IMPORTANTE</b>: Te pedimos que en la descripción del
-                        objeto te guardes uno o más detalles que se utilizarán
-                        en una de las preguntas que deberá contestar quien
-                        encuentre un objeto similar al tuyo
-                      </p>
-                      {/*Tipo de objeto*/}
-                      <FormGroup>
-                        <Input
-                          type='select'
-                          name='select'
-                          id='itemType'
-                          className='form-control-alternative'
-                          defaultValue={"DEFAULT"}
-                        >
-                          <option value='DEFAULT' disabled='disabled'>
-                            Tipo de objeto
-                          </option>
-                          <option>Documentación</option>
-                          <option>Llaves</option>
-                          <option>Patentes</option>
-                          <option>Lentes</option>
-                          <option>Ropa</option>
-                          <option>Celular/Notebook/Tablet</option>
-                          <option>Otro</option>
-                        </Input>
+        </div>
+
+        <section className="section section-sm bg-gradient-default">
+          <Container className="pt-lg pb-300">
+            <Row className="text-center justify-content-center">
+              <Col lg="10">
+                <h2 className="display-3 text-white">¿Cómo funciona?</h2>
+                <p className="lead text-white">
+                  Consideramos que es importante garantizar la seguridad de
+                  nuestros usuarios a la hora de publicar de un objeto, por lo
+                  que te pediremos que nos proporciones información sobre lo que
+                  perdiste, además de una o más preguntas que alguien que pueda
+                  llegar a encontrar tu objeto deberá contestar correctamente.
+                  De esta forma buscamos evitar fraudes y riesgos de seguridad
+                  personal.
+                </p>
+              </Col>
+            </Row>
+          </Container>
+          {/* SVG separator */}
+          <div className="separator separator-bottom separator-skew zindex-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="none"
+              version="1.1"
+              viewBox="0 0 2560 100"
+              x="0"
+              y="0"
+            >
+              <polygon className="fill-white" points="2560 0 2560 100 0 100" />
+            </svg>
+          </div>
+        </section>
+        <section className="section section-lg pt-lg-0 section-contact-us">
+          <Container>
+            <Row className="justify-content-center mt--300">
+              <Col lg="8">
+                <Card className="bg-gradient-secondary shadow">
+                  <CardBody className="p-lg-5">
+                    <h6 className="mt-0" style={{ color: "#cc3300" }}>
+                      <b>IMPORTANTE</b>: Te pedimos que en la descripción del
+                      objeto te guardes uno o más detalles que se utilizarán en
+                      una de las preguntas que deberá contestar quien encuentre
+                      un objeto similar al tuyo
+                    </h6>
+
+                    <h6 className="h6 text-primary  ">
+                      ¿Necesitas ayuda?{" "}
+                      <a href="#" className="mr-1 font-weight-bold">
+                        Acá
+                      </a>
+                      hay un ejemplo de como completar el formulario
+                    </h6>
+                    <br></br>
+
+                    <h2 className="mb-1 fon-weight-bold text-success">
+                      Formulario de objeto perdido
+                    </h2>
+
+                    <Form
+                      noValidate
+                      role="form"
+                      onSubmit={handleSubmit(submitForm)}
+                    >
+                      {/* //* Category (llaves,documentos,patente,celular,etc) */}
+                      <FormGroup className="mb-4">
+                        <ButtonGroup vertical>
+                          <div>
+                            <span className="h6 font-weight-bold ">
+                              Seleccioná una categoría
+                            </span>
+                          </div>
+                          <Button
+                            onClick={() => radio("documentacion")}
+                            className={
+                              category === "documentacion"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">
+                              Documentación
+                            </span>
+                          </Button>
+                          <Button
+                            onClick={() => radio("llaves")}
+                            className={
+                              category === "llaves"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">Llaves</span>
+                          </Button>
+                          <Button
+                            onClick={() => radio("lentes")}
+                            className={
+                              category === "lentes"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">Lentes</span>
+                          </Button>
+                          <Button
+                            onClick={() => radio("patente")}
+                            className={
+                              category === "patente"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">Patente</span>
+                          </Button>
+                          <Button
+                            onClick={() => radio("ropa")}
+                            className={
+                              category === "ropa"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">Ropa</span>
+                          </Button>
+                          <Button
+                            onClick={() => radio("celular")}
+                            className={
+                              category === "celular"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">
+                              Celular/Notebook/Tablet
+                            </span>
+                          </Button>
+                          <Button
+                            onClick={() => radio("otro")}
+                            className={
+                              category === "otro"
+                                ? "active btn-icon mb-3 mb-sm-0"
+                                : "btn-icon mb-3 mb-sm-0"
+                            }
+                            outline
+                            color="default"
+                            size="sm"
+                          >
+                            <span className="btn-inner--text">Otro</span>
+                          </Button>
+                        </ButtonGroup>
                       </FormGroup>
-                      {/* <FormGroup
-                        className={classnames("mt-5", {
-                          focused: this.state.nameFocused
-                        })}
-                      >
-                        <InputGroup className='input-group-alternative'>
-                          <InputGroupAddon addonType='prepend'>
-                            <InputGroupText>
-                              <i className='ni ni-user-run' />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            placeholder='Titulo del objeto (Por ejemplo: llave, documento, patente)'
-                            type='text'
-                            onFocus={e => this.setState({ nameFocused: true })}
-                            onBlur={e => this.setState({ nameFocused: false })}
-                          />
-                        </InputGroup>
-                      </FormGroup> */}
-                      {/*Descripcion */}
-                      <FormGroup className='mb-4'>
+
+                      {/* //* Description */}
+
+                      <FormGroup className="mb-4">
                         <Input
-                          className='form-control-alternative'
-                          cols='80'
-                          name='name'
-                          placeholder='Descripción (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)'
-                          rows='4'
-                          type='textarea'
+                          className="form-control-alternative"
+                          cols="80"
+                          name="name"
+                          placeholder="Escribí una descripción del objeto (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)"
+                          rows="4"
+                          type="textarea"
                         />
                       </FormGroup>
 
-                      {/* Fecha */}
+                      {/* //* Date */}
+
                       <FormGroup>
-                        <InputGroup className='input-group-alternative'>
-                          <InputGroupAddon addonType='prepend'>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className='ni ni-calendar-grid-58' />
+                              <i className="ni ni-calendar-grid-58" />
                             </InputGroupText>
                           </InputGroupAddon>
                           <ReactDatetime
@@ -214,80 +352,28 @@ class LostItem extends React.Component {
                         </InputGroup>
                       </FormGroup>
 
-                      {/* Preguntas */}
-                      <p className='mt-0'>
-                        Agregá una o más preguntas que deberá contestar quien
-                        encuentre tu objeto
-                      </p>
-                      <Button
-                        color='primary'
-                        type='button'
-                        onClick={() => this.toggleModal("exampleModal")}
-                      >
-                        Agregar pregunta
-                      </Button>
-                      {/* Modal pregunta */}
-                      <Modal
-                        className='modal-dialog-centered'
-                        isOpen={this.state.exampleModal}
-                        toggle={() => this.toggleModal("exampleModal")}
-                      >
-                        <div className='modal-header'>
-                          <h5 className='modal-title' id='exampleModalLabel'>
-                            Modal title
-                          </h5>
-                          <button
-                            aria-label='Close'
-                            className='close'
-                            data-dismiss='modal'
-                            type='button'
-                            onClick={() => this.toggleModal("exampleModal")}
-                          >
-                            <span aria-hidden={true}>×</span>
-                          </button>
-                        </div>
-                        <div className='modal-body'>...</div>
-                        <div className='modal-footer'>
-                          <Button
-                            color='secondary'
-                            data-dismiss='modal'
-                            type='button'
-                            onClick={() => this.toggleModal("exampleModal")}
-                          >
-                            Close
-                          </Button>
-                          <Button color='primary' type='button'>
-                            Save changes
-                          </Button>
-                        </div>
-                      </Modal>
-                      <br />
-                      <br />
-
-                      {/* Publicar */}
-                      <div>
+                      <div className="text-center">
                         <Button
-                          block
-                          className='btn-round'
-                          color='default'
-                          size='lg'
-                          type='button'
+                          className="my-4"
+                          color="primary"
+                          disabled={formState.isValid ? false : true}
+                          type="submit"
                         >
-                          Publicar
+                          Publicar objeto
                         </Button>
                       </div>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-            </Container>
-          </section>
-          <Download />
-        </main>
-        <CardsFooter />
-      </>
-    );
-  }
-}
+                    </Form>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <Download />
+      </main>
+      <CardsFooter />
+    </>
+  );
+};
 
 export default LostItem;

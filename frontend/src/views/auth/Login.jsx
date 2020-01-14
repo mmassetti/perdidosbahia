@@ -79,8 +79,6 @@ const Login = props => {
   }, []);
 
   const submitForm = async data => {
-    console.log("TCL: data", data);
-
     setData(data);
 
     let requestBody = {
@@ -267,41 +265,6 @@ const Login = props => {
                         )}
                       </FormGroup>
 
-                      {/* <FormGroup className="mb-3">
-                        <InputGroup className="input-group-alternative">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="ni ni-email-83" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            placeholder="Email"
-                            type="email"
-                            name="email"
-                            required
-                            value={email}
-                            onChange={setEmail}
-                          />
-                        </InputGroup>
-                      </FormGroup> */}
-                      {/* <FormGroup>
-                        <InputGroup className="input-group-alternative">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="ni ni-lock-circle-open" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            placeholder="Contraseña"
-                            type="password"
-                            autoComplete="off"
-                            name="password"
-                            value={password}
-                            onChange={setPassword}
-                            required
-                          />
-                        </InputGroup>
-                      </FormGroup> */}
                       <div className="custom-control custom-control-alternative custom-checkbox">
                         <input
                           className="custom-control-input"
