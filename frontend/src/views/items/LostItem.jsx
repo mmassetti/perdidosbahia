@@ -64,15 +64,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const LostItem = props => {
-  // state = {
-  //   exampleModal: false
-  // };
-  // toggleModal = state => {
-  //   this.setState({
-  //     [state]: !this.state[state]
-  //   });
-  // };
-
   const context = useContext(AuthContext);
 
   const defaultValues = {
@@ -93,11 +84,6 @@ const LostItem = props => {
     // category: yup
     //   .string()
     //   .required("Por favor selecciona la categoría del objeto"),
-    // date: yup
-    //   .string()
-    //   .required(
-    //     "Por favor seleccioná la fecha en la que perdiste/encontraste el objeto"
-    //   )
   });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
@@ -115,11 +101,16 @@ const LostItem = props => {
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  const submitForm = async data => {
-    console.log("entro");
+  const [category, setCategory] = useState({ categoryName: "" });
+  const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
 
+  const radio = i => {
+    setCategory({ categoryName: i });
+    setButtonGroupTouched(true);
+  };
+
+  const submitForm = async data => {
     setData(data);
-    console.log("category: ", category);
     console.log("Data: ", data);
     var options = {
       weekday: "long",
@@ -131,13 +122,52 @@ const LostItem = props => {
       "fecha: ",
       data.dateOfEvent.toLocaleDateString("es-ES", options)
     );
-  };
 
-  const [category, setCategory] = useState(null);
+    let requestBody = {
+      query: `
+          mutation {
+            createItem(itemInput: {description: "${
+              data.description
+            }", type: "perdido", category: "${
+        category.categoryName
+      }", date: "${data.dateOfEvent.toLocaleDateString("es-ES", options)}"}) {
+              _id
+              description
+              type
+              category
+              date
+              creator {
+                _id
+                email
+              }
+            }
+          }
+        `
+    };
 
-  const radio = i => {
-    console.log(i);
-    setCategory(i);
+    const token = context.token;
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then(resData => {
+        /* //TODO: Reedireccionar */
+        console.log("TCL: resData ", resData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -165,7 +195,8 @@ const LostItem = props => {
                     <h1 className="display-3 text-white">
                       Completá el formulario de esta página
                       <span>
-                        y publicaremos tu objeto para que todos lo puedan ver
+                        y tu objeto quedará publicado para que todos lo puedan
+                        ver
                       </span>
                     </h1>
                   </Col>
@@ -220,7 +251,7 @@ const LostItem = props => {
                     </h6>
 
                     <h6 className="h6 text-primary  ">
-                      ¿Necesitas ayuda?{" "}
+                      ¿Necesitás ayuda?{" "}
                       <a href="#" className="mr-1 font-weight-bold">
                         Acá
                       </a>
@@ -238,8 +269,8 @@ const LostItem = props => {
                       onSubmit={handleSubmit(submitForm)}
                     >
                       {/* //* Category (llaves,documentos,patente,celular,etc) */}
-                      <FormGroup className="mb-4">
-                        <ButtonGroup vertical>
+                      <FormGroup>
+                        <ButtonGroup style={{ borderColor: "red" }} vertical>
                           <div>
                             <span className="h6 font-weight-bold ">
                               Seleccioná una categoría
@@ -248,12 +279,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("documentacion")}
                             className={
-                              category === "documentacion"
+                              category.categoryName === "documentacion"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">
@@ -263,12 +298,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("llaves")}
                             className={
-                              category === "llaves"
+                              category.categoryName === "llaves"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">Llaves</span>
@@ -276,12 +315,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("lentes")}
                             className={
-                              category === "lentes"
+                              category.categoryName === "lentes"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">Lentes</span>
@@ -289,12 +332,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("patente")}
                             className={
-                              category === "patente"
+                              category.categoryName === "patente"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">Patente</span>
@@ -302,12 +349,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("ropa")}
                             className={
-                              category === "ropa"
+                              category.categoryName === "ropa"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">Ropa</span>
@@ -315,12 +366,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("celular")}
                             className={
-                              category === "celular"
+                              category.categoryName === "celular"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">
@@ -330,12 +385,16 @@ const LostItem = props => {
                           <Button
                             onClick={() => radio("otro")}
                             className={
-                              category === "otro"
+                              category.categoryName === "otro"
                                 ? "active btn-icon mb-3 mb-sm-0"
                                 : "btn-icon mb-3 mb-sm-0"
                             }
                             outline
-                            color="default"
+                            color={
+                              category.categoryName == "" && buttonGroupTouched
+                                ? "danger"
+                                : "default"
+                            }
                             size="sm"
                           >
                             <span className="btn-inner--text">Otro</span>
@@ -383,16 +442,6 @@ const LostItem = props => {
                           </small>
                         )}
                       </FormGroup>
-                      {/* <FormGroup className="mb-4">
-                        <Input
-                          className="form-control-alternative"
-                          cols="80"
-                          name="name"
-                          placeholder="Escribí una descripción del objeto (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)"
-                          rows="4"
-                          type="textarea"
-                        />
-                      </FormGroup> */}
 
                       {/* //* Date */}
 
@@ -440,7 +489,11 @@ const LostItem = props => {
                         <Button
                           className="my-4"
                           color="primary"
-                          disabled={formState.isValid ? false : true}
+                          disabled={
+                            !formState.isValid || !buttonGroupTouched
+                              ? true
+                              : false
+                          }
                           type="submit"
                         >
                           Publicar objeto

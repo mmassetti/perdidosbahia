@@ -18,9 +18,9 @@ const itemSchema = new Schema({
     required: true
   },
   date: {
-    type: Date,
-    required: true,
-    default: Date.now
+    type: String,
+    required: true
+    // default: Date.now
   },
   creator: {
     type: Schema.Types.ObjectId,

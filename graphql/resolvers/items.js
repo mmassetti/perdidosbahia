@@ -20,7 +20,8 @@ module.exports = {
       description: args.itemInput.description,
       type: args.itemInput.type,
       category: args.itemInput.category,
-      date: new Date(args.itemInput.date),
+      date: args.itemInput.date,
+      //date: new Date(args.itemInput.date),
       creator: req.userId
     });
 
