@@ -60,6 +60,9 @@ import * as yup from "yup";
 
 import { useForm, Controller } from "react-hook-form";
 
+var moment = require("moment");
+require("moment/locale/es");
+
 const LostItem = props => {
   // state = {
   //   exampleModal: false
@@ -81,15 +84,20 @@ const LostItem = props => {
   const ItemSchema = yup.object().shape({
     description: yup
       .string()
-      .required("Por favor ingresa una descripción del objeto"),
-    category: yup
-      .string()
-      .required("Por favor selecciona la categoría del objeto"),
-    date: yup
-      .string()
-      .required(
-        "Por favor selecciona la fecha en que perdiste/encontraste el objeto"
-      )
+      .required("Por favor escribí una descripción del objeto")
+      .min(5, "La descripción es muy corta"),
+    dateOfEvent: yup
+      .date()
+      .max(new Date(), "La fecha no puede ser posterior al día de hoy")
+      .typeError("Por favor selecciona la fecha en que perdiste el objeto")
+    // category: yup
+    //   .string()
+    //   .required("Por favor selecciona la categoría del objeto"),
+    // date: yup
+    //   .string()
+    //   .required(
+    //     "Por favor seleccioná la fecha en la que perdiste/encontraste el objeto"
+    //   )
   });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
@@ -108,7 +116,21 @@ const LostItem = props => {
   }, []);
 
   const submitForm = async data => {
+    console.log("entro");
+
     setData(data);
+    console.log("category: ", category);
+    console.log("Data: ", data);
+    var options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    };
+    console.log(
+      "fecha: ",
+      data.dateOfEvent.toLocaleDateString("es-ES", options)
+    );
   };
 
   const [category, setCategory] = useState(null);
@@ -322,8 +344,46 @@ const LostItem = props => {
                       </FormGroup>
 
                       {/* //* Description */}
-
-                      <FormGroup className="mb-4">
+                      <FormGroup
+                        className={
+                          !formState.touched.description &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.description
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Escribí una descripción del objeto (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)"
+                              className={
+                                !formState.touched.description &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.description
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                              cols="80"
+                              rows="4"
+                              type="textarea"
+                            />
+                          }
+                          name="description"
+                          control={control}
+                        />
+                        {errors.description && (
+                          <small style={{ color: "red" }}>
+                            {errors.description.message}
+                          </small>
+                        )}
+                      </FormGroup>
+                      {/* <FormGroup className="mb-4">
                         <Input
                           className="form-control-alternative"
                           cols="80"
@@ -332,24 +392,48 @@ const LostItem = props => {
                           rows="4"
                           type="textarea"
                         />
-                      </FormGroup>
+                      </FormGroup> */}
 
                       {/* //* Date */}
 
-                      <FormGroup>
+                      <FormGroup
+                        className={
+                          !formState.touched.dateOfEvent &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.dateOfEvent
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
                         <InputGroup className="input-group-alternative">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
                               <i className="ni ni-calendar-grid-58" />
                             </InputGroupText>
                           </InputGroupAddon>
-                          <ReactDatetime
-                            inputProps={{
-                              placeholder: "Fecha en la que perdiste el objeto"
-                            }}
-                            timeFormat={false}
+
+                          <Controller
+                            as={
+                              <ReactDatetime
+                                ref={register()}
+                                inputProps={{
+                                  placeholder:
+                                    "Fecha en la que perdiste el objeto"
+                                }}
+                                timeFormat={false}
+                                locale="es"
+                              />
+                            }
+                            name="dateOfEvent"
+                            control={control}
                           />
                         </InputGroup>
+                        {errors.dateOfEvent && (
+                          <small style={{ color: "red" }}>
+                            {errors.dateOfEvent.message}
+                          </small>
+                        )}
                       </FormGroup>
 
                       <div className="text-center">
