@@ -44,7 +44,8 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Form
+  Form,
+  CardHeader
 } from "reactstrap";
 
 // core components
@@ -69,7 +70,8 @@ const LostItem = props => {
   const defaultValues = {
     description: "",
     category: "",
-    date: ""
+    date: "",
+    question: ""
   };
 
   const ItemSchema = yup.object().shape({
@@ -108,6 +110,10 @@ const LostItem = props => {
     setCategory({ categoryName: i });
     setButtonGroupTouched(true);
   };
+
+  const [isToggled, setToggled] = useState(false);
+
+  const toggleTrueFalse = () => setToggled(!isToggled);
 
   const submitForm = async data => {
     setData(data);
@@ -444,7 +450,6 @@ const LostItem = props => {
                       </FormGroup>
 
                       {/* //* Date */}
-
                       <FormGroup
                         className={
                           !formState.touched.dateOfEvent &&
@@ -485,6 +490,126 @@ const LostItem = props => {
                         )}
                       </FormGroup>
 
+                      {/* Modal questions */}
+                      <Row>
+                        <Col md="4">
+                          <Button
+                            color="default"
+                            type="button"
+                            onClick={toggleTrueFalse}
+                          >
+                            Agregar pregunta
+                          </Button>
+                          <Modal
+                            className="modal-dialog-centered"
+                            size="sm"
+                            isOpen={isToggled}
+                            toggle={toggleTrueFalse}
+                          >
+                            <div className="modal-body p-0">
+                              <Card className="bg-secondary shadow border-0">
+                                <CardHeader className="bg-transparent pb-3">
+                                  <div className="text-muted text-center mt-2 mb-3">
+                                    <span className="h6 font-weight-bold ">
+                                      Preguntas sobre el objeto
+                                    </span>
+                                  </div>
+                                </CardHeader>
+                                <CardBody className="px-lg-5 py-lg-5">
+                                  <div className="text-center text-muted mb-4">
+                                    <h6>
+                                      Agrega una pregunta sobre tu objeto (por
+                                      ejemplo: color, tamano, o cualquier
+                                      detalle que recuerdes).
+                                    </h6>
+                                  </div>
+                                  <Form role="form">
+                                    {/* //* Question */}
+                                    <FormGroup
+                                      className={
+                                        !formState.touched.question &&
+                                        (formState.submitCount == 0 ||
+                                          formState.isSubmitted)
+                                          ? ""
+                                          : errors.question
+                                          ? "has-danger"
+                                          : "has-success"
+                                      }
+                                    >
+                                      <Controller
+                                        as={
+                                          <Input
+                                            ref={register()}
+                                            autoComplete="off"
+                                            placeholder="Escribí una descripción del objeto (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)"
+                                            className={
+                                              !formState.touched.question &&
+                                              (formState.submitCount == 0 ||
+                                                formState.isSubmitted)
+                                                ? ""
+                                                : errors.question
+                                                ? "is-invalid"
+                                                : "is-valid"
+                                            }
+                                            cols="80"
+                                            rows="4"
+                                            type="textarea"
+                                          />
+                                        }
+                                        name="description"
+                                        control={control}
+                                      />
+                                      {errors.question && (
+                                        <small style={{ color: "red" }}>
+                                          {errors.question.message}
+                                        </small>
+                                      )}
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                      <InputGroup className="input-group-alternative">
+                                        <InputGroupAddon addonType="prepend">
+                                          <InputGroupText>
+                                            <i className="ni ni-email-83" />
+                                          </InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input
+                                          placeholder="Email"
+                                          type="email"
+                                        />
+                                      </InputGroup>
+                                    </FormGroup>
+                                    <FormGroup>
+                                      <InputGroup className="input-group-alternative">
+                                        <InputGroupAddon addonType="prepend">
+                                          <InputGroupText>
+                                            <i className="ni ni-lock-circle-open" />
+                                          </InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input
+                                          placeholder="Password"
+                                          type="password"
+                                        />
+                                      </InputGroup>
+                                    </FormGroup>
+
+                                    <div className="text-center">
+                                      <Button
+                                        className="my-4"
+                                        color="primary"
+                                        type="button"
+                                      >
+                                        Guardar pregunta
+                                      </Button>
+                                    </div>
+                                  </Form>
+                                </CardBody>
+                              </Card>
+                            </div>
+                          </Modal>
+                        </Col>
+                      </Row>
+
+                      {/* //Submit */}
                       <div className="text-center">
                         <Button
                           className="my-4"

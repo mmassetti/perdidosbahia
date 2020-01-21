@@ -150,10 +150,66 @@ const Items = () => {
                     {items ? (
                       items.map(item => (
                         <tr key={item._id}>
-                          <td>{item.description}</td>
+                          <th scope="row">
+                            <Media className="align-items-center">
+                              <a
+                                className="avatar rounded-circle mr-3"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                              >
+                                <img
+                                  alt="..."
+                                  src={require("assets/img/theme/angular.jpg")}
+                                />
+                              </a>
+                              <Media>
+                                <span className="mb-0 text-sm">
+                                  {item.description}
+                                </span>
+                              </Media>
+                            </Media>
+                          </th>
                           <td>{item.category}</td>
-                          <td>{item.category}</td>
-                          <td>{item.creator.email}</td>
+                          <td>{item.date}</td>
+                          <td>ubicacion</td>
+                          <td>duenio</td>
+                          <td className="text-right">
+                            <UncontrolledDropdown>
+                              <DropdownToggle
+                                className="btn-icon-only text-light"
+                                href="#pablo"
+                                role="button"
+                                size="sm"
+                                color=""
+                                onClick={e => e.preventDefault()}
+                              >
+                                <i className="fas fa-ellipsis-v" />
+                              </DropdownToggle>
+                              <DropdownMenu
+                                className="dropdown-menu-arrow"
+                                right
+                              >
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={e => e.preventDefault()}
+                                >
+                                  Action
+                                </DropdownItem>
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={e => e.preventDefault()}
+                                >
+                                  Another action
+                                </DropdownItem>
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={e => e.preventDefault()}
+                                >
+                                  Something else here
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </td>
                         </tr>
                       ))
                     ) : (
@@ -164,77 +220,6 @@ const Items = () => {
                         <td>-</td>
                       </tr>
                     )}
-
-                    <tr>
-                      <th scope="row">
-                        <Media className="align-items-center">
-                          <a
-                            className="avatar rounded-circle mr-3"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                          >
-                            <img
-                              alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
-                            />
-                          </a>
-                          <Media>
-                            <span className="mb-0 text-sm">
-                              Descripcion corta
-                            </span>
-                          </Media>
-                        </Media>
-                      </th>
-                      <td>Categoria</td>
-                      <td>Fecha</td>
-                      <td>Ubicacion</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">100%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="100"
-                              barClassName="bg-success"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="text-right">
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            className="btn-icon-only text-light"
-                            href="#pablo"
-                            role="button"
-                            size="sm"
-                            color=""
-                            onClick={e => e.preventDefault()}
-                          >
-                            <i className="fas fa-ellipsis-v" />
-                          </DropdownToggle>
-                          <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                            >
-                              Action
-                            </DropdownItem>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                            >
-                              Another action
-                            </DropdownItem>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                            >
-                              Something else here
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </td>
-                    </tr>
                   </tbody>
                 </Table>
                 <CardFooter className="py-4">

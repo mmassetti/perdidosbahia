@@ -44,7 +44,7 @@
     "config": "^3.2.3",
     "headroom.js": "0.9.4",
     "moment": "^2.24.0",
-    "node-sass": "4.12.0",
+    "node-sass": "^4.13.1",
     "nouislider": "13.1.5",
     "react": "16.8.6",
     "react-datetime": "2.16.3",

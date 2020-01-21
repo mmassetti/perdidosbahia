@@ -22,10 +22,15 @@ const itemSchema = new Schema({
     required: true
     // default: Date.now
   },
+  location: {
+    type: String,
+    required: true
+  },
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User"
-  }
+  },
+
 });
 
 module.exports = mongoose.model("Item", itemSchema);
