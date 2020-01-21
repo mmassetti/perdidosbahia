@@ -11,6 +11,7 @@ import Profile from "views/examples/Profile.jsx";
 import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";
+import Items from "views/items/Items";
 
 const App = props => {
   const [token, setToken] = useState(null);
@@ -49,6 +50,16 @@ const App = props => {
                 path="/objeto-perdido"
                 exact
                 render={props => <LostItem {...props} />}
+              />
+              <Route
+                path="/objeto-encontrado"
+                exact
+                render={props => <LostItem {...props} />}
+              />
+              <Route
+                path="/objetos-publicados"
+                exact
+                render={props => <Items {...props} />}
               />
               {!token && (
                 <Route
