@@ -16,6 +16,8 @@ module.exports = buildSchema(`
         type: String!
         category: String!
         date: String!
+        location: String
+        question: String
         creator: User!
     }
 
@@ -40,6 +42,8 @@ module.exports = buildSchema(`
         type: String!
         category: String!
         date: String!
+        location: String
+        question: String
     }
 
     input UserInput {

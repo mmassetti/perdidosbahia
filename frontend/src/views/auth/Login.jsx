@@ -202,7 +202,7 @@ const Login = props => {
                           as={
                             <Input
                               ref={register()}
-                              autoComplete="off"
+                              // autoComplete="off"
                               placeholder="Email"
                               className={
                                 !formState.touched.email &&
@@ -241,7 +241,7 @@ const Login = props => {
                             <Input
                               type="password"
                               ref={register()}
-                              autoComplete="off"
+                              // autoComplete="off"
                               placeholder="Contraseña"
                               className={
                                 !formState.touched.password &&

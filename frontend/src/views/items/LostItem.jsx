@@ -82,7 +82,8 @@ const LostItem = props => {
     dateOfEvent: yup
       .date()
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
-      .typeError("Por favor selecciona la fecha en que perdiste el objeto")
+      .typeError("Por favor selecciona la fecha en que perdiste el objeto"),
+    question: yup.string()
     // category: yup
     //   .string()
     //   .required("Por favor selecciona la categoría del objeto"),
@@ -104,6 +105,7 @@ const LostItem = props => {
   }, []);
 
   const [category, setCategory] = useState({ categoryName: "" });
+  const [question, setQuestion] = useState("");
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
 
   const radio = i => {
@@ -115,9 +117,20 @@ const LostItem = props => {
 
   const toggleTrueFalse = () => setToggled(!isToggled);
 
+  const handleQuestionChange = event => {
+    setQuestion(event.target.value.toString());
+    // setQuestion("");
+  };
+
+  const cancelQuestion = () => {
+    toggleTrueFalse();
+    setQuestion("");
+  };
+
   const submitForm = async data => {
     setData(data);
     console.log("Data: ", data);
+    console.log("question: ", question);
     var options = {
       weekday: "long",
       year: "numeric",
@@ -132,20 +145,26 @@ const LostItem = props => {
     let requestBody = {
       query: `
           mutation {
-            createItem(itemInput: {description: "${
-              data.description
-            }", type: "perdido", category: "${
-        category.categoryName
-      }", date: "${data.dateOfEvent.toLocaleDateString("es-ES", options)}"}) {
-              _id
-              description
-              type
-              category
-              date
-              creator {
-                _id
-                email
-              }
+            createItem(
+              itemInput: 
+                {description: "${data.description}", 
+                type: "perdido", 
+                category: "${category.categoryName}", 
+                date: "${data.dateOfEvent.toLocaleDateString(
+                  "es-ES",
+                  options
+                )}", 
+                question: "${question}"}) {
+                  _id
+                  description
+                  type
+                  category
+                  date
+                  question
+                  creator {
+                    _id
+                    email
+                  }
             }
           }
         `
@@ -216,8 +235,10 @@ const LostItem = props => {
           <Container className="pt-lg pb-300">
             <Row className="text-center justify-content-center">
               <Col lg="10">
-                <h2 className="display-3 text-white">¿Cómo funciona?</h2>
-                <p className="lead text-white">
+                <h2 className="display-3 text-white">
+                  Formulario de objeto perdido
+                </h2>
+                {/* <p className="lead text-white">
                   Consideramos que es importante garantizar la seguridad de
                   nuestros usuarios a la hora de publicar de un objeto, por lo
                   que te pediremos que nos proporciones información sobre lo que
@@ -225,7 +246,7 @@ const LostItem = props => {
                   llegar a encontrar tu objeto deberá contestar correctamente.
                   De esta forma buscamos evitar fraudes y riesgos de seguridad
                   personal.
-                </p>
+                </p> */}
               </Col>
             </Row>
           </Container>
@@ -250,10 +271,11 @@ const LostItem = props => {
                 <Card className="bg-gradient-secondary shadow">
                   <CardBody className="p-lg-5">
                     <h6 className="mt-0" style={{ color: "#cc3300" }}>
-                      <b>IMPORTANTE</b>: Te pedimos que en la descripción del
-                      objeto te guardes uno o más detalles que se utilizarán en
-                      una de las preguntas que deberá contestar quien encuentre
-                      un objeto similar al tuyo
+                      <b>IMPORTANTE</b>: Recomendamos que en la descripción del
+                      objeto <b>NO</b> des todos los detalles de tu objeto. Más
+                      abajo podrás agregar una pregunta que deberá contestar
+                      quien encuentre un objeto similar al tuyo. De esta forma
+                      buscamos evitar fraudes
                     </h6>
 
                     <h6 className="h6 text-primary  ">
@@ -265,9 +287,9 @@ const LostItem = props => {
                     </h6>
                     <br></br>
 
-                    <h2 className="mb-1 fon-weight-bold text-success">
+                    {/* <h2 className="mb-1 fon-weight-bold">
                       Formulario de objeto perdido
-                    </h2>
+                    </h2> */}
 
                     <Form
                       noValidate
@@ -277,7 +299,7 @@ const LostItem = props => {
                       {/* //* Category (llaves,documentos,patente,celular,etc) */}
                       <FormGroup>
                         <ButtonGroup style={{ borderColor: "red" }} vertical>
-                          <div>
+                          <div style={{ marginBottom: "1rem" }}>
                             <span className="h6 font-weight-bold ">
                               Seleccioná una categoría
                             </span>
@@ -424,7 +446,7 @@ const LostItem = props => {
                             <Input
                               ref={register()}
                               autoComplete="off"
-                              placeholder="Escribí una descripción del objeto (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)"
+                              placeholder="Escribí una descripción del objeto (recomendamos que guardes algún detalle de tu objeto para poner en una pregunta debajo)"
                               className={
                                 !formState.touched.description &&
                                 (formState.submitCount == 0 ||
@@ -490,6 +512,15 @@ const LostItem = props => {
                         )}
                       </FormGroup>
 
+                      <div style={{ marginBottom: "1rem" }}>
+                        <span className="h6 font-weight-bold ">
+                          Recomendamos que agregues una o más preguntas que
+                          deberá contestar quien encuentre un objeto similar al
+                          tuyo. También le solicitaremos a la persona que envíe
+                          una foto
+                        </span>
+                      </div>
+
                       {/* Modal questions */}
                       <Row>
                         <Col md="4">
@@ -511,15 +542,15 @@ const LostItem = props => {
                                 <CardHeader className="bg-transparent pb-3">
                                   <div className="text-muted text-center mt-2 mb-3">
                                     <span className="h6 font-weight-bold ">
-                                      Preguntas sobre el objeto
+                                      Pregunta sobre el objeto
                                     </span>
                                   </div>
                                 </CardHeader>
-                                <CardBody className="px-lg-5 py-lg-5">
+                                <CardBody className="px-lg-3 py-lg-3">
                                   <div className="text-center text-muted mb-4">
                                     <h6>
                                       Agrega una pregunta sobre tu objeto (por
-                                      ejemplo: color, tamano, o cualquier
+                                      ejemplo: color, tamaño, o cualquier
                                       detalle que recuerdes).
                                     </h6>
                                   </div>
@@ -536,69 +567,55 @@ const LostItem = props => {
                                           : "has-success"
                                       }
                                     >
-                                      <Controller
-                                        as={
-                                          <Input
-                                            ref={register()}
-                                            autoComplete="off"
-                                            placeholder="Escribí una descripción del objeto (guardá uno o mas detalles de tu objeto para poner en una pregunta acá abajo)"
-                                            className={
-                                              !formState.touched.question &&
-                                              (formState.submitCount == 0 ||
-                                                formState.isSubmitted)
-                                                ? ""
-                                                : errors.question
-                                                ? "is-invalid"
-                                                : "is-valid"
-                                            }
-                                            cols="80"
-                                            rows="4"
-                                            type="textarea"
-                                          />
+                                      <Input
+                                        ref={register()}
+                                        autoComplete="off"
+                                        placeholder="Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
+                                        className={
+                                          !formState.touched.question &&
+                                          (formState.submitCount == 0 ||
+                                            formState.isSubmitted)
+                                            ? ""
+                                            : errors.question
+                                            ? "is-invalid"
+                                            : "is-valid"
                                         }
-                                        name="description"
-                                        control={control}
+                                        cols="80"
+                                        rows="4"
+                                        type="textarea"
+                                        name="question"
+                                        value={question}
+                                        onChange={handleQuestionChange}
                                       />
+
                                       {errors.question && (
                                         <small style={{ color: "red" }}>
                                           {errors.question.message}
                                         </small>
                                       )}
                                     </FormGroup>
-                                    <FormGroup className="mb-3">
-                                      <InputGroup className="input-group-alternative">
-                                        <InputGroupAddon addonType="prepend">
-                                          <InputGroupText>
-                                            <i className="ni ni-email-83" />
-                                          </InputGroupText>
-                                        </InputGroupAddon>
-                                        <Input
-                                          placeholder="Email"
-                                          type="email"
-                                        />
-                                      </InputGroup>
-                                    </FormGroup>
-                                    <FormGroup>
-                                      <InputGroup className="input-group-alternative">
-                                        <InputGroupAddon addonType="prepend">
-                                          <InputGroupText>
-                                            <i className="ni ni-lock-circle-open" />
-                                          </InputGroupText>
-                                        </InputGroupAddon>
-                                        <Input
-                                          placeholder="Password"
-                                          type="password"
-                                        />
-                                      </InputGroup>
-                                    </FormGroup>
+                                    <h6>
+                                      Si alguien dice haber encontrado tu objeto
+                                      te mostraremos su respuesta a esta
+                                      pregunta
+                                    </h6>
 
-                                    <div className="text-center">
+                                    <div className="modal-footer">
                                       <Button
-                                        className="my-4"
                                         color="primary"
                                         type="button"
+                                        onClick={toggleTrueFalse}
                                       >
                                         Guardar pregunta
+                                      </Button>
+                                      <Button
+                                        className="ml-auto"
+                                        color="link"
+                                        data-dismiss="modal"
+                                        type="button"
+                                        onClick={cancelQuestion}
+                                      >
+                                        Volver
                                       </Button>
                                     </div>
                                   </Form>
@@ -614,11 +631,11 @@ const LostItem = props => {
                         <Button
                           className="my-4"
                           color="primary"
-                          disabled={
-                            !formState.isValid || !buttonGroupTouched
-                              ? true
-                              : false
-                          }
+                          // disabled={
+                          //   !formState.isValid || !buttonGroupTouched
+                          //     ? true
+                          //     : false
+                          // }
                           type="submit"
                         >
                           Publicar objeto

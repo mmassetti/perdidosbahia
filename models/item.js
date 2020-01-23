@@ -23,14 +23,16 @@ const itemSchema = new Schema({
     // default: Date.now
   },
   location: {
-    type: String,
-    required: true
+    type: String
+    //required: true
+  },
+  question: {
+    type: String
   },
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User"
-  },
-
+  }
 });
 
 module.exports = mongoose.model("Item", itemSchema);
