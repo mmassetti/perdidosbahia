@@ -83,6 +83,7 @@ const LostItem = props => {
       .date()
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
       .typeError("Por favor selecciona la fecha en que perdiste el objeto"),
+    location: yup.string().required("Por favor escribí una ubicación"),
     question: yup.string()
     // category: yup
     //   .string()
@@ -129,6 +130,7 @@ const LostItem = props => {
 
   const submitForm = async data => {
     setData(data);
+
     console.log("Data: ", data);
     console.log("question: ", question);
     var options = {
@@ -137,10 +139,17 @@ const LostItem = props => {
       month: "long",
       day: "numeric"
     };
-    console.log(
-      "fecha: ",
-      data.dateOfEvent.toLocaleDateString("es-ES", options)
-    );
+    // console.log(
+    //   "fecha: ",
+    //   data.dateOfEvent.toLocaleDateString("es-ES", options)
+    // );
+
+    // date: "${data.dateOfEvent.toLocaleDateString(
+    //   "es-ES",
+    //   options
+    // )}",
+
+    const transformedDate = moment(data.dateOfEvent).toDate();
 
     let requestBody = {
       query: `
@@ -150,15 +159,14 @@ const LostItem = props => {
                 {description: "${data.description}", 
                 type: "perdido", 
                 category: "${category.categoryName}", 
-                date: "${data.dateOfEvent.toLocaleDateString(
-                  "es-ES",
-                  options
-                )}", 
+                location: "${data.location}",
+                date: "${transformedDate}",
                 question: "${question}"}) {
                   _id
                   description
                   type
                   category
+                  location
                   date
                   question
                   creator {
@@ -430,47 +438,6 @@ const LostItem = props => {
                         </ButtonGroup>
                       </FormGroup>
 
-                      {/* //* Description */}
-                      <FormGroup
-                        className={
-                          !formState.touched.description &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
-                            ? ""
-                            : errors.description
-                            ? "has-danger"
-                            : "has-success"
-                        }
-                      >
-                        <Controller
-                          as={
-                            <Input
-                              ref={register()}
-                              autoComplete="off"
-                              placeholder="Escribí una descripción del objeto (recomendamos que guardes algún detalle de tu objeto para poner en una pregunta debajo)"
-                              className={
-                                !formState.touched.description &&
-                                (formState.submitCount == 0 ||
-                                  formState.isSubmitted)
-                                  ? ""
-                                  : errors.description
-                                  ? "is-invalid"
-                                  : "is-valid"
-                              }
-                              cols="80"
-                              rows="4"
-                              type="textarea"
-                            />
-                          }
-                          name="description"
-                          control={control}
-                        />
-                        {errors.description && (
-                          <small style={{ color: "red" }}>
-                            {errors.description.message}
-                          </small>
-                        )}
-                      </FormGroup>
-
                       {/* //* Date */}
                       <FormGroup
                         className={
@@ -508,6 +475,88 @@ const LostItem = props => {
                         {errors.dateOfEvent && (
                           <small style={{ color: "red" }}>
                             {errors.dateOfEvent.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* //* Location */}
+                      <FormGroup
+                        className={
+                          !formState.touched.location &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.location
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Escribí la ubicación en donde perdiste tu objeto (calle y altura,lugar,zona,etc) "
+                              className={
+                                !formState.touched.location &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.location
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                              cols="80"
+                              rows="4"
+                              type="textarea"
+                            />
+                          }
+                          name="location"
+                          control={control}
+                        />
+                        {errors.location && (
+                          <small style={{ color: "red" }}>
+                            {errors.location.message}
+                          </small>
+                        )}
+                      </FormGroup>
+
+                      {/* //* Description */}
+                      <FormGroup
+                        className={
+                          !formState.touched.description &&
+                          (formState.submitCount == 0 || formState.isSubmitted)
+                            ? ""
+                            : errors.description
+                            ? "has-danger"
+                            : "has-success"
+                        }
+                      >
+                        <Controller
+                          as={
+                            <Input
+                              ref={register()}
+                              autoComplete="off"
+                              placeholder="Escribí una descripción del objeto (recomendamos que guardes algún detalle de tu objeto para poner en una pregunta debajo)"
+                              className={
+                                !formState.touched.description &&
+                                (formState.submitCount == 0 ||
+                                  formState.isSubmitted)
+                                  ? ""
+                                  : errors.description
+                                  ? "is-invalid"
+                                  : "is-valid"
+                              }
+                              cols="80"
+                              rows="4"
+                              type="textarea"
+                            />
+                          }
+                          name="description"
+                          control={control}
+                        />
+                        {errors.description && (
+                          <small style={{ color: "red" }}>
+                            {errors.description.message}
                           </small>
                         )}
                       </FormGroup>
@@ -631,11 +680,11 @@ const LostItem = props => {
                         <Button
                           className="my-4"
                           color="primary"
-                          // disabled={
-                          //   !formState.isValid || !buttonGroupTouched
-                          //     ? true
-                          //     : false
-                          // }
+                          disabled={
+                            !formState.isValid || !buttonGroupTouched
+                              ? true
+                              : false
+                          }
                           type="submit"
                         >
                           Publicar objeto

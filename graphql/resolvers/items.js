@@ -20,10 +20,10 @@ module.exports = {
       description: args.itemInput.description,
       type: args.itemInput.type,
       category: args.itemInput.category,
-      date: args.itemInput.date,
+      // date: args.itemInput.date,
       location: args.itemInput.location ? args.itemInput.location : null,
       question: args.itemInput.question ? args.itemInput.question : null,
-      //date: new Date(args.itemInput.date),
+      date: new Date(args.itemInput.date),
       creator: req.userId
     });
 

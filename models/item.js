@@ -18,13 +18,13 @@ const itemSchema = new Schema({
     required: true
   },
   date: {
-    type: String,
+    type: Date,
     required: true
     // default: Date.now
   },
   location: {
-    type: String
-    //required: true
+    type: String,
+    required: true
   },
   question: {
     type: String
