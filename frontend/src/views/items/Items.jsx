@@ -16,7 +16,8 @@
 
 */
 import React, { useState, useEffect } from "react";
-
+import Download from "../IndexSections/Download";
+import CardsFooter from "../../components/Footers/CardsFooter";
 // reactstrap components
 import {
   Badge,
@@ -36,14 +37,17 @@ import {
   Container,
   Row,
   UncontrolledTooltip,
-  Col
+  Col,
+  Button,
+  CardBody
 } from "reactstrap";
 // core components
 
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
+import CardItemList from "./cards/CardItemList";
 
 const Items = () => {
-  const [items, setItems] = useState();
+  const [items, setItems] = useState({ items: [] });
 
   const fetchItems = () => {
     const requestBody = {
@@ -78,7 +82,7 @@ const Items = () => {
       })
       .then(resData => {
         const items = resData.data.items;
-        setItems(items);
+        setItems({ items: items });
         console.log("Items: ", items);
       })
       .catch(err => {
@@ -126,159 +130,18 @@ const Items = () => {
         </div>
         {/* Page content */}
 
-        <Container className="mt--7" fluid>
-          {/* Table */}
-          <Row>
-            <div className="col">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <h3 className="mb-0">Objetos perdidos</h3>
-                </CardHeader>
-
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Descripción</th>
-                      <th scope="col">Categoría</th>
-                      <th scope="col">Fecha</th>
-                      <th scope="col">Ubicación</th>
-                      <th scope="col">Dueño</th>
-                      <th scope="col" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {items ? (
-                      items.map(item => (
-                        <tr key={item._id}>
-                          <th scope="row">
-                            <Media className="align-items-center">
-                              <a
-                                className="avatar rounded-circle mr-3"
-                                href="#pablo"
-                                onClick={e => e.preventDefault()}
-                              >
-                                <img
-                                  alt="..."
-                                  src={require("assets/img/theme/angular.jpg")}
-                                />
-                              </a>
-                              <Media>
-                                <span className="mb-0 text-sm">
-                                  {item.description}
-                                </span>
-                              </Media>
-                            </Media>
-                          </th>
-                          <td>{item.category}</td>
-                          <td>{item.date}</td>
-                          <td>ubicacion</td>
-                          <td>duenio</td>
-                          <td className="text-right">
-                            <UncontrolledDropdown>
-                              <DropdownToggle
-                                className="btn-icon-only text-light"
-                                href="#pablo"
-                                role="button"
-                                size="sm"
-                                color=""
-                                onClick={e => e.preventDefault()}
-                              >
-                                <i className="fas fa-ellipsis-v" />
-                              </DropdownToggle>
-                              <DropdownMenu
-                                className="dropdown-menu-arrow"
-                                right
-                              >
-                                <DropdownItem
-                                  href="#pablo"
-                                  onClick={e => e.preventDefault()}
-                                >
-                                  Action
-                                </DropdownItem>
-                                <DropdownItem
-                                  href="#pablo"
-                                  onClick={e => e.preventDefault()}
-                                >
-                                  Another action
-                                </DropdownItem>
-                                <DropdownItem
-                                  href="#pablo"
-                                  onClick={e => e.preventDefault()}
-                                >
-                                  Something else here
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </UncontrolledDropdown>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
-              </Card>
-            </div>
+        <Container>
+          <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
+            <Col lg="12">
+              <Row className="row-grid">
+                <CardItemList items={items}></CardItemList>
+              </Row>
+            </Col>
           </Row>
         </Container>
+        <Download />
       </main>
+      <CardsFooter />
     </>
   );
 };

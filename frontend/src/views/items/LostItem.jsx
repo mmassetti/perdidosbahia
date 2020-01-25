@@ -66,6 +66,11 @@ require("moment/locale/es");
 
 const LostItem = props => {
   const context = useContext(AuthContext);
+  const [data, setData] = useState(null);
+  const [category, setCategory] = useState({ categoryName: "" });
+  const [question, setQuestion] = useState("");
+  const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
+  const [isToggled, setToggled] = useState(false);
 
   const defaultValues = {
     description: "",
@@ -98,23 +103,15 @@ const LostItem = props => {
     }
   );
 
-  const [data, setData] = useState(null);
-
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  const [category, setCategory] = useState({ categoryName: "" });
-  const [question, setQuestion] = useState("");
-  const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
-
   const radio = i => {
     setCategory({ categoryName: i });
     setButtonGroupTouched(true);
   };
-
-  const [isToggled, setToggled] = useState(false);
 
   const toggleTrueFalse = () => setToggled(!isToggled);
 
@@ -125,6 +122,10 @@ const LostItem = props => {
 
   const cancelQuestion = () => {
     toggleTrueFalse();
+    setQuestion("");
+  };
+
+  const removeQuestion = () => {
     setQuestion("");
   };
 
@@ -672,6 +673,20 @@ const LostItem = props => {
                               </Card>
                             </div>
                           </Modal>
+                        </Col>
+                        <Col md="4">
+                          <Button
+                            hidden={question == ""}
+                            disabled={question == ""}
+                            className="ml-auto"
+                            color="danger"
+                            outline
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={removeQuestion}
+                          >
+                            Eliminar pregunta
+                          </Button>
                         </Col>
                       </Row>
 
