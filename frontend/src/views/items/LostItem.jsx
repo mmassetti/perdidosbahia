@@ -170,10 +170,6 @@ const LostItem = props => {
                   location
                   date
                   question
-                  creator {
-                    _id
-                    email
-                  }
             }
           }
         `
@@ -645,9 +641,17 @@ const LostItem = props => {
                                       )}
                                     </FormGroup>
                                     <h6>
-                                      Si alguien dice haber encontrado tu objeto
-                                      te mostraremos su respuesta a esta
-                                      pregunta
+                                      <span>
+                                        Si alguien dice haber encontrado tu
+                                        objeto te mostraremos su respuesta a
+                                        esta pregunta
+                                      </span>
+
+                                      <br />
+                                      <span className="text-danger">
+                                        También le solicitaremos que envíe una
+                                        foto del objeto
+                                      </span>
                                     </h6>
 
                                     <div className="modal-footer">

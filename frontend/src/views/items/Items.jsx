@@ -15,9 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Download from "../IndexSections/Download";
 import CardsFooter from "../../components/Footers/CardsFooter";
+import Spinner from "../../components/Spinner/Spinner";
 // reactstrap components
 import {
   Badge,
@@ -45,9 +46,12 @@ import {
 
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import CardItem from "./cards/CardItem";
+import AuthContext from "../../context/auth-context";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
+  const [isLoading, setIsLoading] = useState(false);
+  const context = useContext(AuthContext);
 
   const itemsCards = items.items.map(item => {
     console.log("TCL: Items -> item ", item);
@@ -59,11 +63,14 @@ const Items = () => {
         category={item.category}
         date={item.date}
         location={item.location}
+        creatorId={item.creator._id}
+        authUserId={context.userId}
       ></CardItem>
     );
   });
 
   const fetchItems = () => {
+    setIsLoading(true);
     const requestBody = {
       query: `
           query {
@@ -99,9 +106,11 @@ const Items = () => {
       .then(resData => {
         const items = resData.data.items;
         setItems({ items: items });
+        setIsLoading(false);
         console.log("Items: ", items);
       })
       .catch(err => {
+        setIsLoading(false);
         console.log(err);
       });
   };
@@ -149,7 +158,11 @@ const Items = () => {
         <Container>
           <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
             <Col lg="12">
-              <Row className="row-grid">{itemsCards}</Row>
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <Row className="row-grid">{itemsCards}</Row>
+              )}
             </Col>
           </Row>
         </Container>

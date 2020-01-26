@@ -15,6 +15,13 @@ const CardItem = props => {
           <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
             <i className="ni ni-check-bold" />
           </div>
+          {props.creatorId == props.authUserId ? (
+            <h6 className="text-warning font-weight-light mb-2">
+              ¡Esta publicación es tuya!
+            </h6>
+          ) : (
+            ""
+          )}
           <h6 className="text-primary text-uppercase">{props.category}</h6>
           <p className="description mt-3">{props.description}</p>
           <div>
