@@ -44,10 +44,24 @@ import {
 // core components
 
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import CardItemList from "./cards/CardItemList";
+import CardItem from "./cards/CardItem";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
+
+  const itemsCards = items.items.map(item => {
+    console.log("TCL: Items -> item ", item);
+    return (
+      <CardItem
+        key={item._id}
+        description={item.description}
+        type={item.type}
+        category={item.category}
+        date={item.date}
+        location={item.location}
+      ></CardItem>
+    );
+  });
 
   const fetchItems = () => {
     const requestBody = {
@@ -57,7 +71,9 @@ const Items = () => {
               _id
               category
               description
+              type
               date
+              location
               creator {
                 _id
                 email
@@ -133,9 +149,7 @@ const Items = () => {
         <Container>
           <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
             <Col lg="12">
-              <Row className="row-grid">
-                <CardItemList items={items}></CardItemList>
-              </Row>
+              <Row className="row-grid">{itemsCards}</Row>
             </Col>
           </Row>
         </Container>

@@ -1,30 +1,31 @@
 import React from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
 
-const CardItem = props => {
-  console.log("TCL: CardItem -> props", props);
+var moment = require("moment");
+require("moment/locale/es");
 
+const CardItem = props => {
   return (
     <Col lg="4">
-      <Card className="card-lift--hover shadow border-0">
+      <Card
+        className="card-lift--hover shadow border-0"
+        style={{ marginBottom: "1rem" }}
+      >
         <CardBody className="py-5">
           <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
             <i className="ni ni-check-bold" />
           </div>
-          <h6 className="text-primary text-uppercase">Download Argon</h6>
-          <p className="description mt-3">
-            Argon is a great free UI package based on Bootstrap 4 that includes
-            the most important components and features.
-          </p>
+          <h6 className="text-primary text-uppercase">{props.category}</h6>
+          <p className="description mt-3">{props.description}</p>
           <div>
             <Badge color="primary" pill className="mr-1">
-              design
+              {props.type}
             </Badge>
             <Badge color="primary" pill className="mr-1">
-              system
+              {props.category}
             </Badge>
             <Badge color="primary" pill className="mr-1">
-              creative
+              {moment(props.date).format("LL")}
             </Badge>
           </div>
           <Button
@@ -33,7 +34,7 @@ const CardItem = props => {
             href="#pablo"
             onClick={e => e.preventDefault()}
           >
-            Learn more
+            Ver más
           </Button>
         </CardBody>
       </Card>
