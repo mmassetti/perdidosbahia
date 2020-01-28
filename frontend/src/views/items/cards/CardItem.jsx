@@ -9,12 +9,12 @@ const CardItem = props => {
   let history = useHistory();
 
   function goToItemDetail(idItem) {
-    console.log("te voy a llver al card con id: ", idItem);
-    history.push("/detalle/" + idItem);
-    // props.history.push({
-    //   pathname: "/login-page",
-    //   state: { idItem: idItem }
-    // });
+    console.log("te voy a llevar al card con id: ", idItem);
+    //history.push("/detalle/" + idItem);
+    history.push({
+      pathname: "/detalle/" + idItem,
+      state: { idItem: idItem }
+    });
   }
 
   return (
@@ -50,8 +50,7 @@ const CardItem = props => {
           <Button
             className="mt-4"
             color="primary"
-            onClick={e => e.preventDefault()}
-            // onClick={goToItemDetail(props.id)}
+            onClick={() => goToItemDetail(props.id)}
           >
             Ver más
           </Button>

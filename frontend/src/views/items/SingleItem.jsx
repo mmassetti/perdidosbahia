@@ -26,13 +26,15 @@ import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 
 const SingleItem = props => {
   useEffect(() => {
+    console.log("TCL: props", props);
+
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
 
-    const {
-      match: { params }
-    } = props;
-    console.log("TCL: SingleItem -> componentDidMount -> params ", params);
+    // const {
+    //   match: { params }
+    // } = props;
+    // console.log("TCL: SingleItem -> componentDidMount -> params ", params);
   }, []);
 
   return (
