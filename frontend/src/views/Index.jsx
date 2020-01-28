@@ -8,7 +8,7 @@ import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import CardsFooter from "components/Footers/CardsFooter.jsx";
 
 // index page sections
-import Hero from "./IndexSections/Hero.jsx";
+import SplashScreen from "./IndexSections/SplashScreen.jsx";
 import Buttons from "./IndexSections/Buttons.jsx";
 import Inputs from "./IndexSections/Inputs.jsx";
 import CustomControls from "./IndexSections/CustomControls.jsx";
@@ -39,7 +39,7 @@ const Index = props => {
   return (
     <>
       <DemoNavbar />
-      <Hero />
+      <SplashScreen />
       {/*
               <Buttons />
             <Inputs />

@@ -117,7 +117,6 @@ const LostItem = props => {
 
   const handleQuestionChange = event => {
     setQuestion(event.target.value.toString());
-    // setQuestion("");
   };
 
   const cancelQuestion = () => {

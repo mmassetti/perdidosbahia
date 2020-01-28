@@ -70,7 +70,7 @@ const App = props => {
               )}
 
               <Route
-                path="/detalle/:idItem"
+                path="/detalle"
                 exact
                 render={props => <SingleItem {...props} />}
               />

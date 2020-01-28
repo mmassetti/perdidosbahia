@@ -18,24 +18,49 @@
 import React, { useState, useEffect } from "react";
 
 // reactstrap components
-import { Button, Card, Container, Row, Col } from "reactstrap";
+import {
+  Button,
+  Card,
+  Container,
+  Row,
+  Col,
+  CardHeader,
+  CardBody,
+  Modal,
+  Form,
+  FormGroup,
+  Input
+} from "reactstrap";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
+var moment = require("moment");
+require("moment/locale/es");
 
 const SingleItem = props => {
+  const [answer, setAnswer] = useState("");
+
+  const [isToggled, setToggled] = useState(false);
+
   useEffect(() => {
     console.log("TCL: props", props);
-
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-
-    // const {
-    //   match: { params }
-    // } = props;
-    // console.log("TCL: SingleItem -> componentDidMount -> params ", params);
   }, []);
+
+  const toggleClaimModal = () => {
+    setToggled(!isToggled);
+  };
+
+  const cancelAnswer = () => {
+    toggleClaimModal();
+    setAnswer("");
+  };
+
+  const handleAnswerChange = event => {
+    setAnswer(event.target.value.toString());
+  };
 
   return (
     <>
@@ -88,22 +113,13 @@ const SingleItem = props => {
                   >
                     <div className="card-profile-actions py-4 mt-lg-0">
                       <Button
-                        className="mr-4"
-                        color="info"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Connect
-                      </Button>
-                      <Button
                         className="float-right"
                         color="default"
                         href="#pablo"
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        Message
+                        Ayuda
                       </Button>
                     </div>
                   </Col>
@@ -125,39 +141,150 @@ const SingleItem = props => {
                   </Col>
                 </Row>
                 <div className="text-center mt-5">
-                  <h3>
-                    Jessica Jones{" "}
-                    <span className="font-weight-light">, 27</span>
-                  </h3>
+                  <h3>Objeto {props.location.state.props.type}</h3>
                   <div className="h6 font-weight-300">
                     <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
+                    {moment(props.location.state.props.date).format("LL")}
                   </div>
                   <div className="h6 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Creative Tim Officer
+                    Categoría: {props.location.state.props.category}
                   </div>
                   <div>
                     <i className="ni education_hat mr-2" />
-                    University of Computer Science
+                    Ubicación: {props.location.state.props.location}
                   </div>
                 </div>
                 <div className="mt-5 py-5 border-top text-center">
                   <Row className="justify-content-center">
                     <Col lg="9">
-                      <p>
-                        An artist of considerable range, Ryan — the name taken
-                        by Melbourne-raised, Brooklyn-based Nick Murphy —
-                        writes, performs and records all of his own music,
-                        giving it a warm, intimate feel with a solid groove
-                        structure. An artist of considerable range.
-                      </p>
+                      <p>{props.location.state.props.description}</p>
                       <a href="#pablo" onClick={e => e.preventDefault()}>
                         Show more
                       </a>
                     </Col>
                   </Row>
                 </div>
+              </div>
+              <div className="px-lg-5 py-lg-5">
+                <CardHeader className="bg-white pb-5">
+                  <div className="btn-wrapper text-center">
+                    <Button
+                      color="primary"
+                      href="#pablo"
+                      onClick={toggleClaimModal}
+                    >
+                      <span className="btn-inner--text">
+                        ¡Yo perdí este objeto!
+                      </span>
+                    </Button>
+
+                    <Modal
+                      className="modal-dialog-centered"
+                      isOpen={isToggled}
+                      toggle={() => toggleClaimModal}
+                    >
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                          Modal title
+                        </h5>
+                        <button
+                          aria-label="Close"
+                          className="close"
+                          data-dismiss="modal"
+                          type="button"
+                          onClick={() => toggleClaimModal}
+                        >
+                          <span aria-hidden={true}>×</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">...</div>
+                      <div className="modal-footer">
+                        <Button
+                          color="secondary"
+                          data-dismiss="modal"
+                          type="button"
+                          onClick={() => toggleClaimModal}
+                        >
+                          Close
+                        </Button>
+                        <Button color="primary" type="button">
+                          Save changes
+                        </Button>
+                      </div>
+                    </Modal>
+
+                    {/* <Modal
+                      className="modal-dialog-centered"
+                      size="sm"
+                      isOpen={isToggled}
+                      toggle={toggleClaimModal}
+                    >
+                      <div className="modal-body p-0">
+                        <Card className="bg-secondary shadow border-0">
+                          <CardHeader className="bg-transparent pb-3">
+                            <div className="text-muted text-center mt-2 mb-3">
+                              <span className="h6 font-weight-bold ">
+                                Respuesta sobre el objeto
+                              </span>
+                            </div>
+                          </CardHeader>
+                          <CardBody className="px-lg-3 py-lg-3">
+                            <div className="text-center text-muted mb-4">
+                              <h6>
+                                Deberás contestar esta pregunta que dejó el
+                                usuario que perdió el objeto.
+                              </h6>
+                            </div>
+                            <Form role="form">
+                              {/* //* Answer to user question */}
+                    {/* <FormGroup>
+                                <Input
+                                  autoComplete="off"
+                                  placeholder="Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
+                                  cols="80"
+                                  rows="4"
+                                  type="textarea"
+                                  name="answer"
+                                  value={answer}
+                                  onChange={handleAnswerChange}
+                                />
+                              </FormGroup>
+
+                              <div className="modal-footer">
+                                <Button
+                                  color="primary"
+                                  type="button"
+                                  onClick={toggleClaimModal}
+                                >
+                                  Enviar respuesta
+                                </Button>
+                                <Button
+                                  className="ml-auto"
+                                  color="link"
+                                  data-dismiss="modal"
+                                  type="button"
+                                  onClick={cancelAnswer}
+                                >
+                                  Volver
+                                </Button>
+                              </div>
+                            </Form>
+                          </CardBody>
+                        </Card>
+                      </div>
+                    </Modal> */}
+
+                    <Button
+                      className="btn-neutral btn-icon ml-1"
+                      color="default"
+                      href="#pablo"
+                      onClick={e => e.preventDefault()}
+                    >
+                      <span className="btn-inner--text">Volver</span>
+                    </Button>
+                  </div>
+                </CardHeader>
               </div>
             </Card>
           </Container>

@@ -12,8 +12,8 @@ const CardItem = props => {
     console.log("te voy a llevar al card con id: ", idItem);
     //history.push("/detalle/" + idItem);
     history.push({
-      pathname: "/detalle/" + idItem,
-      state: { idItem: idItem }
+      pathname: "/detalle",
+      state: { props: props }
     });
   }
 
