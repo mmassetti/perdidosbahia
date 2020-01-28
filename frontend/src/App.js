@@ -7,7 +7,7 @@ import "assets/scss/argon-design-system-react.scss";
 import Index from "views/Index.jsx";
 import Landing from "views/examples/Landing.jsx";
 import Login from "views/auth/Login";
-import Profile from "views/examples/Profile.jsx";
+import SingleItem from "views/items/SingleItem";
 import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";
@@ -70,9 +70,9 @@ const App = props => {
               )}
 
               <Route
-                path="/profile-page"
+                path="/detalle/:idItem"
                 exact
-                render={props => <Profile {...props} />}
+                render={props => <SingleItem {...props} />}
               />
               {!token && (
                 <Route

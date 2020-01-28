@@ -1,10 +1,22 @@
 import React from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const CardItem = props => {
+  let history = useHistory();
+
+  function goToItemDetail(idItem) {
+    console.log("te voy a llver al card con id: ", idItem);
+    history.push("/detalle/" + idItem);
+    // props.history.push({
+    //   pathname: "/login-page",
+    //   state: { idItem: idItem }
+    // });
+  }
+
   return (
     <Col lg="4">
       <Card
@@ -38,8 +50,8 @@ const CardItem = props => {
           <Button
             className="mt-4"
             color="primary"
-            href="#pablo"
             onClick={e => e.preventDefault()}
+            // onClick={goToItemDetail(props.id)}
           >
             Ver más
           </Button>

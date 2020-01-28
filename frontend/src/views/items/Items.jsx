@@ -16,6 +16,7 @@
 
 */
 import React, { useState, useEffect, useContext } from "react";
+
 import Download from "../IndexSections/Download";
 import CardsFooter from "../../components/Footers/CardsFooter";
 import Spinner from "../../components/Spinner/Spinner";
@@ -47,6 +48,7 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import CardItem from "./cards/CardItem";
 import AuthContext from "../../context/auth-context";
+import SingleItem from "./SingleItem";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -58,6 +60,7 @@ const Items = () => {
     return (
       <CardItem
         key={item._id}
+        id={item._id}
         description={item.description}
         type={item.type}
         category={item.category}
