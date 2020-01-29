@@ -8,9 +8,7 @@ require("moment/locale/es");
 const CardItem = props => {
   let history = useHistory();
 
-  function goToItemDetail(idItem) {
-    console.log("te voy a llevar al card con id: ", idItem);
-    //history.push("/detalle/" + idItem);
+  function goToSingleItem() {
     history.push({
       pathname: "/detalle",
       state: { props: props }
@@ -34,7 +32,9 @@ const CardItem = props => {
           ) : (
             ""
           )}
-          <h6 className="text-primary text-uppercase">{props.category}</h6>
+          <h6 className="text-primary text-uppercase">
+            {props.category != "otro" ? props.category : "Otros objetos"}
+          </h6>
           <p className="description mt-3">{props.description}</p>
           <div>
             <Badge color="primary" pill className="mr-1">
@@ -50,9 +50,9 @@ const CardItem = props => {
           <Button
             className="mt-4"
             color="primary"
-            onClick={() => goToItemDetail(props.id)}
+            onClick={() => goToSingleItem()}
           >
-            Ver más
+            Ver
           </Button>
         </CardBody>
       </Card>

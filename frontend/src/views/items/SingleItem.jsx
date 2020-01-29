@@ -29,19 +29,23 @@ import {
   Modal,
   Form,
   FormGroup,
-  Input
+  Input,
+  Badge
 } from "reactstrap";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
+import { useHistory } from "react-router-dom";
+
 var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = props => {
   const [answer, setAnswer] = useState("");
-
   const [isToggled, setToggled] = useState(false);
+
+  let history = useHistory();
 
   useEffect(() => {
     console.log("TCL: props", props);
@@ -56,6 +60,10 @@ const SingleItem = props => {
   const cancelAnswer = () => {
     toggleClaimModal();
     setAnswer("");
+    console.log("voy a hacer el push");
+    history.push({
+      pathname: "/objetos-publicados"
+    });
   };
 
   const handleAnswerChange = event => {
@@ -119,7 +127,7 @@ const SingleItem = props => {
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        Ayuda
+                        Necesito ayuda
                       </Button>
                     </div>
                   </Col>
@@ -169,117 +177,89 @@ const SingleItem = props => {
               <div className="px-lg-5 py-lg-5">
                 <CardHeader className="bg-white pb-5">
                   <div className="btn-wrapper text-center">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={toggleClaimModal}
-                    >
+                    <Button color="primary" onClick={toggleClaimModal}>
                       <span className="btn-inner--text">
-                        ¡Yo perdí este objeto!
+                        ¡Encontré este objeto!
                       </span>
                     </Button>
 
                     <Modal
-                      className="modal-dialog-centered"
-                      isOpen={isToggled}
-                      toggle={() => toggleClaimModal}
-                    >
-                      <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">
-                          Modal title
-                        </h5>
-                        <button
-                          aria-label="Close"
-                          className="close"
-                          data-dismiss="modal"
-                          type="button"
-                          onClick={() => toggleClaimModal}
-                        >
-                          <span aria-hidden={true}>×</span>
-                        </button>
-                      </div>
-                      <div className="modal-body">...</div>
-                      <div className="modal-footer">
-                        <Button
-                          color="secondary"
-                          data-dismiss="modal"
-                          type="button"
-                          onClick={() => toggleClaimModal}
-                        >
-                          Close
-                        </Button>
-                        <Button color="primary" type="button">
-                          Save changes
-                        </Button>
-                      </div>
-                    </Modal>
-
-                    {/* <Modal
                       className="modal-dialog-centered"
                       size="sm"
                       isOpen={isToggled}
                       toggle={toggleClaimModal}
                     >
                       <div className="modal-body p-0">
-                        <Card className="bg-secondary shadow border-0">
-                          <CardHeader className="bg-transparent pb-3">
-                            <div className="text-muted text-center mt-2 mb-3">
-                              <span className="h6 font-weight-bold ">
-                                Respuesta sobre el objeto
-                              </span>
-                            </div>
-                          </CardHeader>
-                          <CardBody className="px-lg-3 py-lg-3">
-                            <div className="text-center text-muted mb-4">
-                              <h6>
-                                Deberás contestar esta pregunta que dejó el
-                                usuario que perdió el objeto.
-                              </h6>
-                            </div>
-                            <Form role="form">
-                              {/* //* Answer to user question */}
-                    {/* <FormGroup>
-                                <Input
-                                  autoComplete="off"
-                                  placeholder="Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
-                                  cols="80"
-                                  rows="4"
-                                  type="textarea"
-                                  name="answer"
-                                  value={answer}
-                                  onChange={handleAnswerChange}
-                                />
-                              </FormGroup>
-
-                              <div className="modal-footer">
-                                <Button
-                                  color="primary"
-                                  type="button"
-                                  onClick={toggleClaimModal}
-                                >
-                                  Enviar respuesta
-                                </Button>
-                                <Button
-                                  className="ml-auto"
-                                  color="link"
-                                  data-dismiss="modal"
-                                  type="button"
-                                  onClick={cancelAnswer}
-                                >
-                                  Volver
-                                </Button>
+                        {props.location.state.props.question ? (
+                          <Card className="bg-secondary shadow border-0">
+                            <CardHeader className="bg-transparent pb-3">
+                              <div className="text-muted text-center mt-2 mb-3">
+                                <span className="h6 font-weight-bold ">
+                                  Respuesta sobre el objeto
+                                </span>
                               </div>
-                            </Form>
-                          </CardBody>
-                        </Card>
+                            </CardHeader>
+                            <CardBody className="px-lg-3 py-lg-3">
+                              <div className="text-center text-muted mb-4">
+                                <h6>
+                                  Deberás contestar esta pregunta que dejó el
+                                  usuario que perdió el objeto.
+                                </h6>
+                                <h3>
+                                  <Badge
+                                    className="text-uppercase"
+                                    color="primary"
+                                    pill
+                                  >
+                                    {props.location.state.props.question}
+                                  </Badge>
+                                </h3>
+                              </div>
+                              <Form role="form">
+                                {/* //* Answer to user question */}
+                                <FormGroup>
+                                  <Input
+                                    autoComplete="off"
+                                    placeholder="Tu respuesta..."
+                                    cols="80"
+                                    rows="4"
+                                    type="textarea"
+                                    name="answer"
+                                    value={answer}
+                                    onChange={handleAnswerChange}
+                                  />
+                                </FormGroup>
+                                <div className="modal-footer">
+                                  <Button
+                                    color="primary"
+                                    type="button"
+                                    onClick={toggleClaimModal}
+                                  >
+                                    Enviar respuesta
+                                  </Button>
+                                  <Button
+                                    className="ml-auto"
+                                    color="link"
+                                    data-dismiss="modal"
+                                    type="button"
+                                    onClick={toggleClaimModal}
+                                  >
+                                    Cancelar
+                                  </Button>
+                                </div>
+                              </Form>
+                            </CardBody>
+                          </Card>
+                        ) : (
+                          <p>no cargo pregunta</p>
+                        )}
                       </div>
-                    </Modal> */}
+                    </Modal>
 
                     <Button
                       className="btn-neutral btn-icon ml-1"
                       color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={cancelAnswer}
                     >
                       <span className="btn-inner--text">Volver</span>
                     </Button>
