@@ -30,13 +30,19 @@ import {
   Form,
   FormGroup,
   Input,
-  Badge
+  Badge,
+  NavItem,
+  NavLink,
+  Nav,
+  TabContent,
+  TabPane
 } from "reactstrap";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 import { useHistory } from "react-router-dom";
+import classnames from "classnames";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -44,6 +50,12 @@ require("moment/locale/es");
 const SingleItem = props => {
   const [answer, setAnswer] = useState("");
   const [isToggled, setToggled] = useState(false);
+  const [tabs, setTabs] = useState({ tab: 1 });
+
+  const toggleNavs = (e, index) => {
+    e.preventDefault();
+    setTabs({ tab: index });
+  };
 
   let history = useHistory();
 
@@ -189,7 +201,247 @@ const SingleItem = props => {
                       isOpen={isToggled}
                       toggle={toggleClaimModal}
                     >
-                      <div className="modal-body p-0">
+                      {/* //* If user that publicated the item gave a Question  */}
+
+                      {props.location.state.props.question ? (
+                        <>
+                          <div className="nav-wrapper">
+                            <Nav
+                              style={{ padding: "0.5rem" }}
+                              className="nav-fill flex-column flex-md-row"
+                              id="tabs-icons-text"
+                              pills
+                              role="tablist"
+                            >
+                              <NavItem>
+                                <NavLink
+                                  aria-selected={tabs.tab === 1}
+                                  className={classnames("mb-sm-3 mb-md-0", {
+                                    active: tabs.tab === 1
+                                  })}
+                                  onClick={e => e.preventDefault()}
+                                  role="tab"
+                                >
+                                  <i className="ni ni-cloud-upload-96 mr-2" />
+                                  Paso 1
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink
+                                  aria-selected={tabs.tab === 2}
+                                  className={classnames("mb-sm-3 mb-md-0", {
+                                    active: tabs.tab === 2
+                                  })}
+                                  onClick={e => e.preventDefault()}
+                                  role="tab"
+                                >
+                                  <i className="ni ni-bell-55 mr-2" />
+                                  Paso 2
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink
+                                  aria-selected={tabs === 3}
+                                  className={classnames("mb-sm-3 mb-md-0", {
+                                    active: tabs.tab === 3
+                                  })}
+                                  onClick={e => e.preventDefault()}
+                                  role="tab"
+                                >
+                                  <i className="ni ni-calendar-grid-58 mr-2" />
+                                  Paso 3
+                                </NavLink>
+                              </NavItem>
+                            </Nav>
+                          </div>
+
+                          <Card className="shadow">
+                            <CardBody>
+                              <TabContent activeTab={"tabs" + tabs.tab}>
+                                <TabPane tabId="tabs1">
+                                  <p className="description">
+                                    Raw denim you probably haven't heard of them
+                                    jean shorts Austin. Nesciunt tofu stumptown
+                                    aliqua, retro synth master cleanse. Mustache
+                                    cliche tempor, williamsburg carles vegan
+                                    helvetica. Reprehenderit butcher retro
+                                    keffiyeh dreamcatcher synth.
+                                  </p>
+                                  <p className="description">
+                                    Raw denim you probably haven't heard of them
+                                    jean shorts Austin. Nesciunt tofu stumptown
+                                    aliqua, retro synth master cleanse.
+                                  </p>
+                                  <div className="modal-footer">
+                                    <Button
+                                      color="primary"
+                                      type="button"
+                                      onClick={e => toggleNavs(e, 2)}
+                                    >
+                                      Continuar
+                                    </Button>
+                                    <Button
+                                      className="ml-auto"
+                                      color="link"
+                                      data-dismiss="modal"
+                                      type="button"
+                                      onClick={toggleClaimModal}
+                                    >
+                                      Volver
+                                    </Button>
+                                  </div>
+                                </TabPane>
+                                <TabPane tabId="tabs2">
+                                  <p className="description">
+                                    Cosby sweater eu banh mi, qui irure terry
+                                    richardson ex squid. Aliquip placeat salvia
+                                    cillum iphone. Seitan aliquip quis cardigan
+                                    american apparel, butcher voluptate nisi
+                                    qui.
+                                  </p>
+                                  <div className="modal-footer">
+                                    <Button
+                                      color="primary"
+                                      type="button"
+                                      onClick={e => toggleNavs(e, 3)}
+                                    >
+                                      Continuar
+                                    </Button>
+                                    <Button
+                                      className="ml-auto"
+                                      color="link"
+                                      data-dismiss="modal"
+                                      type="button"
+                                      onClick={toggleClaimModal}
+                                    >
+                                      Volver
+                                    </Button>
+                                  </div>
+                                </TabPane>
+                                <TabPane tabId="tabs3">
+                                  <p className="description">
+                                    Raw denim you probably haven't heard of them
+                                    jean shorts Austin. Nesciunt tofu stumptown
+                                    aliqua, retro synth master cleanse. Mustache
+                                    cliche tempor, williamsburg carles vegan
+                                    helvetica. Reprehenderit butcher retro
+                                    keffiyeh dreamcatcher synth.
+                                  </p>
+                                </TabPane>
+                              </TabContent>
+                            </CardBody>
+                          </Card>
+                        </>
+                      ) : (
+                        //*ELSE: If user that publicated the item DID NOT give a Question
+                        <>
+                          <div className="nav-wrapper">
+                            <Nav
+                              style={{ padding: "0.5rem" }}
+                              className="nav-fill flex-column flex-md-row"
+                              id="tabs-icons-text"
+                              pills
+                              role="tablist"
+                            >
+                              <NavItem>
+                                <NavLink
+                                  aria-selected={tabs.tab === 1}
+                                  className={classnames("mb-sm-3 mb-md-0", {
+                                    active: tabs.tab === 1
+                                  })}
+                                  onClick={e => e.preventDefault()}
+                                  role="tab"
+                                >
+                                  <i className="ni ni-cloud-upload-96 mr-2" />
+                                  Paso 1
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink
+                                  aria-selected={tabs.tab === 2}
+                                  className={classnames("mb-sm-3 mb-md-0", {
+                                    active: tabs.tab === 2
+                                  })}
+                                  onClick={e => e.preventDefault()}
+                                  role="tab"
+                                >
+                                  <i className="ni ni-bell-55 mr-2" />
+                                  Paso 2
+                                </NavLink>
+                              </NavItem>
+                            </Nav>
+                          </div>
+
+                          <Card className="shadow">
+                            <CardBody>
+                              <TabContent activeTab={"tabs" + tabs.tab}>
+                                <TabPane tabId="tabs1">
+                                  <p className="description">
+                                    Raw denim you probably haven't heard of them
+                                    jean shorts Austin. Nesciunt tofu stumptown
+                                    aliqua, retro synth master cleanse. Mustache
+                                    cliche tempor, williamsburg carles vegan
+                                    helvetica. Reprehenderit butcher retro
+                                    keffiyeh dreamcatcher synth.
+                                  </p>
+                                  <p className="description">
+                                    Raw denim you probably haven't heard of them
+                                    jean shorts Austin. Nesciunt tofu stumptown
+                                    aliqua, retro synth master cleanse.
+                                  </p>
+                                  <div className="modal-footer">
+                                    <Button
+                                      color="primary"
+                                      type="button"
+                                      onClick={e => toggleNavs(e, 2)}
+                                    >
+                                      Continuar
+                                    </Button>
+                                    <Button
+                                      className="ml-auto"
+                                      color="link"
+                                      data-dismiss="modal"
+                                      type="button"
+                                      onClick={toggleClaimModal}
+                                    >
+                                      Volver
+                                    </Button>
+                                  </div>
+                                </TabPane>
+                                <TabPane tabId="tabs2">
+                                  <p className="description">
+                                    Cosby sweater eu banh mi, qui irure terry
+                                    richardson ex squid. Aliquip placeat salvia
+                                    cillum iphone. Seitan aliquip quis cardigan
+                                    american apparel, butcher voluptate nisi
+                                    qui.
+                                  </p>
+                                  <div className="modal-footer">
+                                    <Button
+                                      color="primary"
+                                      type="button"
+                                      onClick={e => toggleNavs(e, 3)}
+                                    >
+                                      Finalizar
+                                    </Button>
+                                    <Button
+                                      className="ml-auto"
+                                      color="link"
+                                      data-dismiss="modal"
+                                      type="button"
+                                      onClick={toggleClaimModal}
+                                    >
+                                      Volver
+                                    </Button>
+                                  </div>
+                                </TabPane>
+                              </TabContent>
+                            </CardBody>
+                          </Card>
+                        </>
+                      )}
+
+                      {/* <div className="modal-body p-0">
                         {props.location.state.props.question ? (
                           <Card className="bg-secondary shadow border-0">
                             <CardHeader className="bg-transparent pb-3">
@@ -217,7 +469,7 @@ const SingleItem = props => {
                               </div>
                               <Form role="form">
                                 {/* //* Answer to user question */}
-                                <FormGroup>
+                      {/* <FormGroup>
                                   <Input
                                     autoComplete="off"
                                     placeholder="Tu respuesta..."
@@ -253,7 +505,7 @@ const SingleItem = props => {
                         ) : (
                           <p>no cargo pregunta</p>
                         )}
-                      </div>
+                      </div> */}
                     </Modal>
 
                     <Button
