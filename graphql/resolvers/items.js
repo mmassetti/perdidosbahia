@@ -22,7 +22,12 @@ module.exports = {
       category: args.itemInput.category,
       // date: args.itemInput.date,
       location: args.itemInput.location ? args.itemInput.location : null,
-      question: args.itemInput.question ? args.itemInput.question : null,
+      ownerQuestion: args.itemInput.ownerQuestion
+        ? args.itemInput.ownerQuestion
+        : null,
+      claimerQuestion: args.itemInput.claimerQuestion
+        ? args.itemInput.claimerQuestion
+        : null,
       date: new Date(args.itemInput.date),
       creator: req.userId
     });

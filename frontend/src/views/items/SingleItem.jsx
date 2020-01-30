@@ -35,7 +35,8 @@ import {
   NavLink,
   Nav,
   TabContent,
-  TabPane
+  TabPane,
+  ModalHeader
 } from "reactstrap";
 
 // core components
@@ -43,12 +44,14 @@ import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 import { useHistory } from "react-router-dom";
 import classnames from "classnames";
+import SingleItemQuestionExplain from "components/Helpers/SingleItemQuestionExplain";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = props => {
-  const [answer, setAnswer] = useState("");
+  const [claimerAnswer, setClaimerAnswer] = useState("");
+  const [claimerQuestion, setClaimerQuestion] = useState("");
   const [isToggled, setToggled] = useState(false);
   const [tabs, setTabs] = useState({ tab: 1 });
 
@@ -60,7 +63,6 @@ const SingleItem = props => {
   let history = useHistory();
 
   useEffect(() => {
-    console.log("TCL: props", props);
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, []);
@@ -71,15 +73,22 @@ const SingleItem = props => {
 
   const cancelAnswer = () => {
     toggleClaimModal();
-    setAnswer("");
-    console.log("voy a hacer el push");
+    setClaimerAnswer("");
     history.push({
       pathname: "/objetos-publicados"
     });
   };
 
-  const handleAnswerChange = event => {
-    setAnswer(event.target.value.toString());
+  const handleClaimerAnswerChange = event => {
+    setClaimerAnswer(event.target.value.toString());
+  };
+
+  const handleClaimerQuestionChange = event => {
+    setClaimerQuestion(event.target.value.toString());
+  };
+
+  const handleSubmitModalForm = event => {
+    console.log("TCL: event", event);
   };
 
   return (
@@ -146,42 +155,53 @@ const SingleItem = props => {
                   <Col className="order-lg-1" lg="4">
                     <div className="card-profile-stats d-flex justify-content-center">
                       <div>
-                        <span className="heading">22</span>
-                        <span className="description">Friends</span>
+                        <span className="heading">
+                          {props.location.state.props.category}
+                        </span>
+                        <span className="description">Categoría</span>
                       </div>
                       <div>
-                        <span className="heading">10</span>
-                        <span className="description">Photos</span>
+                        <span className="heading">
+                          {" "}
+                          {moment(props.location.state.props.date).format("L")}
+                        </span>
+                        <span className="description">Fecha</span>
                       </div>
-                      <div>
-                        <span className="heading">89</span>
-                        <span className="description">Comments</span>
-                      </div>
+                      {/* <div>
+                        <span className="heading">
+                          {props.location.state.props.category}
+                        </span>
+                        <span className="description">Categoría</span>
+                      </div> */}
                     </div>
                   </Col>
                 </Row>
                 <div className="text-center mt-5">
                   <h3>Objeto {props.location.state.props.type}</h3>
-                  <div className="h6 font-weight-300">
+                  {/* <div className="h6">
                     <i className="ni location_pin mr-2" />
                     {moment(props.location.state.props.date).format("LL")}
-                  </div>
-                  <div className="h6 mt-4">
+                  </div> */}
+                  {/* <div className="h6 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                    Categoría: {props.location.state.props.category}
-                  </div>
+                    <span className="text-warning">Categoría</span> :{" "}
+                    {props.location.state.props.category}
+                  </div> */}
                   <div>
                     <i className="ni education_hat mr-2" />
-                    Ubicación: {props.location.state.props.location}
+                    <span className="text-primary font-weight-bold">
+                      Ubicación
+                    </span>{" "}
+                    : {props.location.state.props.location}
                   </div>
                 </div>
                 <div className="mt-5 py-5 border-top text-center">
                   <Row className="justify-content-center">
-                    <Col lg="9">
+                    <Col lg="4">
                       <p>{props.location.state.props.description}</p>
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                      {/* <a href="#pablo" onClick={e => e.preventDefault()}>
                         Show more
-                      </a>
+                      </a> */}
                     </Col>
                   </Row>
                 </div>
@@ -189,9 +209,13 @@ const SingleItem = props => {
               <div className="px-lg-5 py-lg-5">
                 <CardHeader className="bg-white pb-5">
                   <div className="btn-wrapper text-center">
-                    <Button color="primary" onClick={toggleClaimModal}>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={toggleClaimModal}
+                    >
                       <span className="btn-inner--text">
-                        ¡Encontré este objeto!
+                        ¡Creo que encontré este objeto!
                       </span>
                     </Button>
 
@@ -203,8 +227,19 @@ const SingleItem = props => {
                     >
                       {/* //* If user that publicated the item gave a Question  */}
 
-                      {props.location.state.props.question ? (
+                      {props.location.state.props.ownerQuestion ? (
                         <>
+                          <ModalHeader
+                            className="text-default text-center mb-3"
+                            toggle={toggleClaimModal}
+                          >
+                            <div className="text-center ">
+                              Completá estos datos
+                            </div>
+                          </ModalHeader>
+                          {/* <div className="text-center mt-5">
+                            Completá estos datos
+                          </div> */}
                           <div className="nav-wrapper">
                             <Nav
                               style={{ padding: "0.5rem" }}
@@ -258,75 +293,153 @@ const SingleItem = props => {
                           <Card className="shadow">
                             <CardBody>
                               <TabContent activeTab={"tabs" + tabs.tab}>
+                                {/* //* Paso 1 */}
                                 <TabPane tabId="tabs1">
-                                  <p className="description">
-                                    Raw denim you probably haven't heard of them
-                                    jean shorts Austin. Nesciunt tofu stumptown
-                                    aliqua, retro synth master cleanse. Mustache
-                                    cliche tempor, williamsburg carles vegan
-                                    helvetica. Reprehenderit butcher retro
-                                    keffiyeh dreamcatcher synth.
-                                  </p>
-                                  <p className="description">
-                                    Raw denim you probably haven't heard of them
-                                    jean shorts Austin. Nesciunt tofu stumptown
-                                    aliqua, retro synth master cleanse.
-                                  </p>
-                                  <div className="modal-footer">
-                                    <Button
-                                      color="primary"
-                                      type="button"
-                                      onClick={e => toggleNavs(e, 2)}
+                                  <div className="text-muted text-center mt-2 mb-3">
+                                    <span
+                                      className="h6 font-weight-bold"
+                                      style={{ marginRight: "0.5rem" }}
                                     >
-                                      Continuar
-                                    </Button>
-                                    <Button
-                                      className="ml-auto"
-                                      color="link"
-                                      data-dismiss="modal"
-                                      type="button"
-                                      onClick={toggleClaimModal}
-                                    >
-                                      Volver
-                                    </Button>
+                                      Respuesta sobre el objeto
+                                    </span>
+                                    <SingleItemQuestionExplain />
                                   </div>
+
+                                  <div className="text-center text-muted mb-4">
+                                    <h6>
+                                      Deberás contestar esta pregunta que dejó
+                                      el usuario que perdió el objeto:
+                                    </h6>
+                                  </div>
+                                  <div className="text-muted text-center mt-2 mb-3">
+                                    <span className="h6 text-primary font-weight-bold ">
+                                      {props.location.state.props.ownerQuestion}
+                                    </span>
+                                  </div>
+                                  <Form role="form">
+                                    {/* //* Answer to user question */}
+                                    <FormGroup>
+                                      <Input
+                                        autoComplete="off"
+                                        placeholder="Tu respuesta..."
+                                        cols="80"
+                                        rows="4"
+                                        type="textarea"
+                                        name="answer"
+                                        value={claimerAnswer}
+                                        onChange={handleClaimerAnswerChange}
+                                      />
+                                    </FormGroup>
+                                    <div className="modal-footer">
+                                      <Button
+                                        color="primary"
+                                        type="button"
+                                        onClick={e => toggleNavs(e, 2)}
+                                      >
+                                        Continuar
+                                      </Button>
+                                      <Button
+                                        className="ml-auto"
+                                        color="link"
+                                        data-dismiss="modal"
+                                        type="button"
+                                        onClick={toggleClaimModal}
+                                      >
+                                        Cancelar
+                                      </Button>
+                                    </div>
+                                  </Form>
                                 </TabPane>
+                                {/* //* Paso 1 */}
                                 <TabPane tabId="tabs2">
-                                  <p className="description">
-                                    Cosby sweater eu banh mi, qui irure terry
-                                    richardson ex squid. Aliquip placeat salvia
-                                    cillum iphone. Seitan aliquip quis cardigan
-                                    american apparel, butcher voluptate nisi
-                                    qui.
-                                  </p>
-                                  <div className="modal-footer">
-                                    <Button
-                                      color="primary"
-                                      type="button"
-                                      onClick={e => toggleNavs(e, 3)}
+                                  <div className="text-muted text-center mt-2 mb-3">
+                                    <span
+                                      className="h6 font-weight-bold"
+                                      style={{ marginRight: "0.5rem" }}
                                     >
-                                      Continuar
-                                    </Button>
-                                    <Button
-                                      className="ml-auto"
-                                      color="link"
-                                      data-dismiss="modal"
-                                      type="button"
-                                      onClick={toggleClaimModal}
-                                    >
-                                      Volver
-                                    </Button>
+                                      Pregunta sobre el objeto
+                                    </span>
+                                    <SingleItemQuestionExplain />
                                   </div>
+
+                                  <div className="text-center text-muted mb-4">
+                                    <h6>
+                                      Te pedimos que escribas una pregunta sobre
+                                      el objeto. La persona que realizó esta
+                                      publicación deberá contestarla y te
+                                      mostraremos su respuesta para que puedas
+                                      verificar que realmente es quién perdió el
+                                      objeto.
+                                    </h6>
+                                  </div>
+                                  <Form role="form">
+                                    {/* //* Create answer for other user */}
+                                    <FormGroup>
+                                      <Input
+                                        autoComplete="off"
+                                        placeholder="Escribí una pregunta. Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
+                                        cols="80"
+                                        rows="4"
+                                        type="textarea"
+                                        name="claimerQuestion"
+                                        value={claimerQuestion}
+                                        onChange={handleClaimerQuestionChange}
+                                      />
+                                    </FormGroup>
+                                    <div className="modal-footer">
+                                      <Button
+                                        color="primary"
+                                        type="button"
+                                        onClick={e => toggleNavs(e, 3)}
+                                      >
+                                        Continuar
+                                      </Button>
+                                      <Button
+                                        className="ml-auto"
+                                        color="link"
+                                        data-dismiss="modal"
+                                        type="button"
+                                        onClick={e => toggleNavs(e, 1)}
+                                      >
+                                        Volver al paso 1
+                                      </Button>
+                                    </div>
+                                  </Form>
                                 </TabPane>
+                                {/* //* Paso 3 */}
                                 <TabPane tabId="tabs3">
+                                  <div className="text-muted text-center mt-2 mb-3">
+                                    <span className="h6 font-weight-bold">
+                                      Finalizar
+                                    </span>
+                                  </div>
                                   <p className="description">
-                                    Raw denim you probably haven't heard of them
-                                    jean shorts Austin. Nesciunt tofu stumptown
-                                    aliqua, retro synth master cleanse. Mustache
-                                    cliche tempor, williamsburg carles vegan
-                                    helvetica. Reprehenderit butcher retro
-                                    keffiyeh dreamcatcher synth.
+                                    Enviaremos esta información al otro usuario
+                                    y te notificaremos cuando haya novedades. Si
+                                    todo va bien, podrás obtener el contacto del
+                                    usuario que publicó el objeto
                                   </p>
+                                  <Form role="form">
+                                    {/* //* Confirmation of claim */}
+                                    <div className="modal-footer">
+                                      <Button
+                                        color="primary"
+                                        type="button"
+                                        onClick={handleSubmitModalForm}
+                                      >
+                                        Finalizar
+                                      </Button>
+                                      <Button
+                                        className="ml-auto"
+                                        color="link"
+                                        data-dismiss="modal"
+                                        type="button"
+                                        onClick={e => toggleNavs(e, 2)}
+                                      >
+                                        Volver al paso 2
+                                      </Button>
+                                    </div>
+                                  </Form>
                                 </TabPane>
                               </TabContent>
                             </CardBody>
@@ -512,6 +625,7 @@ const SingleItem = props => {
                       className="btn-neutral btn-icon ml-1"
                       color="default"
                       onClick={cancelAnswer}
+                      size="sm"
                     >
                       <span className="btn-inner--text">Volver</span>
                     </Button>

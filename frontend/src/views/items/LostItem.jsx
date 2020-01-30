@@ -68,7 +68,7 @@ const LostItem = props => {
   const context = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [category, setCategory] = useState({ categoryName: "" });
-  const [question, setQuestion] = useState("");
+  const [ownerQuestion, setOwnerQuestion] = useState("");
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
   const [isToggled, setToggled] = useState(false);
 
@@ -76,7 +76,7 @@ const LostItem = props => {
     description: "",
     category: "",
     date: "",
-    question: ""
+    ownerQuestion: ""
   };
 
   const ItemSchema = yup.object().shape({
@@ -89,7 +89,7 @@ const LostItem = props => {
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
       .typeError("Por favor selecciona la fecha en que perdiste el objeto"),
     location: yup.string().required("Por favor escribí una ubicación"),
-    question: yup.string()
+    ownerQuestion: yup.string()
     // category: yup
     //   .string()
     //   .required("Por favor selecciona la categoría del objeto"),
@@ -115,39 +115,24 @@ const LostItem = props => {
 
   const toggleTrueFalse = () => setToggled(!isToggled);
 
-  const handleQuestionChange = event => {
-    setQuestion(event.target.value.toString());
+  const handleOwnerQuestionChange = event => {
+    setOwnerQuestion(event.target.value.toString());
   };
 
-  const cancelQuestion = () => {
+  const cancelOwnerQuestion = () => {
     toggleTrueFalse();
-    setQuestion("");
+    setOwnerQuestion("");
   };
 
-  const removeQuestion = () => {
-    setQuestion("");
+  const removeOwnerQuestion = () => {
+    setOwnerQuestion("");
   };
 
   const submitForm = async data => {
     setData(data);
 
     console.log("Data: ", data);
-    console.log("question: ", question);
-    var options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    };
-    // console.log(
-    //   "fecha: ",
-    //   data.dateOfEvent.toLocaleDateString("es-ES", options)
-    // );
-
-    // date: "${data.dateOfEvent.toLocaleDateString(
-    //   "es-ES",
-    //   options
-    // )}",
+    console.log("ownerQuestion: ", ownerQuestion);
 
     const transformedDate = moment(data.dateOfEvent).toDate();
 
@@ -161,14 +146,14 @@ const LostItem = props => {
                 category: "${category.categoryName}", 
                 location: "${data.location}",
                 date: "${transformedDate}",
-                question: "${question}"}) {
+                ownerQuestion: "${ownerQuestion}"}) {
                   _id
                   description
                   type
                   category
                   location
                   date
-                  question
+                  ownerQuestion
             }
           }
         `
@@ -603,11 +588,11 @@ const LostItem = props => {
                                     {/* //* Question */}
                                     <FormGroup
                                       className={
-                                        !formState.touched.question &&
+                                        !formState.touched.ownerQuestion &&
                                         (formState.submitCount == 0 ||
                                           formState.isSubmitted)
                                           ? ""
-                                          : errors.question
+                                          : errors.ownerQuestion
                                           ? "has-danger"
                                           : "has-success"
                                       }
@@ -617,25 +602,25 @@ const LostItem = props => {
                                         autoComplete="off"
                                         placeholder="Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
                                         className={
-                                          !formState.touched.question &&
+                                          !formState.touched.ownerQuestion &&
                                           (formState.submitCount == 0 ||
                                             formState.isSubmitted)
                                             ? ""
-                                            : errors.question
+                                            : errors.ownerQuestion
                                             ? "is-invalid"
                                             : "is-valid"
                                         }
                                         cols="80"
                                         rows="4"
                                         type="textarea"
-                                        name="question"
-                                        value={question}
-                                        onChange={handleQuestionChange}
+                                        name="ownerQuestion"
+                                        value={ownerQuestion}
+                                        onChange={handleOwnerQuestionChange}
                                       />
 
-                                      {errors.question && (
+                                      {errors.ownerQuestion && (
                                         <small style={{ color: "red" }}>
-                                          {errors.question.message}
+                                          {errors.ownerQuestion.message}
                                         </small>
                                       )}
                                     </FormGroup>
@@ -666,7 +651,7 @@ const LostItem = props => {
                                         color="link"
                                         data-dismiss="modal"
                                         type="button"
-                                        onClick={cancelQuestion}
+                                        onClick={cancelOwnerQuestion}
                                       >
                                         Volver
                                       </Button>
@@ -679,14 +664,14 @@ const LostItem = props => {
                         </Col>
                         <Col md="4">
                           <Button
-                            hidden={question == ""}
-                            disabled={question == ""}
+                            hidden={ownerQuestion == ""}
+                            disabled={ownerQuestion == ""}
                             className="ml-auto"
                             color="danger"
                             outline
                             data-dismiss="modal"
                             type="button"
-                            onClick={removeQuestion}
+                            onClick={removeOwnerQuestion}
                           >
                             Eliminar pregunta
                           </Button>

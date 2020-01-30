@@ -26,7 +26,10 @@ const itemSchema = new Schema({
     type: String,
     required: true
   },
-  question: {
+  ownerQuestion: {
+    type: String
+  },
+  claimerQuestion: {
     type: String
   },
   creator: {
