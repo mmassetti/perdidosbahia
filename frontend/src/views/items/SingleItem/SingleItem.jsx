@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // reactstrap components
 import {
@@ -43,8 +43,9 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import SimpleFooter from "components/Footers/SimpleFooter.jsx";
 import { useHistory } from "react-router-dom";
-import classnames from "classnames";
-import SingleItemQuestionExplain from "components/Helpers/SingleItemQuestionExplain";
+import AuthContext from "../../../context/auth-context";
+import ModalSingleItem from "../SingleItem/ModalSingleItem";
+import MustLoginModal from "../../../components/Helpers/MustLoginModal";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -54,6 +55,8 @@ const SingleItem = props => {
   const [claimerQuestion, setClaimerQuestion] = useState("");
   const [isToggled, setToggled] = useState(false);
   const [tabs, setTabs] = useState({ tab: 1 });
+
+  const context = useContext(AuthContext);
 
   const toggleNavs = (e, index) => {
     e.preventDefault();
@@ -219,13 +222,17 @@ const SingleItem = props => {
                       </span>
                     </Button>
 
-                    <Modal
+                    {isToggled && context.token && (
+                      <ModalSingleItem toggleClaimModal={toggleClaimModal} />
+                    )}
+                    {isToggled && !context.token && <MustLoginModal />}
+
+                    {/* <Modal
                       className="modal-dialog-centered"
                       size="sm"
                       isOpen={isToggled}
                       toggle={toggleClaimModal}
                     >
-                      {/* //* If user that publicated the item gave a Question  */}
 
                       {props.location.state.props.ownerQuestion ? (
                         <>
@@ -239,7 +246,7 @@ const SingleItem = props => {
                           </ModalHeader>
                           {/* <div className="text-center mt-5">
                             Completá estos datos
-                          </div> */}
+                          </div> 
                           <div className="nav-wrapper">
                             <Nav
                               style={{ padding: "0.5rem" }}
@@ -293,7 +300,6 @@ const SingleItem = props => {
                           <Card className="shadow">
                             <CardBody>
                               <TabContent activeTab={"tabs" + tabs.tab}>
-                                {/* //* Paso 1 */}
                                 <TabPane tabId="tabs1">
                                   <div className="text-muted text-center mt-2 mb-3">
                                     <span
@@ -317,7 +323,6 @@ const SingleItem = props => {
                                     </span>
                                   </div>
                                   <Form role="form">
-                                    {/* //* Answer to user question */}
                                     <FormGroup>
                                       <Input
                                         autoComplete="off"
@@ -350,7 +355,6 @@ const SingleItem = props => {
                                     </div>
                                   </Form>
                                 </TabPane>
-                                {/* //* Paso 1 */}
                                 <TabPane tabId="tabs2">
                                   <div className="text-muted text-center mt-2 mb-3">
                                     <span
@@ -373,7 +377,6 @@ const SingleItem = props => {
                                     </h6>
                                   </div>
                                   <Form role="form">
-                                    {/* //* Create answer for other user */}
                                     <FormGroup>
                                       <Input
                                         autoComplete="off"
@@ -406,7 +409,6 @@ const SingleItem = props => {
                                     </div>
                                   </Form>
                                 </TabPane>
-                                {/* //* Paso 3 */}
                                 <TabPane tabId="tabs3">
                                   <div className="text-muted text-center mt-2 mb-3">
                                     <span className="h6 font-weight-bold">
@@ -420,7 +422,6 @@ const SingleItem = props => {
                                     usuario que publicó el objeto
                                   </p>
                                   <Form role="form">
-                                    {/* //* Confirmation of claim */}
                                     <div className="modal-footer">
                                       <Button
                                         color="primary"
@@ -446,7 +447,6 @@ const SingleItem = props => {
                           </Card>
                         </>
                       ) : (
-                        //*ELSE: If user that publicated the item DID NOT give a Question
                         <>
                           <div className="nav-wrapper">
                             <Nav
@@ -553,7 +553,7 @@ const SingleItem = props => {
                           </Card>
                         </>
                       )}
-                    </Modal>
+                    </Modal> */}
 
                     <Button
                       className="btn-neutral btn-icon ml-1"

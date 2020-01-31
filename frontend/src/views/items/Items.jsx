@@ -55,7 +55,6 @@ const Items = () => {
   const context = useContext(AuthContext);
 
   const itemsCards = items.items.map(item => {
-    console.log("TCL: Items -> item ", item);
     return (
       <CardItem
         key={item._id}
@@ -111,7 +110,6 @@ const Items = () => {
         const items = resData.data.items;
         setItems({ items: items });
         setIsLoading(false);
-        console.log("Items: ", items);
       })
       .catch(err => {
         setIsLoading(false);

@@ -22,83 +22,81 @@ import SingleItemQuestionExplain from "components/Helpers/SingleItemQuestionExpl
 import AuthContext from "../../../context/auth-context";
 
 const ModalSingleItem = props => {
-  const [claimerAnswer, setClaimerAnswer] = useState("");
-  const [claimerQuestion, setClaimerQuestion] = useState("");
-  const [tabs, setTabs] = useState({ tab: 1 });
-  const [isToggled, setToggled] = useState(false);
-  const context = useContext(AuthContext);
+  // const [claimerAnswer, setClaimerAnswer] = useState("");
+  // const [claimerQuestion, setClaimerQuestion] = useState("");
+  // const [tabs, setTabs] = useState({ tab: 1 });
+  // const context = useContext(AuthContext);
 
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setTabs({ tab: index });
-  };
+  // const toggleNavs = (e, index) => {
+  //   e.preventDefault();
+  //   setTabs({ tab: index });
+  // };
 
-  const toggleClaimModal = () => {
-    setToggled(!isToggled);
-  };
+  // const toggleClaimModal = () => {
+  //   setToggled(!isToggled);
+  // };
 
-  const handleClaimerAnswerChange = event => {
-    setClaimerAnswer(event.target.value.toString());
-  };
+  // const handleClaimerAnswerChange = event => {
+  //   setClaimerAnswer(event.target.value.toString());
+  // };
 
-  const handleClaimerQuestionChange = event => {
-    setClaimerQuestion(event.target.value.toString());
-  };
+  // const handleClaimerQuestionChange = event => {
+  //   setClaimerQuestion(event.target.value.toString());
+  // };
 
-  const handleSubmitModalForm = () => {
-    toggleClaimModal();
-    setClaimerQuestion("");
-    setClaimerAnswer("");
-    console.log("TCL: claimerAnswer", claimerAnswer);
-    console.log("TCL: claimerQuestion", claimerQuestion);
-    console.log("TCL: itemId: ", props.location.state.props.id);
-    let requestBody = {
-      query: `
-          mutation {
-            claimItem(
-              itemId: "${props.location.state.props.id}"
-            ) {
-              _id
-              createdAt
-              updatedAt
-            }
-          }
-        `
-    };
-    const token = context.token;
+  // const handleSubmitModalForm = () => {
+  //   toggleClaimModal();
+  //   setClaimerQuestion("");
+  //   setClaimerAnswer("");
+  //   console.log("TCL: claimerAnswer", claimerAnswer);
+  //   console.log("TCL: claimerQuestion", claimerQuestion);
+  //   console.log("TCL: itemId: ", props.location.state.props.id);
+  //   let requestBody = {
+  //     query: `
+  //         mutation {
+  //           claimItem(
+  //             itemId: "${props.location.state.props.id}"
+  //           ) {
+  //             _id
+  //             createdAt
+  //             updatedAt
+  //           }
+  //         }
+  //       `
+  //   };
+  //   const token = context.token;
 
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
-      })
-      .then(resData => {
-        /* //TODO: Reedireccionar */
-        console.log("TCL: resData ", resData);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  //   fetch("http://localhost:8000/graphql", {
+  //     method: "POST",
+  //     body: JSON.stringify(requestBody),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + token
+  //     }
+  //   })
+  //     .then(res => {
+  //       if (res.status !== 200 && res.status !== 201) {
+  //         throw new Error("Failed!");
+  //       }
+  //       return res.json();
+  //     })
+  //     .then(resData => {
+  //       /* //TODO: Reedireccionar */
+  //       console.log("TCL: resData ", resData);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <>
-      <Modal
+      {/* <Modal
         className="modal-dialog-centered"
         size="sm"
-        isOpen={isToggled}
-        toggle={toggleClaimModal}
+        isOpen={props.isToggled}
+        toggle={props.toggleClaimModal}
       >
-        {/* //* If user that publicated the item gave a Question  */}
 
         {props.location.state.props.ownerQuestion ? (
           <>
@@ -115,7 +113,7 @@ const ModalSingleItem = props => {
             </ModalHeader>
             {/* <div className="text-center mt-5">
                             Completá estos datos
-                          </div> */}
+                          </div> 
             <div className="nav-wrapper">
               <Nav
                 style={{ padding: "0.5rem" }}
@@ -169,7 +167,6 @@ const ModalSingleItem = props => {
             <Card className="shadow">
               <CardBody>
                 <TabContent activeTab={"tabs" + tabs.tab}>
-                  {/* //* Paso 1 */}
                   <TabPane tabId="tabs1">
                     <div className="text-muted text-center mt-2 mb-3">
                       <span className="h6 font-weight-bold">
@@ -189,7 +186,6 @@ const ModalSingleItem = props => {
                       </span>
                     </div>
                     <Form role="form">
-                      {/* //* Answer to user question */}
                       <FormGroup>
                         <Input
                           autoComplete="off"
@@ -222,7 +218,6 @@ const ModalSingleItem = props => {
                       </div>
                     </Form>
                   </TabPane>
-                  {/* //* Paso 1 */}
                   <TabPane tabId="tabs2">
                     <div className="text-muted text-center mt-2 mb-3">
                       <span className="h6 font-weight-bold">
@@ -239,7 +234,6 @@ const ModalSingleItem = props => {
                       </h6>
                     </div>
                     <Form role="form">
-                      {/* //* Create answer for other user */}
                       <FormGroup>
                         <Input
                           autoComplete="off"
@@ -272,7 +266,6 @@ const ModalSingleItem = props => {
                       </div>
                     </Form>
                   </TabPane>
-                  {/* //* Paso 3 */}
                   <TabPane tabId="tabs3">
                     <div className="text-muted text-center mt-2 mb-3">
                       <span className="h6 font-weight-bold">Último paso</span>
@@ -284,7 +277,6 @@ const ModalSingleItem = props => {
                       objeto
                     </p>
                     <Form role="form">
-                      {/* //* Confirmation of claim */}
                       <div className="modal-footer">
                         <Button
                           color="primary"
@@ -310,7 +302,6 @@ const ModalSingleItem = props => {
             </Card>
           </>
         ) : (
-          //*ELSE: If user that publicated the item DID NOT give a Question
           <>
             <div className="nav-wrapper">
               <Nav
@@ -415,7 +406,8 @@ const ModalSingleItem = props => {
             </Card>
           </>
         )}
-      </Modal>
+      </Modal> */}
+      <p>estas logueado</p>
     </>
   );
 };
