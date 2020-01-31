@@ -27,7 +27,7 @@ const CardItem = props => {
           </div>
           {props.creatorId == props.authUserId ? (
             <h6 className="text-warning font-weight-light mb-2">
-              ¡Esta publicación es tuya!
+              ¡Esta es tu publicación!
             </h6>
           ) : (
             ""

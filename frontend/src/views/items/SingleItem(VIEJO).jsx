@@ -40,7 +40,7 @@ import { useHistory } from "react-router-dom";
 
 import AuthContext from "../../context/auth-context";
 
-import ModalSingleItem from "../../views/items/SingleItem/ModalSingleItem";
+import ModalSingleItem from "./SingleItem/ModalSingleItem";
 import MustLoginModal from "../../components/Helpers/MustLoginModal";
 var moment = require("moment");
 require("moment/locale/es");

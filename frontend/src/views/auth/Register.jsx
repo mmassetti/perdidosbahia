@@ -485,7 +485,7 @@ const Register = props => {
                         <p>
                           {" "}
                           Ya tenes una cuenta?{" "}
-                          <Link className="label" to="/login-page">
+                          <Link className="label" to="/inicio-sesion">
                             Iniciar sesión
                           </Link>
                         </p>

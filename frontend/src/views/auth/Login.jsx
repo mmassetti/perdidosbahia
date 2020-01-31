@@ -303,7 +303,7 @@ const Login = props => {
                   </Col>
                   <Col className="text-right" xs="6">
                     <small>
-                      <Link className="text-light" to="/register-page">
+                      <Link className="text-light" to="/registro">
                         Crear nueva cuenta
                       </Link>
                     </small>

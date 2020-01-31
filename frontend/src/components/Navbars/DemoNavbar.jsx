@@ -187,10 +187,10 @@ class DemoNavbar extends React.Component {
                             <DropdownItem to="/profile-page" tag={Link}>
                               Redes sociales
                             </DropdownItem>
-                            <DropdownItem to="/login-page" tag={Link}>
+                            <DropdownItem to="/inicio-sesion" tag={Link}>
                               Contacto
                             </DropdownItem>
-                            <DropdownItem to="/register-page" tag={Link}>
+                            <DropdownItem to="/registro" tag={Link}>
                               Otra ayuda
                             </DropdownItem>
                           </DropdownMenu>
@@ -203,7 +203,7 @@ class DemoNavbar extends React.Component {
                             <Button
                               className="btn-neutral btn-icon"
                               color="default"
-                              to="/login-page"
+                              to="/inicio-sesion"
                               tag={Link}
                             >
                               <span className="btn-inner--icon">

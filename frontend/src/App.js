@@ -63,7 +63,7 @@ const App = props => {
               />
               {!token && (
                 <Route
-                  path="/login-page"
+                  path="/inicio-sesion"
                   exact
                   render={props => <Login {...props} />}
                 />
@@ -76,7 +76,7 @@ const App = props => {
               />
               {!token && (
                 <Route
-                  path="/register-page"
+                  path="/registro"
                   exact
                   render={props => <Register {...props} />}
                 />
