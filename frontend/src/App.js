@@ -7,7 +7,7 @@ import "assets/scss/argon-design-system-react.scss";
 import Index from "views/Index.jsx";
 import Landing from "views/examples/Landing.jsx";
 import Login from "views/auth/Login";
-import SingleItem from "views/items/SingleItem";
+import SingleItem from "views/items/SingleItem/SingleItem";
 import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";

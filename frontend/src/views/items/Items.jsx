@@ -48,7 +48,6 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import CardItem from "./cards/CardItem";
 import AuthContext from "../../context/auth-context";
-import SingleItem from "./SingleItem";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });

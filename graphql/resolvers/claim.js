@@ -22,7 +22,7 @@ module.exports = {
     }
     const fetchedItem = await Item.findOne({ _id: args.itemId });
     const claim = new Claim({
-      user: req.userId,
+      claimerUser: req.userId,
       item: fetchedItem
     });
     const result = await claim.save();

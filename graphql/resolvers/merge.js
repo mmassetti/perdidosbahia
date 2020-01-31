@@ -1,6 +1,6 @@
-const Item = require('../../models/item');
-const User = require('../../models/user');
-const { dateToString } = require('../../helpers/date');
+const Item = require("../../models/item");
+const User = require("../../models/user");
+const { dateToString } = require("../../helpers/date");
 
 const items = async itemIds => {
   try {
@@ -44,11 +44,11 @@ const transformItem = item => {
   };
 };
 
-const transformClaim= claim => {
+const transformClaim = claim => {
   return {
     ...claim._doc,
     _id: claim.id,
-    user: user.bind(this, claim._doc.user),
+    claimerUser: user.bind(this, claim._doc.claimerUser),
     item: singleItem.bind(this, claim._doc.item),
     createdAt: dateToString(claim._doc.createdAt),
     updatedAt: dateToString(claim._doc.updatedAt)
@@ -56,4 +56,4 @@ const transformClaim= claim => {
 };
 
 exports.transformItem = transformItem;
-exports.transformClaim= transformClaim;
+exports.transformClaim = transformClaim;

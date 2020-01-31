@@ -5,7 +5,7 @@ module.exports = buildSchema(`
     type Claim {
         _id: ID!
         item: Item!
-        user: User!
+        claimerUser: User!
         createdAt: String!
         updatedAt: String!
     }
