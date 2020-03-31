@@ -12,7 +12,7 @@ import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";
 import Items from "views/items/Items";
-import UserPublications from "views/publications/UserPublications";
+import UserClaims from "views/claims/UserClaims";
 
 const App = props => {
   const [token, setToken] = useState(null);
@@ -86,7 +86,7 @@ const App = props => {
               <Route
                 path="/mis-publicaciones"
                 exact
-                render={props => <UserPublications {...props} />}
+                render={props => <UserClaims {...props} />}
               />
 
               <Redirect to="/" />
