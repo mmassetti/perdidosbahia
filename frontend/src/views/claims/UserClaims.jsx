@@ -62,31 +62,32 @@ const UserClaims = () => {
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
 
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, []);
+  const itemsUserIsOwner = claims.claims.map(claim => {
+    console.log("UserClaims -> claim ", claim);
 
-  const userClaimsCards = claims.claims.map(claim => {
-    return (
-      <ClaimCard
-        claimerUser={claim.claimerUser}
-        authUserId={context.userId}
-        itemCreator={claim.item.creator}
-      ></ClaimCard>
-      // <CardItem
-      //   key={item._id}
-      //   id={item._id}
-      //   description={item.description}
-      //   type={item.type}
-      //   category={item.category}
-      //   date={item.date}
-      //   location={item.location}
-      //   creatorId={item.creator._id}
-      //   authUserId={context.userId}
-      //   ownerQuestion={item.ownerQuestion ? item.ownerQuestion : null}
-      // ></CardItem>
-    );
+    if (claim.item.creator._id == context.userId) {
+      return (
+        <ClaimCard
+          key={claim._id}
+          claimerUser={claim.claimerUser}
+          authUserId={context.userId}
+          item={claim.item}
+        ></ClaimCard>
+      );
+    }
+  });
+
+  const itemsUserIsClaimer = claims.claims.map(claim => {
+    if (claim.claimerUser._id == context.userId) {
+      return (
+        <ClaimCard
+          key={claim._id}
+          claimerUser={claim.claimerUser}
+          authUserId={context.userId}
+          item={claim.item}
+        ></ClaimCard>
+      );
+    }
   });
 
   const fetchClaims = () => {
@@ -95,13 +96,23 @@ const UserClaims = () => {
       query: `
           query {
             claims {
-              _id
-              claimerUser
+              _id  
               item {
-                _id
+                description
+                category
+                description
+                type
+                date
+                location
+                ownerQuestion
                 creator {
+                  _id
                   email
                 }
+              }
+              claimerUser {
+                _id
+                email
               }
             }
           }
@@ -112,7 +123,8 @@ const UserClaims = () => {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token
       }
     })
       .then(res => {
@@ -131,6 +143,12 @@ const UserClaims = () => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    fetchClaims();
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, []);
 
   const toggleNavs = (e, state, index) => {
     e.preventDefault();
@@ -161,7 +179,11 @@ const UserClaims = () => {
               <div className="col px-0">
                 <Row>
                   <Col lg="12">
-                    <h1 className="display-3 text-white">Tus publicaciones</h1>
+                    <h1 className="display-3 text-white">
+                      En esta seccion aparecen las publicaciones que fueron
+                      creadas por vos o bien por otra persona y estes
+                      participando
+                    </h1>
                   </Col>
                 </Row>
               </div>
@@ -195,7 +217,7 @@ const UserClaims = () => {
                           role="tab"
                         >
                           <i className="ni ni-cloud-upload-96 mr-2" />
-                          Mis objetos perdidos
+                          Publicaciones creadas por mi
                         </NavLink>
                       </NavItem>
                       <NavItem>
@@ -209,7 +231,7 @@ const UserClaims = () => {
                           role="tab"
                         >
                           <i className="ni ni-bell-55 mr-2" />
-                          Mis objetos encontrados
+                          Publicaciones creadas por otra persona
                         </NavLink>
                       </NavItem>
                     </Nav>
@@ -219,26 +241,10 @@ const UserClaims = () => {
                     <CardBody>
                       <TabContent activeTab={"tabs" + tabs.tabs}>
                         <TabPane tabId="tabs1">
-                          <p className="description">
-                            Raw denim you probably haven't heard of them jean
-                            shorts Austin. Nesciunt tofu stumptown aliqua, retro
-                            synth master cleanse. Mustache cliche tempor,
-                            williamsburg carles vegan helvetica. Reprehenderit
-                            butcher retro keffiyeh dreamcatcher synth.
-                          </p>
-                          <p className="description">
-                            Raw denim you probably haven't heard of them jean
-                            shorts Austin. Nesciunt tofu stumptown aliqua, retro
-                            synth master cleanse.
-                          </p>
+                          <Row className="row-grid">{itemsUserIsOwner}</Row>
                         </TabPane>
                         <TabPane tabId="tabs2">
-                          <p className="description">
-                            Cosby sweater eu banh mi, qui irure terry richardson
-                            ex squid. Aliquip placeat salvia cillum iphone.
-                            Seitan aliquip quis cardigan american apparel,
-                            butcher voluptate nisi qui.
-                          </p>
+                          <Row className="row-grid">{itemsUserIsClaimer}</Row>
                         </TabPane>
                       </TabContent>
                     </CardBody>

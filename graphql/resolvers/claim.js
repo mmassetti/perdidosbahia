@@ -4,9 +4,9 @@ const { transformClaim, transformItem } = require("./merge");
 
 module.exports = {
   claims: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!");
-    }
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!");
+    // }
     try {
       const claims = await Claim.find();
       return claims.map(claim => {

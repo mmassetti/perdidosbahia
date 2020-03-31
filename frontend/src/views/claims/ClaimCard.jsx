@@ -29,34 +29,48 @@ const ClaimCard = props => {
           <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
             <i className="ni ni-check-bold" />
           </div>
-          {props.creatorId == props.authUserId ? (
-            <h6 className="text-warning font-weight-light mb-2">
-              ¡Esta es tu publicación!
-            </h6>
+
+          <h6 className="text-primary text-uppercase">
+            {props.item.category != "otro"
+              ? props.item.category
+              : "Otros objetos"}
+          </h6>
+          <p className="description mt-3">{props.item.description}</p>
+          <Badge color="primary" pill className="mr-1">
+            {props.item.type}
+          </Badge>
+
+          <div>
+            <Badge color="primary" pill className="mr-1">
+              {moment(props.item.date).format("LL")}
+            </Badge>
+          </div>
+          <div style={{ marginTop: "1rem" }}>
+            <span className="h6 font-weight-bold ">Estado actual:</span>
+            <Badge color="success" pill className="mr-1">
+              Esperando respuesta
+            </Badge>
+          </div>
+          {props.item.creator._id == props.authUserId ? (
+            <Button
+              className="mt-4"
+              color="primary"
+              onClick={() => cancelClaim()}
+            >
+              Editar publicacion
+            </Button>
           ) : (
             ""
           )}
-          <h6 className="text-primary text-uppercase">
-            {props.category != "otro" ? props.category : "Otros objetos"}
-          </h6>
-          <p className="description mt-3">{props.description}</p>
-          <div>
-            <Badge color="primary" pill className="mr-1">
-              {props.type}
-            </Badge>
-            <Badge color="primary" pill className="mr-1">
-              {props.category}
-            </Badge>
-            <Badge color="primary" pill className="mr-1">
-              {moment(props.date).format("LL")}
-            </Badge>
-          </div>
+
           <Button
             className="mt-4"
-            color="primary"
+            color="warning"
             onClick={() => cancelClaim()}
           >
-            Cancelar publicacion
+            {props.item.creator._id == props.authUserId
+              ? "Eliminar publicacion"
+              : "Cancelar contacto"}
           </Button>
         </CardBody>
       </Card>
