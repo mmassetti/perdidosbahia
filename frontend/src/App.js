@@ -12,6 +12,7 @@ import Register from "views/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
 import LostItem from "views/items/LostItem";
 import Items from "views/items/Items";
+import UserPublications from "views/publications/UserPublications";
 
 const App = props => {
   const [token, setToken] = useState(null);
@@ -81,6 +82,12 @@ const App = props => {
                   render={props => <Register {...props} />}
                 />
               )}
+
+              <Route
+                path="/mis-publicaciones"
+                exact
+                render={props => <UserPublications {...props} />}
+              />
 
               <Redirect to="/" />
             </Switch>

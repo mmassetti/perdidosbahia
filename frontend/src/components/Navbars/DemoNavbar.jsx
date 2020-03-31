@@ -174,6 +174,14 @@ class DemoNavbar extends React.Component {
                             </div>
                           </DropdownMenu>
                         </UncontrolledDropdown>
+
+                        {/* Mis publicaciones */}
+                        {context.token && (
+                          <NavItem to="/mis-publicaciones" tag={Link}>
+                            <NavLink>Mis publicaciones</NavLink>
+                          </NavItem>
+                        )}
+
                         {/* Ayuda */}
                         <UncontrolledDropdown nav>
                           <DropdownToggle nav>

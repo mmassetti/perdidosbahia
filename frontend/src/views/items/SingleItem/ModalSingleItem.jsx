@@ -86,7 +86,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
       .then(resData => {
         /* //TODO: Reedireccionar */
         history.push({
-          pathname: "/"
+          pathname: "/mis-publicaciones"
         });
         console.log("TCL: resData ", resData);
       })
