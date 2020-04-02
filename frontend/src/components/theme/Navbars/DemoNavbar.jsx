@@ -39,7 +39,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-import AuthContext from "../../context/auth-context";
+import AuthContext from "../../../context/auth-context";
 
 class DemoNavbar extends React.Component {
   componentDidMount() {

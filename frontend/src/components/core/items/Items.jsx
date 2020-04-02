@@ -17,9 +17,13 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import Download from "../IndexSections/Download";
-import CardsFooter from "../../components/Footers/CardsFooter";
-import Spinner from "../../components/Spinner/Spinner";
+import Download from "../../theme/IndexSections/Download";
+import CardsFooter from "../../theme/Footers/CardsFooter";
+import Spinner from "../../theme/Spinner/Spinner";
+import DemoNavbar from "../../theme/Navbars/DemoNavbar";
+import CardItem from "./cards/CardItem";
+import AuthContext from "../../../context/auth-context";
+
 // reactstrap components
 import {
   Badge,
@@ -44,10 +48,6 @@ import {
   CardBody
 } from "reactstrap";
 // core components
-
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import CardItem from "./cards/CardItem";
-import AuthContext from "../../context/auth-context";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });

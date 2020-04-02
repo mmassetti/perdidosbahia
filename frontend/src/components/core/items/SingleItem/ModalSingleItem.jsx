@@ -20,14 +20,9 @@ import {
 } from "reactstrap";
 
 import classnames from "classnames";
-import SingleItemQuestionExplain from "components/Helpers/SingleItemQuestionExplain";
+import SingleItemQuestionExplain from "../../Helpers/SingleItemQuestionExplain";
 
 const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
-  console.log("TCL: ModalSingleItem ->  token", token);
-  console.log("TCL: ModalSingleItem -> itemId", itemId);
-  console.log("TCL: ModalSingleItem -> ownerQuestion", ownerQuestion);
-  console.log("TCL: ModalSingleItem ->  hide", hide);
-  console.log("TCL: ModalSingleItem -> isShowing", isShowing);
   const [tabs, setTabs] = useState({ tab: 1 });
   const [claimerAnswer, setClaimerAnswer] = useState("");
   const [claimerQuestion, setClaimerQuestion] = useState("");

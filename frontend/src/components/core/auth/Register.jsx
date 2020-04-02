@@ -39,8 +39,8 @@ import {
 import * as yup from "yup";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import SimpleFooter from "components/Footers/SimpleFooter.jsx";
+import DemoNavbar from "../../theme/Navbars/DemoNavbar.jsx";
+import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { useForm, Controller } from "react-hook-form";
 

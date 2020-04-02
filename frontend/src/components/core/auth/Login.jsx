@@ -17,7 +17,7 @@
 */
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/auth-context";
+import AuthContext from "../../../context/auth-context";
 
 // reactstrap components
 import {
@@ -37,8 +37,8 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import SimpleFooter from "components/Footers/SimpleFooter.jsx";
+import DemoNavbar from "../../theme/Navbars/DemoNavbar.jsx";
+import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import * as yup from "yup";
 

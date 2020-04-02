@@ -40,13 +40,13 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import SimpleFooter from "components/Footers/SimpleFooter.jsx";
+import DemoNavbar from "../../../theme/Navbars/DemoNavbar.jsx";
+import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../../context/auth-context";
 import ModalSingleItem from "../SingleItem/ModalSingleItem";
-import MustLoginModal from "../../../components/Helpers/MustLoginModal";
-import useModal from "../../../components/Helpers/useModal";
+import MustLoginModal from "../../../core/Helpers/MustLoginModal";
+import useModal from "../../../core/Helpers/useModal";
 
 var moment = require("moment");
 require("moment/locale/es");

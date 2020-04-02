@@ -49,19 +49,18 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import CardsFooter from "components/Footers/CardsFooter.jsx";
-
+import DemoNavbar from "../../theme/Navbars/DemoNavbar.jsx";
+import CardsFooter from "../../theme/Footers/CardsFooter";
 // index page sections
-import Download from "../IndexSections/Download.jsx";
+import Download from "../../theme/IndexSections/Download";
 
-import AuthContext from "../../context/auth-context";
+import AuthContext from "../../../context/auth-context";
 
 import * as yup from "yup";
 
 import { useForm, Controller } from "react-hook-form";
-import MustLoginModal from "components/Helpers/MustLoginModal";
-import useModal from "components/Helpers/useModal";
+import MustLoginModal from "../Helpers/MustLoginModal";
+import useModal from "../Helpers/useModal";
 
 var moment = require("moment");
 require("moment/locale/es");

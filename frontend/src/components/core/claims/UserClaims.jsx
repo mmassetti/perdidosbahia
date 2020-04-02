@@ -17,9 +17,12 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import Download from "../IndexSections/Download";
-import CardsFooter from "../../components/Footers/CardsFooter";
-import Spinner from "../../components/Spinner/Spinner";
+import Download from "../../theme/IndexSections/Download";
+import CardsFooter from "../../theme/Footers/CardsFooter";
+import Spinner from "../../theme/Spinner/Spinner";
+import DemoNavbar from "../../theme/Navbars/DemoNavbar";
+import AuthContext from "../../../context/auth-context";
+import ClaimCard from "../../core/claims/ClaimCard";
 import classnames from "classnames";
 
 // reactstrap components
@@ -51,10 +54,6 @@ import {
   TabContent
 } from "reactstrap";
 // core components
-
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import AuthContext from "../../context/auth-context";
-import ClaimCard from "./ClaimCard";
 
 const UserClaims = () => {
   const [isLoading, setIsLoading] = useState(false);

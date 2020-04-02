@@ -37,8 +37,8 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
-import CardsFooter from "components/Footers/CardsFooter.jsx";
+import DemoNavbar from "../Navbars/DemoNavbar.jsx";
+import CardsFooter from "../Footers/CardsFooter";
 
 // index page sections
 import Download from "../IndexSections/Download.jsx";
@@ -53,24 +53,24 @@ class Landing extends React.Component {
     return (
       <>
         <DemoNavbar />
-        <main ref='main'>
-          <div className='position-relative'>
+        <main ref="main">
+          <div className="position-relative">
             {/* shape Hero */}
-            <section className='section section-lg section-shaped pb-250'>
-              <Container className='py-lg-md d-flex'></Container>
+            <section className="section section-lg section-shaped pb-250">
+              <Container className="py-lg-md d-flex"></Container>
               {/* SVG separator */}
-              <div className='separator separator-bottom separator-skew'>
+              <div className="separator separator-bottom separator-skew">
                 <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  preserveAspectRatio='none'
-                  version='1.1'
-                  viewBox='0 0 2560 100'
-                  x='0'
-                  y='0'
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="none"
+                  version="1.1"
+                  viewBox="0 0 2560 100"
+                  x="0"
+                  y="0"
                 >
                   <polygon
-                    className='fill-white'
-                    points='2560 0 2560 100 0 100'
+                    className="fill-white"
+                    points="2560 0 2560 100 0 100"
                   />
                 </svg>
               </div>
@@ -78,55 +78,55 @@ class Landing extends React.Component {
             {/* 1st Hero Variation */}
           </div>
 
-          <section className='section section-lg pt-lg-0 section-contact-us'>
+          <section className="section section-lg pt-lg-0 section-contact-us">
             <Container>
-              <Row className='justify-content-center mt--300'>
-                <Col lg='8'>
-                  <Card className='bg-gradient-secondary shadow'>
-                    <CardBody className='p-lg-5'>
-                      <h4 className='mb-1'></h4>
-                      <p className='mt-0'>
+              <Row className="justify-content-center mt--300">
+                <Col lg="8">
+                  <Card className="bg-gradient-secondary shadow">
+                    <CardBody className="p-lg-5">
+                      <h4 className="mb-1"></h4>
+                      <p className="mt-0">
                         Ingrese una o más preguntas que deberá contestar quien
                         encuentre tu objeto
                       </p>
-                      <p className='mt-0'>
+                      <p className="mt-0">
                         También le solicitaremos que envie una foto
                       </p>
-                      <i className='ni ni-fat-add'></i>
+                      <i className="ni ni-fat-add"></i>
 
-                      <div className='custom-control custom-checkbox mb-3'>
+                      <div className="custom-control custom-checkbox mb-3">
                         <input
-                          className='custom-control-input'
-                          id='customCheck1'
-                          type='checkbox'
+                          className="custom-control-input"
+                          id="customCheck1"
+                          type="checkbox"
                         />
                         <label
-                          className='custom-control-label'
-                          htmlFor='customCheck1'
+                          className="custom-control-label"
+                          htmlFor="customCheck1"
                         >
                           Unchecked
                         </label>
                       </div>
                       <div>
-                        <div className='custom-control custom-checkbox mb-3'>
+                        <div className="custom-control custom-checkbox mb-3">
                           <input
-                            className='custom-control-input'
-                            id='customCheck1'
-                            type='checkbox'
+                            className="custom-control-input"
+                            id="customCheck1"
+                            type="checkbox"
                           />
                           <label
-                            className='custom-control-label'
-                            htmlFor='customCheck1'
+                            className="custom-control-label"
+                            htmlFor="customCheck1"
                           >
                             Unchecked
                           </label>
                         </div>
                         <Button
                           block
-                          className='btn-round'
-                          color='default'
-                          size='lg'
-                          type='button'
+                          className="btn-round"
+                          color="default"
+                          size="lg"
+                          type="button"
                         >
                           Confirmar
                         </Button>

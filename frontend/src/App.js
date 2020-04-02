@@ -4,15 +4,15 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
-import Index from "views/Index.jsx";
-import Landing from "views/examples/Landing.jsx";
-import Login from "views/auth/Login";
-import SingleItem from "views/items/SingleItem/SingleItem";
-import Register from "views/auth/Register.jsx";
+import Index from "components/Index";
+import Landing from "components/theme/examples/Landing.jsx";
+import Login from "components/core/auth/Login";
+import SingleItem from "components/core/items/SingleItem/SingleItem";
+import Register from "components/core/auth/Register.jsx";
 import AuthContext from "./context/auth-context";
-import LostItem from "views/items/LostItem";
-import Items from "views/items/Items";
-import UserClaims from "views/claims/UserClaims";
+import LostItem from "components/core/items/LostItem";
+import Items from "components/core/items/Items";
+import UserClaims from "components/core/claims/UserClaims";
 
 const App = props => {
   const [token, setToken] = useState(null);
