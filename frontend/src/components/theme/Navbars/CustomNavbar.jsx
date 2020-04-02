@@ -41,7 +41,7 @@ import {
 
 import AuthContext from "../../../context/auth-context";
 
-class DemoNavbar extends React.Component {
+class CustomNavbar extends React.Component {
   componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
@@ -259,4 +259,4 @@ class DemoNavbar extends React.Component {
   }
 }
 
-export default DemoNavbar;
+export default CustomNavbar;

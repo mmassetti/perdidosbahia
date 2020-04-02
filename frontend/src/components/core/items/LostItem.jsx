@@ -49,7 +49,7 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "../../theme/Navbars/DemoNavbar.jsx";
+import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import CardsFooter from "../../theme/Footers/CardsFooter";
 // index page sections
 import Download from "../../theme/IndexSections/Download";
@@ -189,7 +189,7 @@ const LostItem = props => {
 
   return (
     <>
-      <DemoNavbar />
+      <CustomNavbar />
       <main>
         <div className="position-relative">
           {/* shape Hero */}

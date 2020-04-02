@@ -20,7 +20,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Download from "../../theme/IndexSections/Download";
 import CardsFooter from "../../theme/Footers/CardsFooter";
 import Spinner from "../../theme/Spinner/Spinner";
-import DemoNavbar from "../../theme/Navbars/DemoNavbar";
+import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import AuthContext from "../../../context/auth-context";
 import ClaimCard from "../../core/claims/ClaimCard";
 import classnames from "classnames";
@@ -158,7 +158,7 @@ const UserClaims = () => {
 
   return (
     <>
-      <DemoNavbar />
+      <CustomNavbar />
       <main>
         <div className="position-relative">
           {/* shape Hero */}

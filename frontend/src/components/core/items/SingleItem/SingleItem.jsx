@@ -40,7 +40,7 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "../../../theme/Navbars/DemoNavbar.jsx";
+import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../../../context/auth-context";
@@ -77,7 +77,7 @@ const SingleItem = props => {
 
   return (
     <>
-      <DemoNavbar />
+      <CustomNavbar />
       <main className="profile-page">
         <section className="section-profile-cover section-shaped my-0">
           {/* Circles background */}

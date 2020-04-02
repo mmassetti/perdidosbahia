@@ -37,7 +37,7 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "../../theme/Navbars/DemoNavbar.jsx";
+import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import * as yup from "yup";
@@ -126,7 +126,7 @@ const Login = props => {
 
   return (
     <>
-      <DemoNavbar />
+      <CustomNavbar />
       <main>
         <section className="section section-shaped section-lg">
           <div className="shape shape-style-1 bg-gradient-default">

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { Container, Row } from "reactstrap";
 
 // core components
-import DemoNavbar from "../components/theme/Navbars/DemoNavbar.jsx";
+import CustomNavbar from "./theme/Navbars/CustomNavbar.jsx";
 import CardsFooter from "../components/theme/Footers/CardsFooter.jsx";
 
 // index page sections
@@ -38,7 +38,7 @@ const Index = props => {
 
   return (
     <>
-      <DemoNavbar />
+      <CustomNavbar />
       <SplashScreen />
       {/*
               <Buttons />
