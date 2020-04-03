@@ -68,8 +68,8 @@ const SplashScreen = props => {
                   <img
                     alt="..."
                     className="img-fluid"
-                    src={require("assets/img/brand/argon-react-white.png")}
-                    style={{ width: "200px" }}
+                    src={require("assets/img/brand/prueba.png")}
+                    style={{ width: "400px" }}
                   />
                   <p className="lead text-white">
                     Publica lo que hayas perdido o encontrado de forma facil y
