@@ -51,7 +51,7 @@ import {
   Nav,
   NavLink,
   TabPane,
-  TabContent
+  TabContent,
 } from "reactstrap";
 // core components
 
@@ -61,7 +61,7 @@ const UserClaims = () => {
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
 
-  const itemsUserIsOwner = claims.claims.map(claim => {
+  const itemsUserIsOwner = claims.claims.map((claim) => {
     console.log("UserClaims -> claim ", claim);
 
     if (claim.item.creator._id == context.userId) {
@@ -76,7 +76,7 @@ const UserClaims = () => {
     }
   });
 
-  const itemsUserIsClaimer = claims.claims.map(claim => {
+  const itemsUserIsClaimer = claims.claims.map((claim) => {
     if (claim.claimerUser._id == context.userId) {
       return (
         <ClaimCard
@@ -115,7 +115,7 @@ const UserClaims = () => {
               }
             }
           }
-        `
+        `,
     };
 
     fetch("http://localhost:8000/graphql", {
@@ -123,21 +123,21 @@ const UserClaims = () => {
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token
-      }
+        Authorization: "Bearer " + context.token,
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         const claims = resData.data.claims;
         setClaims({ claims: claims });
         setIsLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setIsLoading(false);
         console.log(err);
       });
@@ -152,7 +152,7 @@ const UserClaims = () => {
   const toggleNavs = (e, state, index) => {
     e.preventDefault();
     setTabs({
-      [state]: index
+      [state]: index,
     });
   };
 
@@ -179,9 +179,8 @@ const UserClaims = () => {
                 <Row>
                   <Col lg="12">
                     <h1 className="display-3 text-white">
-                      En esta seccion aparecen las publicaciones que fueron
-                      creadas por vos o bien por otra persona y estes
-                      participando
+                      En esta sección aparecen las publicaciones abiertas en las
+                      que estas participando
                     </h1>
                   </Col>
                 </Row>
@@ -209,9 +208,9 @@ const UserClaims = () => {
                         <NavLink
                           aria-selected={tabs.tabs === 1}
                           className={classnames("mb-sm-3 mb-md-0", {
-                            active: tabs.tabs === 1
+                            active: tabs.tabs === 1,
                           })}
-                          onClick={e => toggleNavs(e, "tabs", 1)}
+                          onClick={(e) => toggleNavs(e, "tabs", 1)}
                           href="#pablo"
                           role="tab"
                         >
@@ -223,9 +222,9 @@ const UserClaims = () => {
                         <NavLink
                           aria-selected={tabs.tabs === 2}
                           className={classnames("mb-sm-3 mb-md-0", {
-                            active: tabs.tabs === 2
+                            active: tabs.tabs === 2,
                           })}
-                          onClick={e => toggleNavs(e, "tabs", 2)}
+                          onClick={(e) => toggleNavs(e, "tabs", 2)}
                           href="#pablo"
                           role="tab"
                         >
