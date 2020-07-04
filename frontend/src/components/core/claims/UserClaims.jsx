@@ -53,7 +53,6 @@ import {
   TabPane,
   TabContent,
 } from "reactstrap";
-// core components
 
 const UserClaims = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,16 +60,64 @@ const UserClaims = () => {
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
 
-  const itemsUserIsOwner = claims.claims.map((claim) => {
-    console.log("UserClaims -> claim ", claim);
+  const deleteClaimHandler = (claimId) => {
+    console.log("Entro al delete claim handler con claimId: ", claimId);
+    setIsLoading(true);
+    const requestBody = {
+      query: `
+         mutation {
+            cancelClaim(claimId: "${claimId}") {
+              _id
+            }
+          }
+        `,
+    };
 
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        const updatedValues = claims.claims.filter(
+          (claim) => claim._id !== claimId
+        );
+
+        setClaims({ claims: updatedValues });
+
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchClaims();
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, []);
+
+  const itemsUserIsOwner = claims.claims.map((claim) => {
     if (claim.item.creator._id == context.userId) {
       return (
         <ClaimCard
           key={claim._id}
+          claimId={claim._id}
           claimerUser={claim.claimerUser}
           authUserId={context.userId}
           item={claim.item}
+          onDelete={deleteClaimHandler}
         ></ClaimCard>
       );
     }
@@ -142,12 +189,6 @@ const UserClaims = () => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    fetchClaims();
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, []);
 
   const toggleNavs = (e, state, index) => {
     e.preventDefault();

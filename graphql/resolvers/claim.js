@@ -9,7 +9,7 @@ module.exports = {
     // }
     try {
       const claims = await Claim.find();
-      return claims.map(claim => {
+      return claims.map((claim) => {
         return transformClaim(claim);
       });
     } catch (err) {
@@ -23,12 +23,12 @@ module.exports = {
     const fetchedItem = await Item.findOne({ _id: args.itemId });
     const claim = new Claim({
       claimerUser: req.userId,
-      item: fetchedItem
+      item: fetchedItem,
     });
     const result = await claim.save();
     return transformClaim(result);
   },
-  cancelItem: async (args, req) => {
+  cancelClaim: async (args, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
@@ -40,5 +40,5 @@ module.exports = {
     } catch (err) {
       throw err;
     }
-  }
+  },
 };
