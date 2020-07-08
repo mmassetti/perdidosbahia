@@ -14,6 +14,11 @@ const userLoader = new DataLoader((userIds) => {
 const items = async (itemIds) => {
   try {
     const items = await Item.find({ _id: { $in: itemIds } });
+    items.sort((a, b) => {
+      return (
+        itemIds.indexOf(a._id.toString()) - itemIds.indexOf(b._id.toString())
+      );
+    });
     return items.map((item) => {
       return transformItem(item);
     });
