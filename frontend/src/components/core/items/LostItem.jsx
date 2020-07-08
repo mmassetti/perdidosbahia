@@ -45,7 +45,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Form,
-  CardHeader
+  CardHeader,
 } from "reactstrap";
 
 // core components
@@ -65,7 +65,7 @@ import useModal from "../Helpers/useModal";
 var moment = require("moment");
 require("moment/locale/es");
 
-const LostItem = props => {
+const LostItem = (props) => {
   const context = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [category, setCategory] = useState({ categoryName: "" });
@@ -78,7 +78,7 @@ const LostItem = props => {
     description: "",
     category: "",
     date: "",
-    ownerQuestion: ""
+    ownerQuestion: "",
   };
 
   const ItemSchema = yup.object().shape({
@@ -91,7 +91,7 @@ const LostItem = props => {
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
       .typeError("Por favor selecciona la fecha en que perdiste el objeto"),
     location: yup.string().required("Por favor escribí una ubicación"),
-    ownerQuestion: yup.string()
+    ownerQuestion: yup.string(),
     // category: yup
     //   .string()
     //   .required("Por favor selecciona la categoría del objeto"),
@@ -101,7 +101,7 @@ const LostItem = props => {
     {
       mode: "onChange",
       validationSchema: ItemSchema,
-      defaultValues
+      defaultValues,
     }
   );
 
@@ -111,14 +111,14 @@ const LostItem = props => {
     toggle();
   }, []);
 
-  const radio = i => {
+  const radio = (i) => {
     setCategory({ categoryName: i });
     setButtonGroupTouched(true);
   };
 
   const toggleTrueFalse = () => setToggled(!isToggled);
 
-  const handleOwnerQuestionChange = event => {
+  const handleOwnerQuestionChange = (event) => {
     setOwnerQuestion(event.target.value.toString());
   };
 
@@ -131,7 +131,7 @@ const LostItem = props => {
     setOwnerQuestion("");
   };
 
-  const submitForm = async data => {
+  const submitForm = async (data) => {
     setData(data);
 
     console.log("Data: ", data);
@@ -141,15 +141,15 @@ const LostItem = props => {
 
     let requestBody = {
       query: `
-          mutation {
+          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $ownerQuestion: String) {
             createItem(
               itemInput: 
-                {description: "${data.description}", 
+                {description: $description, 
                 type: "perdido", 
-                category: "${category.categoryName}", 
-                location: "${data.location}",
-                date: "${transformedDate}",
-                ownerQuestion: "${ownerQuestion}"}) {
+                category: $category, 
+                location: $location,
+                date: $date,
+                ownerQuestion: $ownerQuestion }) {
                   _id
                   description
                   type
@@ -159,7 +159,14 @@ const LostItem = props => {
                   ownerQuestion
             }
           }
-        `
+        `,
+      variables: {
+        description: data.description,
+        category: category.categoryName,
+        location: data.location,
+        date: transformedDate,
+        ownerQuestion: ownerQuestion,
+      },
     };
 
     const token = context.token;
@@ -169,20 +176,20 @@ const LostItem = props => {
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         /* //TODO: Reedireccionar */
         console.log("TCL: resData ", resData);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -461,7 +468,7 @@ const LostItem = props => {
                                     ref={register()}
                                     inputProps={{
                                       placeholder:
-                                        "Fecha en la que perdiste el objeto"
+                                        "Fecha en la que perdiste el objeto",
                                     }}
                                     timeFormat={false}
                                     locale="es"

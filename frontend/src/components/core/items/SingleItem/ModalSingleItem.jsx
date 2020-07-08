@@ -16,7 +16,7 @@ import {
   Nav,
   TabContent,
   TabPane,
-  ModalHeader
+  ModalHeader,
 } from "reactstrap";
 
 import classnames from "classnames";
@@ -39,29 +39,30 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
     setTabs({ tab: index });
   };
 
-  const handleClaimerAnswerChange = event => {
+  const handleClaimerAnswerChange = (event) => {
     setClaimerAnswer(event.target.value.toString());
   };
 
-  const handleClaimerQuestionChange = event => {
+  const handleClaimerQuestionChange = (event) => {
     setClaimerQuestion(event.target.value.toString());
   };
 
-  const handleSubmitModalForm = e => {
+  const handleSubmitModalForm = (e) => {
     setClaimerQuestion("");
     setClaimerAnswer("");
     let requestBody = {
       query: `
-        mutation {
-          claimItem(
-            itemId: "${itemId}"
-          ) {
+        mutation ClaimItem($id: ID!) {
+          claimItem(itemId: $id) {
             _id
             createdAt
             updatedAt
           }
         }
-      `
+      `,
+      variables: {
+        id: itemId,
+      },
     };
 
     fetch("http://localhost:8000/graphql", {
@@ -69,23 +70,23 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         /* //TODO: Reedireccionar */
         history.push({
-          pathname: "/mis-publicaciones"
+          pathname: "/mis-publicaciones",
         });
         console.log("TCL: resData ", resData);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -124,9 +125,9 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                       <NavLink
                         aria-selected={tabs.tab === 1}
                         className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 1
+                          active: tabs.tab === 1,
                         })}
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         role="tab"
                       >
                         <i className="ni ni-cloud-upload-96 mr-2" />
@@ -137,9 +138,9 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                       <NavLink
                         aria-selected={tabs.tab === 2}
                         className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 2
+                          active: tabs.tab === 2,
                         })}
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         role="tab"
                       >
                         <i className="ni ni-bell-55 mr-2" />
@@ -150,9 +151,9 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                       <NavLink
                         aria-selected={tabs === 3}
                         className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 3
+                          active: tabs.tab === 3,
                         })}
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         role="tab"
                       >
                         <i className="ni ni-calendar-grid-58 mr-2" />
@@ -200,7 +201,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                             <Button
                               color="primary"
                               type="button"
-                              onClick={e => toggleNavs(e, 2)}
+                              onClick={(e) => toggleNavs(e, 2)}
                             >
                               Continuar
                             </Button>
@@ -249,7 +250,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                             <Button
                               color="primary"
                               type="button"
-                              onClick={e => toggleNavs(e, 3)}
+                              onClick={(e) => toggleNavs(e, 3)}
                             >
                               Continuar
                             </Button>
@@ -258,7 +259,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                               color="link"
                               data-dismiss="modal"
                               type="button"
-                              onClick={e => toggleNavs(e, 1)}
+                              onClick={(e) => toggleNavs(e, 1)}
                             >
                               Volver
                             </Button>
@@ -282,7 +283,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                             <Button
                               color="primary"
                               type="button"
-                              onClick={e => handleSubmitModalForm(e)}
+                              onClick={(e) => handleSubmitModalForm(e)}
                             >
                               Confirmar
                             </Button>
@@ -291,7 +292,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                               color="link"
                               data-dismiss="modal"
                               type="button"
-                              onClick={e => toggleNavs(e, 2)}
+                              onClick={(e) => toggleNavs(e, 2)}
                             >
                               Volver
                             </Button>
@@ -318,9 +319,9 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                       <NavLink
                         aria-selected={tabs.tab === 1}
                         className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 1
+                          active: tabs.tab === 1,
                         })}
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         role="tab"
                       >
                         <i className="ni ni-cloud-upload-96 mr-2" />
@@ -331,9 +332,9 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                       <NavLink
                         aria-selected={tabs.tab === 2}
                         className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 2
+                          active: tabs.tab === 2,
                         })}
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         role="tab"
                       >
                         <i className="ni ni-bell-55 mr-2" />
@@ -379,7 +380,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                             <Button
                               color="primary"
                               type="button"
-                              onClick={e => toggleNavs(e, 2)}
+                              onClick={(e) => toggleNavs(e, 2)}
                             >
                               Continuar
                             </Button>
@@ -421,7 +422,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                               color="link"
                               data-dismiss="modal"
                               type="button"
-                              onClick={e => toggleNavs(e, 1)}
+                              onClick={(e) => toggleNavs(e, 1)}
                             >
                               Volver
                             </Button>

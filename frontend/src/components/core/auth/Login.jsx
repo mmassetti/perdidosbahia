@@ -33,7 +33,7 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 // core components
@@ -44,30 +44,27 @@ import * as yup from "yup";
 
 import { useForm, Controller } from "react-hook-form";
 
-const Login = props => {
+const Login = (props) => {
   const context = useContext(AuthContext);
 
   const defaultValues = {
     email: "",
-    password: ""
+    password: "",
   };
 
   const SigninSchema = yup.object().shape({
-    email: yup
-      .string()
-      .email()
-      .required(),
+    email: yup.string().email().required(),
     password: yup
       .string()
       .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
-      .min(8, "La contraseña debe tener al menos 8 caracteres.")
+      .min(8, "La contraseña debe tener al menos 8 caracteres."),
   });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
     {
       mode: "onChange",
       validationSchema: SigninSchema,
-      defaultValues
+      defaultValues,
     }
   );
 
@@ -78,34 +75,38 @@ const Login = props => {
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  const submitForm = async data => {
+  const submitForm = async (data) => {
     setData(data);
 
     let requestBody = {
       query: `
-        query {
-          login(email: "${data.email}", password: "${data.password}") {
+        query Login($email: String!, $password: String!){
+          login(email: $email, password: $password) {
             userId
             token
             tokenExpiration
           }
         }
-      `
+      `,
+      variables: {
+        email: data.email,
+        password: data.password,
+      },
     };
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         if (resData.data.login.token) {
           context.login(
             resData.data.login.token,
@@ -114,13 +115,13 @@ const Login = props => {
           );
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
     reset({
       email: "",
-      password: ""
+      password: "",
     });
   };
 
@@ -152,7 +153,7 @@ const Login = props => {
                         className="btn-neutral btn-icon"
                         color="default"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                       >
                         <span className="btn-inner--icon mr-1">
                           <img
@@ -166,7 +167,7 @@ const Login = props => {
                         className="btn-neutral btn-icon ml-1"
                         color="default"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                       >
                         <span className="btn-inner--icon mr-1">
                           <img
@@ -296,7 +297,7 @@ const Login = props => {
                     <a
                       className="text-light"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <small>Olvidé mi contraseña</small>
                     </a>

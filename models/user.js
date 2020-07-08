@@ -5,29 +5,29 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   phoneNumber: {
-    type: String
+    type: String,
   },
   createdItems: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Item"
-    }
-  ]
+      ref: "Item",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -60,17 +60,73 @@ const UserClaims = () => {
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
 
-  const deleteClaimHandler = (claimId) => {
-    console.log("Entro al delete claim handler con claimId: ", claimId);
+  const fetchClaims = () => {
     setIsLoading(true);
     const requestBody = {
       query: `
-         mutation {
-            cancelClaim(claimId: "${claimId}") {
+          query {
+            claims {
+              _id  
+              item {
+                description
+                category
+                description
+                type
+                date
+                location
+                ownerQuestion
+                creator {
+                  _id
+                  email
+                }
+              }
+              claimerUser {
+                _id
+                email
+              }
+            }
+          }
+        `,
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        const claims = resData.data.claims;
+        setClaims({ claims: claims });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
+  };
+
+  const deleteClaimHandler = (claimId) => {
+    setIsLoading(true);
+    const requestBody = {
+      query: `
+         mutation CancelClaim($id: ID!) {
+            cancelClaim(claimId: $id) {
               _id
             }
           }
         `,
+      variables: {
+        id: claimId,
+      },
     };
 
     fetch("http://localhost:8000/graphql", {
@@ -135,60 +191,6 @@ const UserClaims = () => {
       );
     }
   });
-
-  const fetchClaims = () => {
-    setIsLoading(true);
-    const requestBody = {
-      query: `
-          query {
-            claims {
-              _id  
-              item {
-                description
-                category
-                description
-                type
-                date
-                location
-                ownerQuestion
-                creator {
-                  _id
-                  email
-                }
-              }
-              claimerUser {
-                _id
-                email
-              }
-            }
-          }
-        `,
-    };
-
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
-      })
-      .then((resData) => {
-        const claims = resData.data.claims;
-        setClaims({ claims: claims });
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        console.log(err);
-      });
-  };
 
   const toggleNavs = (e, state, index) => {
     e.preventDefault();

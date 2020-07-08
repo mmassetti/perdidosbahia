@@ -33,7 +33,7 @@ import {
   Container,
   Row,
   Col,
-  FormFeedback
+  FormFeedback,
 } from "reactstrap";
 
 import * as yup from "yup";
@@ -44,7 +44,7 @@ import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { useForm, Controller } from "react-hook-form";
 
-const Register = props => {
+const Register = (props) => {
   // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
 
   const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
@@ -54,16 +54,13 @@ const Register = props => {
     lastName: "",
     email: "",
     password: "",
-    phoneNumber: ""
+    phoneNumber: "",
   };
 
   const SignupSchema = yup.object().shape({
     firstName: yup.string().required("Por favor ingresa tu nombre"),
     lastName: yup.string().required("Por favor ingresa tu apellido"),
-    email: yup
-      .string()
-      .email()
-      .required(),
+    email: yup.string().email().required(),
     password: yup
       .string()
       .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
@@ -80,9 +77,9 @@ const Register = props => {
       .notRequired()
       .matches(phoneRegExp, {
         excludeEmptyString: true,
-        message: "El número contiene caracteres inválidos"
+        message: "El número contiene caracteres inválidos",
       })
-      .test("phoneNumber", "El número debe tener al menos 7 dígitos", function(
+      .test("phoneNumber", "El número debe tener al menos 7 dígitos", function (
         value
       ) {
         if (!!value) {
@@ -90,14 +87,14 @@ const Register = props => {
           return schema.isValidSync(value);
         }
         return true;
-      })
+      }),
   });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
     {
       mode: "onChange",
       validationSchema: SignupSchema,
-      defaultValues
+      defaultValues,
     }
   );
   const [data, setData] = useState(null);
@@ -107,37 +104,44 @@ const Register = props => {
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  const submitForm = async data => {
+  const submitForm = async (data) => {
     setData(data);
 
     const requestBody = {
       query: `
-        mutation {
-          createUser(userInput: {email: "${data.email}", password: "${data.password}", firstName: "${data.firstName}", lastName: "${data.lastName} , "phoneNumber: "${data.phoneNumber}" }) {
+        mutation CreateUser($email: String! , $password: String!, $firstName: String!, $lastName: String!, $phoneNumber: String) {
+          createUser(userInput: {email: $email, password: $password, firstName: $firstName, lastName: $lastName , phoneNumber: $phoneNumber }) {
             _id
             email
           }
         }
-      `
+      `,
+      variables: {
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber ? data.phoneNumber : "",
+      },
     };
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         console.log(resData);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
@@ -147,7 +151,7 @@ const Register = props => {
       email: "",
       password: "",
       passwordCheck: "",
-      phoneNumber: ""
+      phoneNumber: "",
     });
   };
 
@@ -192,7 +196,7 @@ const Register = props => {
                         className="btn-neutral btn-icon mr-4"
                         color="default"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                       >
                         <span className="btn-inner--icon mr-1">
                           <img
@@ -206,7 +210,7 @@ const Register = props => {
                         className="btn-neutral btn-icon ml-1"
                         color="default"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                       >
                         <span className="btn-inner--icon mr-1">
                           <img
