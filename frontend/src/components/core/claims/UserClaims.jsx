@@ -24,6 +24,8 @@ import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import AuthContext from "../../../context/auth-context";
 import ClaimCard from "../../core/claims/ClaimCard";
 import classnames from "classnames";
+import MustLoginModal from "../Helpers/MustLoginModal";
+import useModal from "../Helpers/useModal";
 
 // reactstrap components
 import {
@@ -59,6 +61,8 @@ const UserClaims = () => {
   const [tabs, setTabs] = useState({ tabs: 1 });
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
+  const [isToggled, setToggled] = useState(false);
+  const { isShowing, toggle } = useModal();
 
   const fetchClaims = () => {
     setIsLoading(true);
@@ -162,6 +166,7 @@ const UserClaims = () => {
     fetchClaims();
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+    toggle();
   }, []);
 
   const itemsUserIsOwner = claims.claims.map((claim) => {
@@ -202,101 +207,141 @@ const UserClaims = () => {
   return (
     <>
       <CustomNavbar />
-      <main>
-        <div className="position-relative">
-          {/* shape Hero */}
-          <section className="section section-sm, section-shaped">
-            <div className="shape shape-style-1 shape-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <Container className="py-lg-md d-flex">
-              <div className="col px-0">
-                <Row>
-                  <Col lg="12">
-                    <h1 className="display-3 text-white">
-                      En esta sección aparecen las publicaciones abiertas en las
-                      que estas participando
-                    </h1>
-                  </Col>
-                </Row>
+
+      {context.token ? (
+        <main>
+          <div className="position-relative">
+            {/* shape Hero */}
+            <section className="section section-sm, section-shaped">
+              <div className="shape shape-style-1 shape-default">
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
               </div>
-            </Container>
-          </section>
-        </div>
-        {/* Page content */}
 
-        <Container>
-          <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
-            <Col lg="12">
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <>
-                  <div className="nav-wrapper">
-                    <Nav
-                      className="nav-fill flex-column flex-md-row"
-                      id="tabs-icons-text"
-                      pills
-                      role="tablist"
-                    >
-                      <NavItem>
-                        <NavLink
-                          aria-selected={tabs.tabs === 1}
-                          className={classnames("mb-sm-3 mb-md-0", {
-                            active: tabs.tabs === 1,
-                          })}
-                          onClick={(e) => toggleNavs(e, "tabs", 1)}
-                          href="#pablo"
-                          role="tab"
-                        >
-                          <i className="ni ni-cloud-upload-96 mr-2" />
-                          Publicaciones creadas por mi
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          aria-selected={tabs.tabs === 2}
-                          className={classnames("mb-sm-3 mb-md-0", {
-                            active: tabs.tabs === 2,
-                          })}
-                          onClick={(e) => toggleNavs(e, "tabs", 2)}
-                          href="#pablo"
-                          role="tab"
-                        >
-                          <i className="ni ni-bell-55 mr-2" />
-                          Publicaciones creadas por otra persona
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
+              <Container className="py-lg-md d-flex">
+                <div className="col px-0">
+                  <Row>
+                    <Col lg="12">
+                      <h1 className="display-3 text-white">
+                        En esta sección aparecen las publicaciones abiertas en
+                        las que estas participando
+                      </h1>
+                    </Col>
+                  </Row>
+                </div>
+              </Container>
+            </section>
+          </div>
+          {/* Page content */}
 
-                  <Card className="shadow">
-                    <CardBody>
-                      <TabContent activeTab={"tabs" + tabs.tabs}>
-                        <TabPane tabId="tabs1">
-                          <Row className="row-grid">{itemsUserIsOwner}</Row>
-                        </TabPane>
-                        <TabPane tabId="tabs2">
-                          <Row className="row-grid">{itemsUserIsClaimer}</Row>
-                        </TabPane>
-                      </TabContent>
-                    </CardBody>
-                  </Card>
-                </>
-              )}
-            </Col>
-          </Row>
-        </Container>
-        {/* <Download /> */}
-      </main>
+          <Container>
+            <Row
+              className="justify-content-center"
+              style={{ marginTop: "2rem" }}
+            >
+              <Col lg="12">
+                {isLoading ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <div className="nav-wrapper">
+                      <Nav
+                        className="nav-fill flex-column flex-md-row"
+                        id="tabs-icons-text"
+                        pills
+                        role="tablist"
+                      >
+                        <NavItem>
+                          <NavLink
+                            aria-selected={tabs.tabs === 1}
+                            className={classnames("mb-sm-3 mb-md-0", {
+                              active: tabs.tabs === 1,
+                            })}
+                            onClick={(e) => toggleNavs(e, "tabs", 1)}
+                            href="#pablo"
+                            role="tab"
+                          >
+                            <i className="ni ni-cloud-upload-96 mr-2" />
+                            Publicaciones creadas por mi
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            aria-selected={tabs.tabs === 2}
+                            className={classnames("mb-sm-3 mb-md-0", {
+                              active: tabs.tabs === 2,
+                            })}
+                            onClick={(e) => toggleNavs(e, "tabs", 2)}
+                            href="#pablo"
+                            role="tab"
+                          >
+                            <i className="ni ni-bell-55 mr-2" />
+                            Publicaciones creadas por otra persona
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                    </div>
+
+                    <Card className="shadow">
+                      <CardBody>
+                        <TabContent activeTab={"tabs" + tabs.tabs}>
+                          <TabPane tabId="tabs1">
+                            <Row className="row-grid">{itemsUserIsOwner}</Row>
+                          </TabPane>
+                          <TabPane tabId="tabs2">
+                            <Row className="row-grid">{itemsUserIsClaimer}</Row>
+                          </TabPane>
+                        </TabContent>
+                      </CardBody>
+                    </Card>
+                  </>
+                )}
+              </Col>
+            </Row>
+          </Container>
+          {/* <Download /> */}
+        </main>
+      ) : (
+        //TODO : Extrar afuera lo que esta entre <main> </main> porque tambien se usa arriba
+        <>
+          <main>
+            <div className="position-relative">
+              {/* shape Hero */}
+              <section className="section section-sm, section-shaped">
+                <div className="shape shape-style-1 shape-default">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+
+                <Container className="py-lg-md d-flex">
+                  <div className="col px-0"></div>
+                </Container>
+              </section>
+            </div>
+          </main>
+          <h2>
+            {" "}
+            Para poder publicar un objeto primero es necesario Registrarse o
+            Iniciar sesion
+          </h2>
+          <MustLoginModal isShowing={isShowing} hide={toggle} />
+        </>
+      )}
+
       <CardsFooter />
     </>
   );
