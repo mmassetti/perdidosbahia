@@ -5,13 +5,13 @@ import { useHistory } from "react-router-dom";
 var moment = require("moment");
 require("moment/locale/es");
 
-const ClaimCard = props => {
+const ClaimCard = (props) => {
   let history = useHistory();
 
   function goToSingleItem() {
     history.push({
       pathname: "/detalle",
-      state: { props: props }
+      state: { props: props },
     });
   }
 
@@ -55,7 +55,7 @@ const ClaimCard = props => {
             <Button
               className="mt-4"
               color="primary"
-              onClick={() => cancelClaim()}
+              // onClick={props.onDelete.bind()}
             >
               Editar publicacion
             </Button>
@@ -63,15 +63,19 @@ const ClaimCard = props => {
             ""
           )}
 
-          <Button
-            className="mt-4"
-            color="warning"
-            onClick={() => cancelClaim()}
-          >
-            {props.item.creator._id == props.authUserId
-              ? "Eliminar publicacion"
-              : "Cancelar contacto"}
-          </Button>
+          {props.item.creator._id == props.authUserId ? (
+            <Button
+              className="mt-4"
+              color="warning"
+              onClick={() => props.onDelete(props.claimId)}
+            >
+              Eliminar publicación
+            </Button>
+          ) : (
+            <Button className="mt-4" color="warning" onClick={props.onDelete}>
+              Cancelar contacto
+            </Button>
+          )}
         </CardBody>
       </Card>
     </Col>

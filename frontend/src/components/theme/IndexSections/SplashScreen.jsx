@@ -22,24 +22,24 @@ import { Button, Container, Row, Col } from "reactstrap";
 
 import { useHistory } from "react-router-dom";
 
-const SplashScreen = props => {
+const SplashScreen = (props) => {
   let history = useHistory();
 
   function goToLostItem() {
     history.push({
-      pathname: "/objeto-perdido"
+      pathname: "/objeto-perdido",
     });
   }
 
   function goToFoundItem() {
     history.push({
-      pathname: "/objeto-encontrado"
+      pathname: "/objeto-encontrado",
     });
   }
 
   function goToListOfItems() {
     history.push({
-      pathname: "/objetos-publicados"
+      pathname: "/objetos-publicados",
     });
   }
 
@@ -72,7 +72,7 @@ const SplashScreen = props => {
                     style={{ width: "400px" }}
                   />
                   <p className="lead text-white">
-                    Publica lo que hayas perdido o encontrado de forma facil y
+                    Publicá lo que hayas perdido o encontrado de forma fácil y
                     rápida
                   </p>
                   <div className="btn-wrapper mt-5">
