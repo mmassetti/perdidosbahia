@@ -30,7 +30,7 @@ import Login from "../components/theme/IndexSections/Login.jsx";
 import Download from "../components/theme/IndexSections/Download.jsx";
 import AuthContext from "../context/auth-context";
 
-const Index = props => {
+const Index = (props) => {
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;

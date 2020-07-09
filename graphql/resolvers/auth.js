@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../../models/user");
 
 module.exports = {
-  createUser: async args => {
+  createUser: async (args) => {
     try {
       const existingUser = await User.findOne({ email: args.userInput.email });
       if (existingUser) {
@@ -19,7 +19,7 @@ module.exports = {
         password: hashedPassword,
         phoneNumber: args.userInput.phoneNumber
           ? args.userInput.phoneNumber
-          : null
+          : null,
       });
 
       const result = await user.save();
@@ -38,13 +38,14 @@ module.exports = {
     if (!isEqual) {
       throw new Error("Password is incorrect!");
     }
+
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      "somesupersecretkey",
+      process.env.SECRET,
       {
-        expiresIn: "1h"
+        expiresIn: "1h",
       }
     );
     return { userId: user.id, token: token, tokenExpiration: 1 };
-  }
+  },
 };
