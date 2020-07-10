@@ -119,6 +119,7 @@ const App = (props) => {
               />
 
               <Redirect from="/inicio-sesion" to="/" exact />
+              <Redirect from="/argon-design-system-react" to="/" exact />
 
               <Route render={(props) => <ErrorPage {...props} />} />
             </Switch>

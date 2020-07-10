@@ -18,7 +18,7 @@
     "argon-design-system-react",
     "design-system-react"
   ],
-  "homepage": "https://demos.creative-tim.com/argon-design-system-react/",
+  "homepage": "http://localhost:3000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
