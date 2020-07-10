@@ -13,6 +13,7 @@ import AuthContext from "./context/auth-context";
 import LostItem from "components/core/items/LostItem";
 import Items from "components/core/items/Items";
 import UserClaims from "components/core/claims/UserClaims";
+import ErrorPage from "components/core/Helpers/ErrorPage/ErrorPage";
 
 const App = (props) => {
   const [token, setToken] = useState(null);
@@ -45,6 +46,7 @@ const App = (props) => {
       localStorage.setItem("expirationDate", expirationDate);
     }
     localStorage.setItem("userId", userId);
+    return <Redirect to="/" />;
   };
 
   const logout = () => {
@@ -116,7 +118,9 @@ const App = (props) => {
                 render={(props) => <UserClaims {...props} />}
               />
 
-              <Redirect to="/" />
+              <Redirect from="/inicio-sesion" to="/" exact />
+
+              <Route render={(props) => <ErrorPage {...props} />} />
             </Switch>
           </main>
         </AuthContext.Provider>
