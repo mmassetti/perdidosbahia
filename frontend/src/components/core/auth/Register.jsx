@@ -17,8 +17,7 @@
 */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-//import useForm from "../../forms/useForm";
-// reactstrap components
+
 import {
   Button,
   Card,
@@ -27,26 +26,19 @@ import {
   FormGroup,
   Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col,
-  FormFeedback,
 } from "reactstrap";
 
 import * as yup from "yup";
 
-// core components
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { useForm, Controller } from "react-hook-form";
 
 const Register = (props) => {
-  // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
-
   const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
 
   const defaultValues = {
@@ -65,7 +57,6 @@ const Register = (props) => {
       .string()
       .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
       .min(8, "La contraseña debe tener al menos 8 caracteres."),
-    // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     passwordCheck: yup
       .string()
       .required("Por favor escribe nuevamente tu contraseña.")
@@ -154,19 +145,6 @@ const Register = (props) => {
       phoneNumber: "",
     });
   };
-
-  // function firstNameErrors() {
-  //   var errorsMsgs = [];
-  //   if (errors.firstName) {
-  //     errors.firstName.map((item, i) => {
-  //       errorsMsgs.push(item.message);
-  //     });
-  //   }
-
-  //   console.log("TCL: firstNameErrors -> errorsMsgs", errorsMsgs);
-
-  //   return <div>Hello World</div>;
-  // }
 
   return (
     <>
@@ -465,15 +443,6 @@ const Register = (props) => {
                         )}
                       </FormGroup>
 
-                      {/* {data && (
-                        <div>
-                          <pre style={{ textAlign: "left" }}>
-                            {JSON.stringify(data, null, 2)}
-                          </pre>
-
-                        
-                        </div>
-                      )} */}
                       <div className="text-center">
                         <Button
                           disabled={formState.isValid ? false : true}
@@ -494,7 +463,6 @@ const Register = (props) => {
                           </Link>
                         </p>
                       </small>
-                      {/* <pre>{JSON.stringify(formState, null, 2)}</pre> */}
                     </Form>
                   </CardBody>
                 </Card>
