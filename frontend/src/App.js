@@ -15,6 +15,9 @@ import Items from "components/core/items/Items";
 import UserClaims from "components/core/claims/UserClaims";
 import ErrorPage from "components/core/Helpers/ErrorPage/ErrorPage";
 
+import APIErrorProvider from "common/providers/APIErrorProvider";
+import APIErrorNotification from "components/APIErrorNotification";
+
 const App = (props) => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -68,62 +71,69 @@ const App = (props) => {
             logout: logout,
           }}
         >
-          <main className="main-content">
-            <Switch>
-              <Route path="/" exact render={(props) => <Index {...props} />} />
-              <Route
-                path="/landing-page"
-                exact
-                render={(props) => <Landing {...props} />}
-              />
-              <Route
-                path="/objeto-perdido"
-                exact
-                render={(props) => <LostItem {...props} />}
-              />
-              <Route
-                path="/objeto-encontrado"
-                exact
-                render={(props) => <LostItem {...props} />}
-              />
-              <Route
-                path="/objetos-publicados"
-                exact
-                render={(props) => <Items {...props} />}
-              />
-              {!token && (
+          <APIErrorProvider>
+            <main className="main-content">
+              <Switch>
                 <Route
-                  path="/inicio-sesion"
+                  path="/"
                   exact
-                  render={(props) => <Login {...props} />}
+                  render={(props) => <Index {...props} />}
                 />
-              )}
-
-              <Route
-                path="/detalle"
-                exact
-                render={(props) => <SingleItem {...props} />}
-              />
-              {!token && (
                 <Route
-                  path="/registro"
+                  path="/landing-page"
                   exact
-                  render={(props) => <Register {...props} />}
+                  render={(props) => <Landing {...props} />}
                 />
-              )}
+                <Route
+                  path="/objeto-perdido"
+                  exact
+                  render={(props) => <LostItem {...props} />}
+                />
+                <Route
+                  path="/objeto-encontrado"
+                  exact
+                  render={(props) => <LostItem {...props} />}
+                />
+                <Route
+                  path="/objetos-publicados"
+                  exact
+                  render={(props) => <Items {...props} />}
+                />
+                {!token && (
+                  <Route
+                    path="/inicio-sesion"
+                    exact
+                    render={(props) => <Login {...props} />}
+                  />
+                )}
 
-              <Route
-                path="/mis-publicaciones"
-                exact
-                render={(props) => <UserClaims {...props} />}
-              />
+                <Route
+                  path="/detalle"
+                  exact
+                  render={(props) => <SingleItem {...props} />}
+                />
+                {!token && (
+                  <Route
+                    path="/registro"
+                    exact
+                    render={(props) => <Register {...props} />}
+                  />
+                )}
 
-              <Redirect from="/inicio-sesion" to="/" exact />
-              <Redirect from="/argon-design-system-react" to="/" exact />
+                <Route
+                  path="/mis-publicaciones"
+                  exact
+                  render={(props) => <UserClaims {...props} />}
+                />
 
-              <Route render={(props) => <ErrorPage {...props} />} />
-            </Switch>
-          </main>
+                <Redirect from="/inicio-sesion" to="/" exact />
+                <Redirect from="/argon-design-system-react" to="/" exact />
+
+                <Route render={(props) => <ErrorPage {...props} />} />
+              </Switch>
+            </main>
+            <APIErrorNotification />
+          </APIErrorProvider>
         </AuthContext.Provider>
       </React.Fragment>
     </BrowserRouter>

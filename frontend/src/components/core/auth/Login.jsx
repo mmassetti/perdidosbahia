@@ -43,9 +43,11 @@ import SimpleFooter from "../../theme/Footers/SimpleFooter";
 import * as yup from "yup";
 
 import { useForm, Controller } from "react-hook-form";
+import useAPIError from "common/hooks/useAPIError";
 
 const Login = (props) => {
   const context = useContext(AuthContext);
+  const { addError } = useAPIError();
 
   const defaultValues = {
     email: "",
@@ -73,7 +75,7 @@ const Login = (props) => {
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-  }, []);
+  }, [[addError]]);
 
   const submitForm = async (data) => {
     setData(data);
@@ -102,7 +104,7 @@ const Login = (props) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
+          throw new Error("Falló el inicio de sesión");
         }
         return res.json();
       })
@@ -116,7 +118,7 @@ const Login = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        addError(`${err}`);
       });
 
     reset({
