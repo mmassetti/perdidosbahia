@@ -29,7 +29,7 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from "reactstrap";
 
 class CardsFooter extends React.Component {
@@ -41,7 +41,7 @@ class CardsFooter extends React.Component {
             <Row>
               <Col className="mb-5 mb-md-0" md="6">
                 <Card className="card-lift--hover shadow border-0">
-                  <Link to="/landing-page">
+                  <Link to="/algun-lado">
                     <CardImg
                       alt="..."
                       src={require("assets/img/theme/landing.jpg")}
@@ -51,7 +51,7 @@ class CardsFooter extends React.Component {
               </Col>
               <Col className="mb-5 mb-lg-0" md="6">
                 <Card className="card-lift--hover shadow border-0">
-                  <Link to="/profile-page">
+                  <Link to="/otro-lado">
                     <CardImg
                       alt="..."
                       src={require("assets/img/theme/profile.jpg")}

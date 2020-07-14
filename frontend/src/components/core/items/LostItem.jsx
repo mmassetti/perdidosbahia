@@ -1,8 +1,8 @@
 /*!
 
-=========================================================
+=====================================================================================
 * Argon Design System React - v1.0.0
-=========================================================
+=====================================================================================
 
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
@@ -10,7 +10,7 @@
 
 * Coded by Creative Tim
 
-=========================================================
+=====================================================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
@@ -288,7 +288,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -308,7 +308,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -326,7 +326,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -344,7 +344,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -362,7 +362,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -380,7 +380,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -400,7 +400,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -416,7 +416,7 @@ const LostItem = (props) => {
                           <FormGroup
                             className={
                               !formState.touched.dateOfEvent &&
-                              (formState.submitCount == 0 ||
+                              (formState.submitCount === 0 ||
                                 formState.isSubmitted)
                                 ? ""
                                 : errors.dateOfEvent
@@ -458,7 +458,7 @@ const LostItem = (props) => {
                           <FormGroup
                             className={
                               !formState.touched.location &&
-                              (formState.submitCount == 0 ||
+                              (formState.submitCount === 0 ||
                                 formState.isSubmitted)
                                 ? ""
                                 : errors.location
@@ -474,7 +474,7 @@ const LostItem = (props) => {
                                   placeholder="Escribí la ubicación en donde perdiste tu objeto (calle y altura,lugar,zona,etc) "
                                   className={
                                     !formState.touched.location &&
-                                    (formState.submitCount == 0 ||
+                                    (formState.submitCount === 0 ||
                                       formState.isSubmitted)
                                       ? ""
                                       : errors.location
@@ -500,7 +500,7 @@ const LostItem = (props) => {
                           <FormGroup
                             className={
                               !formState.touched.description &&
-                              (formState.submitCount == 0 ||
+                              (formState.submitCount === 0 ||
                                 formState.isSubmitted)
                                 ? ""
                                 : errors.description
@@ -516,7 +516,7 @@ const LostItem = (props) => {
                                   placeholder="Escribí una descripción del objeto (recomendamos que guardes algún detalle de tu objeto para poner en una pregunta debajo)"
                                   className={
                                     !formState.touched.description &&
-                                    (formState.submitCount == 0 ||
+                                    (formState.submitCount === 0 ||
                                       formState.isSubmitted)
                                       ? ""
                                       : errors.description
@@ -585,7 +585,7 @@ const LostItem = (props) => {
                                         <FormGroup
                                           className={
                                             !formState.touched.ownerQuestion &&
-                                            (formState.submitCount == 0 ||
+                                            (formState.submitCount === 0 ||
                                               formState.isSubmitted)
                                               ? ""
                                               : errors.ownerQuestion
@@ -600,7 +600,7 @@ const LostItem = (props) => {
                                             className={
                                               !formState.touched
                                                 .ownerQuestion &&
-                                              (formState.submitCount == 0 ||
+                                              (formState.submitCount === 0 ||
                                                 formState.isSubmitted)
                                                 ? ""
                                                 : errors.ownerQuestion
@@ -657,8 +657,8 @@ const LostItem = (props) => {
                             </Col>
                             <Col md="4">
                               <Button
-                                hidden={ownerQuestion == ""}
-                                disabled={ownerQuestion == ""}
+                                hidden={ownerQuestion === ""}
+                                disabled={ownerQuestion === ""}
                                 className="ml-auto"
                                 color="danger"
                                 outline

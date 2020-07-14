@@ -280,6 +280,16 @@ const Login = (props) => {
                           Iniciar sesión
                         </Button>
                       </div>
+                      <br></br>
+                      <small className="text-center">
+                        <p>
+                          {" "}
+                          ¿Todavía no tenés una cuenta?{" "}
+                          <Link className="label" to="/registro">
+                            Registrate
+                          </Link>
+                        </p>
+                      </small>
                     </Form>
                   </CardBody>
                 </Card>

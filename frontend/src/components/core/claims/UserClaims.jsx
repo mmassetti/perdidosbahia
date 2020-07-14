@@ -44,7 +44,7 @@ const UserClaims = () => {
   const [tabs, setTabs] = useState({ tabs: 1 });
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
-  // const [isToggled, setToggled] = useState(false);
+  const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
 
   const fetchClaims = () => {
@@ -269,7 +269,6 @@ const UserClaims = () => {
                         </NavItem>
                       </Nav>
                     </div>
-
                     <Card className="shadow">
                       <CardBody>
                         <TabContent activeTab={"tabs" + tabs.tabs}>
@@ -314,11 +313,7 @@ const UserClaims = () => {
               </section>
             </div>
           </main>
-          <h2>
-            {" "}
-            Para poder publicar un objeto primero es necesario Registrarse o
-            Iniciar sesion
-          </h2>
+
           <MustLoginModal isShowing={isShowing} hide={toggle} />
         </>
       )}

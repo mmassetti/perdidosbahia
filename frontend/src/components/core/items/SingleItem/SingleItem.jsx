@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
 import { Button, Card, Container, Row, Col, CardHeader } from "reactstrap";
 
@@ -49,7 +49,7 @@ const SingleItem = (props) => {
 
   function loggedUserIsOwner() {
     return (
-      props.location.state.props.creatorId ==
+      props.location.state.props.creatorId ===
         props.location.state.props.authUserId && context.token
     );
   }

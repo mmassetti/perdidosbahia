@@ -5,13 +5,13 @@ import { useHistory } from "react-router-dom";
 var moment = require("moment");
 require("moment/locale/es");
 
-const CardItem = props => {
+const CardItem = (props) => {
   let history = useHistory();
 
   function goToSingleItem() {
     history.push({
       pathname: "/detalle",
-      state: { props: props }
+      state: { props: props },
     });
   }
 

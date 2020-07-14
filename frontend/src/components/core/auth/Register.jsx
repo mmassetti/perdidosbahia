@@ -1,8 +1,8 @@
 /*!
 
-=========================================================
+=====================================================================================
 * Argon Design System React - v1.0.0
-=========================================================
+=====================================================================================
 
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
@@ -10,7 +10,7 @@
 
 * Coded by Creative Tim
 
-=========================================================
+=====================================================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
@@ -214,7 +214,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.firstName &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.firstName
                             ? "has-danger"
@@ -230,7 +230,7 @@ const Register = (props) => {
                               placeholder="Nombre"
                               className={
                                 !formState.touched.firstName &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.firstName
@@ -254,7 +254,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.lastName &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.lastName
                             ? "has-danger"
@@ -269,7 +269,7 @@ const Register = (props) => {
                               placeholder="Apellido"
                               className={
                                 !formState.touched.lastName &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.lastName
@@ -293,7 +293,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.email &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.email
                             ? "has-danger"
@@ -308,7 +308,7 @@ const Register = (props) => {
                               placeholder="Email"
                               className={
                                 !formState.touched.email &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.email
@@ -331,7 +331,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.pasword &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.password
                             ? "has-danger"
@@ -347,7 +347,7 @@ const Register = (props) => {
                               placeholder="Contraseña"
                               className={
                                 !formState.touched.password &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.password
@@ -371,7 +371,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.paswordCheck &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.passwordCheck
                             ? "has-danger"
@@ -387,7 +387,7 @@ const Register = (props) => {
                               placeholder="Escribir nuevamente la contraseña"
                               className={
                                 !formState.touched.passwordCheck &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.passwordCheck

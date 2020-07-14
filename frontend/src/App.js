@@ -5,7 +5,6 @@ import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
 import Index from "components/Index";
-import Landing from "components/theme/examples/Landing.jsx";
 import Login from "components/core/auth/Login";
 import SingleItem from "components/core/items/SingleItem/SingleItem";
 import Register from "components/core/auth/Register.jsx";
@@ -78,11 +77,6 @@ const App = (props) => {
                   path="/"
                   exact
                   render={(props) => <Index {...props} />}
-                />
-                <Route
-                  path="/landing-page"
-                  exact
-                  render={(props) => <Landing {...props} />}
                 />
                 <Route
                   path="/objeto-perdido"
