@@ -24,37 +24,14 @@ import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import CardItem from "./cards/CardItem";
 import AuthContext from "../../../context/auth-context";
 
-// reactstrap components
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  UncontrolledTooltip,
-  Col,
-  Button,
-  CardBody
-} from "reactstrap";
-// core components
+import { Container, Row, Col } from "reactstrap";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
   const [isLoading, setIsLoading] = useState(false);
   const context = useContext(AuthContext);
 
-  const itemsCards = items.items.map(item => {
+  const itemsCards = items.items.map((item) => {
     return (
       <CardItem
         key={item._id}
@@ -90,28 +67,28 @@ const Items = () => {
               }
             }
           }
-        `
+        `,
     };
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         const items = resData.data.items;
         setItems({ items: items });
         setIsLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setIsLoading(false);
         console.log(err);
       });
@@ -128,7 +105,6 @@ const Items = () => {
       <CustomNavbar />
       <main>
         <div className="position-relative">
-          {/* shape Hero */}
           <section className="section section-sm, section-shaped">
             <div className="shape shape-style-1 shape-default">
               <span />
@@ -155,7 +131,6 @@ const Items = () => {
             </Container>
           </section>
         </div>
-        {/* Page content */}
 
         <Container>
           <Row className="justify-content-center" style={{ marginTop: "2rem" }}>

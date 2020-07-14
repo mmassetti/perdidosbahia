@@ -17,7 +17,6 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import Download from "../../theme/IndexSections/Download";
 import CardsFooter from "../../theme/Footers/CardsFooter";
 import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
@@ -27,27 +26,11 @@ import classnames from "classnames";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 
-// reactstrap components
 import {
-  Badge,
   Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
   Container,
   Row,
-  UncontrolledTooltip,
   Col,
-  Button,
   CardBody,
   NavItem,
   Nav,
@@ -61,7 +44,7 @@ const UserClaims = () => {
   const [tabs, setTabs] = useState({ tabs: 1 });
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
-  const [isToggled, setToggled] = useState(false);
+  // const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
 
   const fetchClaims = () => {
@@ -211,7 +194,6 @@ const UserClaims = () => {
       {context.token ? (
         <main>
           <div className="position-relative">
-            {/* shape Hero */}
             <section className="section section-sm, section-shaped">
               <div className="shape shape-style-1 shape-default">
                 <span />
@@ -239,7 +221,6 @@ const UserClaims = () => {
               </Container>
             </section>
           </div>
-          {/* Page content */}
 
           <Container>
             <Row

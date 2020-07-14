@@ -17,29 +17,8 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-// reactstrap components
-import {
-  Button,
-  Card,
-  Container,
-  Row,
-  Col,
-  CardHeader,
-  CardBody,
-  Modal,
-  Form,
-  FormGroup,
-  Input,
-  Badge,
-  NavItem,
-  NavLink,
-  Nav,
-  TabContent,
-  TabPane,
-  ModalHeader,
-} from "reactstrap";
+import { Button, Card, Container, Row, Col, CardHeader } from "reactstrap";
 
-// core components
 import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
@@ -82,7 +61,6 @@ const SingleItem = (props) => {
           <CustomNavbar />
           <main className="profile-page">
             <section className="section-profile-cover section-shaped my-0">
-              {/* Circles background */}
               <div className="shape shape-style-1 shape-default alpha-4">
                 <span />
                 <span />
@@ -92,7 +70,6 @@ const SingleItem = (props) => {
                 <span />
                 <span />
               </div>
-              {/* SVG separator */}
               <div className="separator separator-bottom separator-skew">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
