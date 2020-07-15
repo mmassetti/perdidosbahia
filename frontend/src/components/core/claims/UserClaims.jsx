@@ -212,8 +212,8 @@ const UserClaims = () => {
                   <Row>
                     <Col lg="12">
                       <h1 className="display-3 text-white">
-                        En esta sección aparecen las publicaciones abiertas en
-                        las que estas participando
+                        Controlá el estado de las publicaciones que creaste o de
+                        las que estás participando
                       </h1>
                     </Col>
                   </Row>
