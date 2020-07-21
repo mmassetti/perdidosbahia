@@ -62,10 +62,12 @@ const transformClaim = (claim) => {
   return {
     ...claim._doc,
     _id: claim.id,
-    claimerUser: user.bind(this, claim._doc.claimerUser),
+    itemCreator: user.bind(this, claim._doc.itemCreator),
+    itemClaimer: user.bind(this, claim._doc.itemClaimer),
     item: singleItem.bind(this, claim._doc.item),
     createdAt: dateToString(claim._doc.createdAt),
     updatedAt: dateToString(claim._doc.updatedAt),
+    //TODO: Transform stateForCreator and stateForClaimer (Enums)
   };
 };
 

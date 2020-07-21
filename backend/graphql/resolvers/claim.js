@@ -4,6 +4,7 @@ const { transformClaim, transformItem } = require("./merge");
 
 module.exports = {
   claims: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     // if (!req.isAuth) {
     //   throw new Error("Unauthenticated!");
     // }
@@ -16,13 +17,31 @@ module.exports = {
       throw err;
     }
   },
+
+  createClaim: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    const fetchedItem = await Item.findOne({ _id: args.itemId });
+    const claim = new Claim({
+      item: fetchedItem._id,
+      itemClaimer: req.userId,
+      itemCreator: fetchedItem.creator,
+      //los estados se crean por defecto para ambos usuarios
+    });
+    const result = await claim.save();
+    return transformClaim(result);
+  },
+
   editClaim: async (args, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
     const fetchedItem = await Item.findOne({ _id: args.itemId });
     const fetchedClaim = await Claim.findOne({ item: fetchedItem });
-    fetchedClaim.claimerUser = req.userId;
+    // fetchedClaim.itemCreator = req.userId;
+    fetchedClaim.itemCreator = args.itemCreatorId;
+    fetchedClaim.itemClaimer = args.itemClaimerId;
     fetchedClaim.state = args.newState;
     const result = await fetchedClaim.save();
     return transformClaim(result);
@@ -36,6 +55,19 @@ module.exports = {
       const item = transformItem(claim.item);
       await Claim.deleteOne({ _id: args.claimId });
       return item;
+    } catch (err) {
+      throw err;
+    }
+  },
+  getClaim: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    // if ()
+    try {
+      const claim = await Claim.findOne({ _id: args.claimId });
+      return transformClaim(claim);
     } catch (err) {
       throw err;
     }

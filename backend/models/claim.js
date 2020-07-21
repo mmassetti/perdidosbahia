@@ -1,25 +1,40 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
+
 const claimSchema = new Schema(
   {
     item: {
       type: Schema.Types.ObjectId,
       ref: "Item",
     },
-    claimerUser: {
+    itemClaimer: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    state: {
+    itemCreator: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    stateForClaimer: {
       type: String,
       required: true,
       enum: [
-        "SinRespuestas",
         "EsperandoRespuestaOtroUsuario",
-        "EsperandoRespuestaUsuario",
+        "EsperandoRespuestaMia",
+        "EnContacto",
       ],
-      default: "SinRespuestas",
+      default: "EsperandoRespuestaOtroUsuario",
+    },
+    stateForItemOwner: {
+      type: String,
+      required: true,
+      enum: [
+        "EsperandoRespuestaOtroUsuario",
+        "EsperandoRespuestaMia",
+        "EnContacto",
+      ],
+      default: "EsperandoRespuestaMia",
     },
   },
   { timestamps: true }

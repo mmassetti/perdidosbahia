@@ -44,12 +44,12 @@ module.exports = {
       creator.createdItems.push(item);
       await creator.save();
 
-      //By default: Create a claim with state: "SinRespuestas"
-      const claim = new Claim({
-        claimerUser: req.userId,
-        item: item,
-      });
-      await claim.save();
+      // //By default: Create a claim with state: "SinRespuestas"
+      // const claim = new Claim({
+      //   itemCreator: req.userId,
+      //   item: item,
+      // });
+      // await claim.save();
 
       return createdItem;
     } catch (err) {
