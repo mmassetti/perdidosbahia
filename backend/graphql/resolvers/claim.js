@@ -55,21 +55,8 @@ module.exports = {
     }
   },
 
-  // editClaim: async (args, req) => {
-  //   if (!req.isAuth) {
-  //     throw new Error("Unauthenticated!");
-  //   }
-  //   const fetchedItem = await Item.findOne({ _id: args.itemId });
-  //   const fetchedClaim = await Claim.findOne({ item: fetchedItem });
-  //   // fetchedClaim.itemCreator = req.userId;
-  //   fetchedClaim.itemCreator = args.itemCreatorId;
-  //   fetchedClaim.itemClaimer = args.itemClaimerId;
-  //   fetchedClaim.state = args.newState;
-  //   const result = await fetchedClaim.save();
-  //   return transformClaim(result);
-  // },
-
   editClaim: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
@@ -78,7 +65,6 @@ module.exports = {
       fetchedClaim.stateForClaimer = args.newStateForClaimer;
       fetchedClaim.stateForItemCreator = args.newStateForCreator;
       const result = await fetchedClaim.save();
-      console.log("fetchedClaim", fetchedClaim);
       return transformClaim(result);
     } catch (err) {
       throw err;
@@ -86,13 +72,25 @@ module.exports = {
   },
 
   cancelClaim: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
     try {
       const claim = await Claim.findById(args.claimId).populate("item");
+      console.log("claim ", claim);
       const item = transformItem(claim.item);
       await Claim.deleteOne({ _id: args.claimId });
+
+      //Delete Claims from users lists
+      const claimer = await User.findOne({ _id: claim.itemClaimer });
+      const creator = await User.findOne({ _id: claim.itemCreator });
+
+      claimer.claimsInvolved.pull(claim._id);
+      creator.claimsInvolved.pull(claim._id);
+      claimer.save();
+      creator.save();
+
       return item;
     } catch (err) {
       throw err;
@@ -103,7 +101,6 @@ module.exports = {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
-    // if ()
     try {
       const claim = await Claim.findOne({ _id: args.claimId });
       return transformClaim(claim);
