@@ -33,6 +33,7 @@ module.exports = buildSchema(`
         password: String
         phoneNumber: String
         createdItems: [Item!]
+        claimsInvolved: [Claim!]
     }
 
     type AuthData {

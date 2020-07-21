@@ -1,5 +1,6 @@
 const Item = require("../../models/item");
 const Claim = require("../../models/claim");
+const User = require("../../models/user");
 const { transformClaim, transformItem } = require("./merge");
 
 module.exports = {
@@ -25,12 +26,26 @@ module.exports = {
       throw new Error("Unauthenticated!");
     }
     const fetchedItem = await Item.findOne({ _id: args.itemId });
+
+    const claimerId = req.userId;
+    const creatorId = fetchedItem.creator;
+
     const claim = new Claim({
       item: fetchedItem._id,
-      itemClaimer: req.userId,
-      itemCreator: fetchedItem.creator,
+      itemClaimer: claimerId,
+      itemCreator: creatorId,
       //los estados se crean por defecto para ambos usuarios
     });
+
+    //Se agrega el Claim a la lista de ambos usuarios
+    const claimer = await User.findOne({ _id: claimerId });
+    const creator = await User.findOne({ _id: creatorId });
+
+    creator.claimsInvolved.push(claim);
+    claimer.claimsInvolved.push(claim);
+    creator.save();
+    claimer.save();
+
     const result = await claim.save();
     return transformClaim(result);
   },

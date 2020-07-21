@@ -28,6 +28,12 @@ const userSchema = new Schema({
       ref: "Item",
     },
   ],
+  claimsInvolved: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Claim",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

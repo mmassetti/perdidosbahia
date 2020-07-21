@@ -43,6 +43,7 @@ const user = async (userId) => {
       ...user._doc,
       _id: user.id,
       createdItems: () => itemLoader.loadMany(this, user._doc.createdItems),
+      claimsInvoled: () => itemLoader.loadMany(this, user._doc.claimsInvoled),
     };
   } catch (err) {
     throw err;
