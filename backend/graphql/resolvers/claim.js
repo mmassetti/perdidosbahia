@@ -16,16 +16,15 @@ module.exports = {
       throw err;
     }
   },
-  claimItem: async (args, req) => {
+  editClaim: async (args, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
     const fetchedItem = await Item.findOne({ _id: args.itemId });
-    const claim = new Claim({
-      claimerUser: req.userId,
-      item: fetchedItem,
-    });
-    const result = await claim.save();
+    const fetchedClaim = await Claim.findOne({ item: fetchedItem });
+    fetchedClaim.claimerUser = req.userId;
+    fetchedClaim.state = args.newState;
+    const result = await fetchedClaim.save();
     return transformClaim(result);
   },
   cancelClaim: async (args, req) => {

@@ -8,6 +8,7 @@ module.exports = buildSchema(`
         claimerUser: User!
         createdAt: String!
         updatedAt: String!
+        state: String!
     }
         
     type Item {
@@ -65,7 +66,7 @@ module.exports = buildSchema(`
     type RootMutation {
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
-        claimItem(itemId: ID!): Claim!
+        editClaim(itemId: ID!,newState: String!): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 
