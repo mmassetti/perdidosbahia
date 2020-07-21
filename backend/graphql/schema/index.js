@@ -64,14 +64,14 @@ module.exports = buildSchema(`
         items: [Item!]!
         claims: [Claim!]!
         getClaim(claimId: ID!): Claim!
-        login(email: String!, password: String!): AuthData!
+        login(email: String!, password: String  !): AuthData!
     }
 
     type RootMutation {
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
         createClaim(itemId : ID!): Claim!
-        editClaim(itemId: ID!,itemClaimerId: ID!, newState: String!): Claim!
+        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForCreator: String!): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 

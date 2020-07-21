@@ -26,7 +26,7 @@ const claimSchema = new Schema(
       ],
       default: "EsperandoRespuestaOtroUsuario",
     },
-    stateForItemOwner: {
+    stateForItemCreator: {
       type: String,
       required: true,
       enum: [
