@@ -48,7 +48,7 @@ const ClaimCard = (props) => {
           <div style={{ marginTop: "1rem" }}>
             <span className="h6 font-weight-bold ">Estado actual:</span>
             <Badge color="success" pill className="mr-1">
-              Esperando respuesta
+              {props.claimState}
             </Badge>
           </div>
           {props.item.creator._id == props.authUserId ? (
@@ -57,7 +57,7 @@ const ClaimCard = (props) => {
               color="primary"
               // onClick={props.onDelete.bind()}
             >
-              Editar publicacion
+              Editar
             </Button>
           ) : (
             ""
@@ -69,7 +69,7 @@ const ClaimCard = (props) => {
               color="warning"
               onClick={() => props.onDelete(props.claimId)}
             >
-              Eliminar publicación
+              Eliminar
             </Button>
           ) : (
             <Button className="mt-4" color="warning" onClick={props.onDelete}>

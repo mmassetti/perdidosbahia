@@ -54,6 +54,7 @@ const UserClaims = () => {
           query {
             claims {
               _id  
+              state
               item {
                 description
                 category
@@ -158,6 +159,7 @@ const UserClaims = () => {
         <ClaimCard
           key={claim._id}
           claimId={claim._id}
+          claimState={claim.state}
           claimerUser={claim.claimerUser}
           authUserId={context.userId}
           item={claim.item}
@@ -172,7 +174,9 @@ const UserClaims = () => {
       return (
         <ClaimCard
           key={claim._id}
+          claimId={claim._id}
           claimerUser={claim.claimerUser}
+          claimState={claim.state}
           authUserId={context.userId}
           item={claim.item}
         ></ClaimCard>

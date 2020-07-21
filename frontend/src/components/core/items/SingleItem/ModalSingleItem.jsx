@@ -52,9 +52,13 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
     setClaimerAnswer("");
     let requestBody = {
       query: `
-        mutation ClaimItem($id: ID!) {
-          claimItem(itemId: $id) {
+        mutation EditClaim($id: ID!,$newState: String!) {
+          editClaim(itemId: $id,newState: $newState) {
             _id
+            state
+            claimerUser {
+              email
+            }
             createdAt
             updatedAt
           }
@@ -62,6 +66,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
       `,
       variables: {
         id: itemId,
+        newState: "SinRespuestas",
       },
     };
 
