@@ -5,11 +5,13 @@ const { transformClaim, transformItem } = require("./merge");
 module.exports = {
   claims: async (args, req) => {
     //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
-    // if (!req.isAuth) {
+    //  if (!req.isAuth) {
     //   throw new Error("Unauthenticated!");
     // }
     try {
-      const claims = await Claim.find();
+      const claims = await Claim.find({
+        $or: [{ itemCreator: req.userId }, { itemClaimer: req.userId }],
+      });
       return claims.map((claim) => {
         return transformClaim(claim);
       });
