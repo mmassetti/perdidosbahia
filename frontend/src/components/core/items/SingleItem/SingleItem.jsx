@@ -54,7 +54,24 @@ const SingleItem = (props) => {
     );
   }
 
-  function getNewState() {}
+  const getActionForTypeOfItem = () => {
+    let itemType = props.location.state.props.type;
+    if (itemType == "perdido") {
+      return (
+        <Button color="primary" size="sm" onClick={toggle}>
+          <span className="btn-inner--text">
+            ¡Creo que encontré este objeto!
+          </span>
+        </Button>
+      );
+    } else if (itemType == "encontrado") {
+      return (
+        <Button color="primary" size="sm" onClick={toggle}>
+          <span className="btn-inner--text">¡Este objeto es mío!</span>
+        </Button>
+      );
+    }
+  };
 
   return (
     <>
@@ -187,11 +204,7 @@ const SingleItem = (props) => {
                             </span>
                           </Button>
                         ) : (
-                          <Button color="primary" size="sm" onClick={toggle}>
-                            <span className="btn-inner--text">
-                              ¡Creo que encontré este objeto!
-                            </span>
-                          </Button>
+                          getActionForTypeOfItem()
                         )}
 
                         {context.token ? (
@@ -202,7 +215,6 @@ const SingleItem = (props) => {
                               props.location.state.props.ownerQuestion
                             }
                             itemId={props.location.state.props.id}
-                            state={() => getNewState()}
                             token={context.token}
                           />
                         ) : (
