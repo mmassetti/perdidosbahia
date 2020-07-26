@@ -43,7 +43,9 @@ const Items = () => {
         location={item.location}
         creatorId={item.creator._id}
         authUserId={context.userId}
-        ownerQuestion={item.ownerQuestion ? item.ownerQuestion : null}
+        itemCreatorQuestion={
+          item.itemCreatorQuestion ? item.itemCreatorQuestion : null
+        }
       ></CardItem>
     );
   });
@@ -60,7 +62,7 @@ const Items = () => {
               type
               date
               location
-              ownerQuestion
+              itemCreatorQuestion
               creator {
                 _id
                 email

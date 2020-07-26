@@ -120,7 +120,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
             isOpen={isShowing}
             toggle={hide}
           >
-            {info.item.ownerQuestion ? (
+            {info.item.itemCreatorQuestion ? (
               <>
                 <ModalHeader
                   className="text-default text-center mb-2"
@@ -203,7 +203,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                         </div>
                         <div className="text-muted text-center mt-2 mb-3">
                           <span className="h6 text-primary font-weight-bold ">
-                            {info.item.ownerQuestion}
+                            {info.item.itemCreatorQuestion}
                           </span>
                         </div>
                         <Form role="form">

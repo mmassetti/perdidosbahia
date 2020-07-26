@@ -47,7 +47,7 @@ const SingleItem = (props) => {
     });
   };
 
-  function loggedUserIsOwner() {
+  function loggedUserIsItemCreator() {
     return (
       props.location.state.props.creatorId ===
         props.location.state.props.authUserId && context.token
@@ -197,7 +197,7 @@ const SingleItem = (props) => {
                   <div className="px-lg-5 py-lg-5">
                     <CardHeader className="bg-white pb-5">
                       <div className="btn-wrapper text-center">
-                        {loggedUserIsOwner() ? (
+                        {loggedUserIsItemCreator() ? (
                           <Button color="primary" size="sm" onClick={toggle}>
                             <span className="btn-inner--text">
                               Editar publicación
@@ -211,8 +211,8 @@ const SingleItem = (props) => {
                           <ModalFirstStep
                             isShowing={isShowing}
                             hide={toggle}
-                            ownerQuestion={
-                              props.location.state.props.ownerQuestion
+                            itemCreatorQuestion={
+                              props.location.state.props.itemCreatorQuestion
                             }
                             itemId={props.location.state.props.id}
                             token={context.token}

@@ -59,7 +59,7 @@ const UserClaims = (props) => {
                 type
                 date
                 location
-                ownerQuestion
+                itemCreatorQuestion
                 claimerQuestion
                 creator {
                   _id

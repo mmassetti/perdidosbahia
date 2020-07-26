@@ -149,7 +149,7 @@ const ClaimCard = (props) => {
           isShowing={isShowing}
           hide={toggle}
           info={props}
-          // ownerQuestion={props.item.ownerQuestion}
+          // itemCreatorQuestion={props.item.itemCreatorQuestion}
           // claimerQuestion={props.item.claimerQuestion}
           // item={props.item}
           // token={props.token}

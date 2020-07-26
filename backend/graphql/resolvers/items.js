@@ -22,8 +22,8 @@ module.exports = {
       type: args.itemInput.type,
       category: args.itemInput.category,
       location: args.itemInput.location ? args.itemInput.location : null,
-      ownerQuestion: args.itemInput.ownerQuestion
-        ? args.itemInput.ownerQuestion
+      itemCreatorQuestion: args.itemInput.creatorQuestion
+        ? args.itemInput.creatorQuestion
         : null,
       claimerQuestion: args.itemInput.claimerQuestion
         ? args.itemInput.claimerQuestion

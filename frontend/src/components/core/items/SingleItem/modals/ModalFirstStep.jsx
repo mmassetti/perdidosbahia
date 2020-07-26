@@ -22,7 +22,13 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 
-const ModalFirstStep = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
+const ModalFirstStep = ({
+  isShowing,
+  hide,
+  itemCreatorQuestion,
+  itemId,
+  token,
+}) => {
   const [tabs, setTabs] = useState({ tab: 1 });
   const [claimerAnswer, setClaimerAnswer] = useState("");
   const [claimerQuestion, setClaimerQuestion] = useState("");
@@ -112,7 +118,7 @@ const ModalFirstStep = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
             isOpen={isShowing}
             toggle={hide}
           >
-            {ownerQuestion ? (
+            {itemCreatorQuestion ? (
               <>
                 <ModalHeader
                   className="text-default text-center mb-2"
@@ -193,7 +199,7 @@ const ModalFirstStep = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                         </div>
                         <div className="text-muted text-center mt-2 mb-3">
                           <span className="h6 text-primary font-weight-bold ">
-                            {ownerQuestion}
+                            {itemCreatorQuestion}
                           </span>
                         </div>
                         <Form role="form">

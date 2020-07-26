@@ -13,6 +13,8 @@ module.exports = buildSchema(`
         stateForClaimer: String!
         flagClaimer: Int!
         flagItemCreator: Int!
+        itemCreatorQuestion: String!
+        claimerQuestion: String
     }
         
     type Item {
@@ -22,7 +24,7 @@ module.exports = buildSchema(`
         category: String!
         date: String!
         location: String
-        ownerQuestion: String
+        itemCreatorQuestion: String
         claimerQuestion: String
         creator: User!
     }
@@ -50,8 +52,6 @@ module.exports = buildSchema(`
         category: String!
         date: String!
         location: String
-        ownerQuestion: String
-        claimerQuestion: String
     }
 
     input UserInput {

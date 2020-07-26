@@ -25,12 +25,6 @@ const itemSchema = new Schema({
     type: String,
     required: true,
   },
-  ownerQuestion: {
-    type: String,
-  },
-  claimerQuestion: {
-    type: String,
-  },
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User",
