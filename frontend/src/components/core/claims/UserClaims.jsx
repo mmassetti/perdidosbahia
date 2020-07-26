@@ -166,6 +166,7 @@ const UserClaims = (props) => {
         itemCreator={claim.itemCreator}
         itemClaimer={claim.itemClaimer}
         authUserId={context.userId}
+        token={context.token}
         item={claim.item}
         stateForClaimer={claim.stateForClaimer}
         stateForItemCreator={claim.stateForItemCreator}

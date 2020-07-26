@@ -22,7 +22,7 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../Helpers/SingleItemQuestionExplain";
 
-const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
+const ModalFirstStep = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
   const [claimerAnswer, setClaimerAnswer] = useState("");
   const [claimerQuestion, setClaimerQuestion] = useState("");
@@ -451,4 +451,4 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
     : null;
 };
 
-export default ModalSingleItem;
+export default ModalFirstStep;

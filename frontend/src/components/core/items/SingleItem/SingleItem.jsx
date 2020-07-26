@@ -23,7 +23,7 @@ import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
-import ModalSingleItem from "../SingleItem/ModalSingleItem";
+import ModalFirstStep from "./ModalFirstStep";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
 
@@ -208,7 +208,7 @@ const SingleItem = (props) => {
                         )}
 
                         {context.token ? (
-                          <ModalSingleItem
+                          <ModalFirstStep
                             isShowing={isShowing}
                             hide={toggle}
                             ownerQuestion={
