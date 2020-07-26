@@ -19,6 +19,14 @@ const ClaimCard = (props) => {
     alert("publicacion cancelada");
   }
 
+  const getStateForAuthUser = () => {
+    if (props.authUserId == props.itemCreator._id) {
+      return props.stateForItemCreator;
+    } else if (props.authUserId == props.itemClaimer._id) {
+      return props.stateForClaimer;
+    }
+  };
+
   return (
     <Col lg="4">
       <Card
@@ -48,7 +56,7 @@ const ClaimCard = (props) => {
           <div style={{ marginTop: "1rem" }}>
             <span className="h6 font-weight-bold ">Estado actual:</span>
             <Badge color="success" pill className="mr-1">
-              {props.claimState}
+              {getStateForAuthUser()}
             </Badge>
           </div>
           {props.item.creator._id == props.authUserId ? (
