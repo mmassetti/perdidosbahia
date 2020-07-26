@@ -63,7 +63,7 @@ module.exports = {
     try {
       const fetchedClaim = await Claim.findOne({ _id: args.claimId });
       fetchedClaim.stateForClaimer = args.newStateForClaimer;
-      fetchedClaim.stateForItemCreator = args.newStateForCreator;
+      fetchedClaim.stateForItemCreator = args.newStateForItemCreator;
       const result = await fetchedClaim.save();
       return transformClaim(result);
     } catch (err) {

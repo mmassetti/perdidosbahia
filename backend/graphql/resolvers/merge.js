@@ -68,7 +68,6 @@ const transformClaim = (claim) => {
     item: singleItem.bind(this, claim._doc.item),
     createdAt: dateToString(claim._doc.createdAt),
     updatedAt: dateToString(claim._doc.updatedAt),
-    //TODO: Transform stateForCreator and stateForClaimer (Enums)
   };
 };
 
