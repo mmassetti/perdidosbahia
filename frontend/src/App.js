@@ -8,7 +8,8 @@ import Index from "components/Index";
 import Login from "components/core/auth/Login";
 import SingleItem from "components/core/items/SingleItem/SingleItem";
 import Register from "components/core/auth/Register.jsx";
-import AuthContext from "./context/auth-context";
+import AuthContext from "common/providers/AuthProvider/auth-context";
+
 import LostItem from "components/core/items/LostItem";
 import Items from "components/core/items/Items";
 import UserClaims from "components/core/claims/UserClaims";
@@ -22,8 +23,8 @@ const App = (props) => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const userToken = localStorage.getItem("token");
+    if (userToken) {
       const tokenExpiration = localStorage.getItem("expirationDate");
       const expirationDateInSeconds = new Date(tokenExpiration).getTime();
       const dateDifference =
@@ -32,10 +33,10 @@ const App = (props) => {
       if (new Date(tokenExpiration) <= new Date()) {
         logout();
       } else {
-        login(token, localStorage.getItem("userId"), dateDifference);
+        login(userToken, localStorage.getItem("userId"), dateDifference);
       }
     }
-  }, []);
+  });
 
   const login = (token, userId, tokenExpiration) => {
     setToken(token);
@@ -61,75 +62,69 @@ const App = (props) => {
 
   return (
     <BrowserRouter>
-      <React.Fragment>
-        <AuthContext.Provider
-          value={{
-            token: token,
-            userId: userId,
-            login: login,
-            logout: logout,
-          }}
-        >
-          <APIErrorProvider>
-            <main className="main-content">
-              <Switch>
+      <AuthContext.Provider
+        value={{
+          token: token,
+          userId: userId,
+          login: login,
+          logout: logout,
+        }}
+      >
+        <APIErrorProvider>
+          <main className="main-content">
+            <Switch>
+              <Route path="/" exact render={(props) => <Index {...props} />} />
+              <Route
+                path="/objeto-perdido"
+                exact
+                render={(props) => <LostItem {...props} />}
+              />
+              <Route
+                path="/objeto-encontrado"
+                exact
+                render={(props) => <LostItem {...props} />}
+              />
+              <Route
+                path="/objetos-publicados"
+                exact
+                render={(props) => <Items {...props} />}
+              />
+              {!token && (
                 <Route
-                  path="/"
+                  path="/inicio-sesion"
                   exact
-                  render={(props) => <Index {...props} />}
+                  render={(props) => <Login {...props} />}
                 />
-                <Route
-                  path="/objeto-perdido"
-                  exact
-                  render={(props) => <LostItem {...props} />}
-                />
-                <Route
-                  path="/objeto-encontrado"
-                  exact
-                  render={(props) => <LostItem {...props} />}
-                />
-                <Route
-                  path="/objetos-publicados"
-                  exact
-                  render={(props) => <Items {...props} />}
-                />
-                {!token && (
-                  <Route
-                    path="/inicio-sesion"
-                    exact
-                    render={(props) => <Login {...props} />}
-                  />
-                )}
+              )}
 
+              <Route
+                path="/detalle"
+                exact
+                render={(props) => <SingleItem {...props} />}
+              />
+              {!token && (
                 <Route
-                  path="/detalle"
+                  path="/registro"
                   exact
-                  render={(props) => <SingleItem {...props} />}
+                  render={(props) => <Register {...props} />}
                 />
-                {!token && (
-                  <Route
-                    path="/registro"
-                    exact
-                    render={(props) => <Register {...props} />}
-                  />
-                )}
+              )}
 
-                <Route
-                  path="/mis-publicaciones"
-                  exact
-                  render={(props) => <UserClaims {...props} />}
-                />
+              <Route
+                path="/mis-publicaciones"
+                exact
+                render={(props) => <UserClaims {...props} />}
+              />
 
-                <Redirect from="/inicio-sesion" to="/" exact />
-                <Redirect from="/argon-design-system-react" to="/" exact />
+              <Redirect from="/inicio-sesion" to="/" exact />
+              <Redirect from="/argon-design-system-react" to="/" exact />
 
-                <Route render={(props) => <ErrorPage {...props} />} />
-              </Switch>
-            </main>
-            <APIErrorNotification />
-          </APIErrorProvider>
-        </AuthContext.Provider>
-      </React.Fragment>
+              <Route render={(props) => <ErrorPage {...props} />} />
+            </Switch>
+          </main>
+          <APIErrorNotification />
+        </APIErrorProvider>
+      </AuthContext.Provider>
     </BrowserRouter>
   );
 };

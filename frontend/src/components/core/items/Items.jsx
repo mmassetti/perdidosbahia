@@ -22,7 +22,7 @@ import CardsFooter from "../../theme/Footers/CardsFooter";
 import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import CardItem from "./cards/CardItem";
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 
 import { Container, Row, Col } from "reactstrap";
 

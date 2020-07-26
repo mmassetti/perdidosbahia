@@ -56,7 +56,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
           editClaim(itemId: $id,newState: $newState) {
             _id
             state
-            claimerUser {
+            itemCreator {
               email
             }
             createdAt

@@ -36,7 +36,7 @@ import {
   Col,
 } from "reactstrap";
 
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 
 class CustomNavbar extends React.Component {
   componentDidMount() {

@@ -17,7 +17,7 @@
 */
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import {
   Button,
   Card,

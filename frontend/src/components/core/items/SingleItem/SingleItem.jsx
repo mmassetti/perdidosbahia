@@ -22,7 +22,7 @@ import { Button, Card, Container, Row, Col, CardHeader } from "reactstrap";
 import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
-import AuthContext from "../../../../context/auth-context";
+import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
 import ModalSingleItem from "../SingleItem/ModalSingleItem";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
@@ -53,6 +53,8 @@ const SingleItem = (props) => {
         props.location.state.props.authUserId && context.token
     );
   }
+
+  function getNewState() {}
 
   return (
     <>
@@ -200,6 +202,7 @@ const SingleItem = (props) => {
                               props.location.state.props.ownerQuestion
                             }
                             itemId={props.location.state.props.id}
+                            state={() => getNewState()}
                             token={context.token}
                           />
                         ) : (

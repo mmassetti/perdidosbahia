@@ -40,7 +40,7 @@ import {
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import CardsFooter from "../../theme/Footers/CardsFooter";
 import Download from "../../theme/IndexSections/Download";
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../Helpers/MustLoginModal";
@@ -69,7 +69,7 @@ const LostItem = (props) => {
     description: yup
       .string()
       .required("Por favor escribí una descripción del objeto")
-      .min(5, "La descripción es muy corta"),
+      .min(3, "La descripción es muy corta"),
     dateOfEvent: yup
       .date()
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
