@@ -5,37 +5,36 @@ const Schema = mongoose.Schema;
 const itemSchema = new Schema({
   description: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     //Perdido o encontrado
     type: String,
-    required: true
+    required: true,
   },
   category: {
     //Llaves, documentos, lentes, etc
     type: String,
-    required: true
+    required: true,
   },
   date: {
     type: Date,
-    required: true
-    // default: Date.now
+    required: true,
   },
   location: {
     type: String,
-    required: true
+    required: true,
   },
   ownerQuestion: {
-    type: String
+    type: String,
   },
   claimerQuestion: {
-    type: String
+    type: String,
   },
   creator: {
     type: Schema.Types.ObjectId,
-    ref: "User"
-  }
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("Item", itemSchema);

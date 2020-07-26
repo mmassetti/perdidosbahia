@@ -5,9 +5,12 @@ module.exports = buildSchema(`
     type Claim {
         _id: ID!
         item: Item!
-        claimerUser: User!
+        itemCreator: User!
+        itemClaimer: User!
         createdAt: String!
         updatedAt: String!
+        stateForCreator: String!
+        stateForClaimer: String!
     }
         
     type Item {
@@ -30,6 +33,7 @@ module.exports = buildSchema(`
         password: String
         phoneNumber: String
         createdItems: [Item!]
+        claimsInvolved: [Claim!]
     }
 
     type AuthData {
@@ -59,13 +63,15 @@ module.exports = buildSchema(`
     type RootQuery {
         items: [Item!]!
         claims: [Claim!]!
-        login(email: String!, password: String!): AuthData!
+        getClaim(claimId: ID!): Claim!
+        login(email: String!, password: String  !): AuthData!
     }
 
     type RootMutation {
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
-        claimItem(itemId: ID!): Claim!
+        createClaim(itemId : ID!): Claim!
+        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForCreator: String!): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 

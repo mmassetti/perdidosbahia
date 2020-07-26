@@ -17,9 +17,7 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
-// JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
-// reactstrap components
 import {
   Button,
   UncontrolledCollapse,
@@ -36,10 +34,9 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip
 } from "reactstrap";
 
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 
 class CustomNavbar extends React.Component {
   componentDidMount() {
@@ -50,7 +47,7 @@ class CustomNavbar extends React.Component {
 
   state = {
     token: null,
-    userId: null
+    userId: null,
   };
 
   login = (token, userId, tokenExpiration) => {
@@ -65,7 +62,7 @@ class CustomNavbar extends React.Component {
     return (
       <>
         <AuthContext.Consumer>
-          {context => {
+          {(context) => {
             return (
               <header className="header-global">
                 <Navbar

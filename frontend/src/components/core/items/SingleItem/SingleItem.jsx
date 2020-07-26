@@ -15,35 +15,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
-// reactstrap components
-import {
-  Button,
-  Card,
-  Container,
-  Row,
-  Col,
-  CardHeader,
-  CardBody,
-  Modal,
-  Form,
-  FormGroup,
-  Input,
-  Badge,
-  NavItem,
-  NavLink,
-  Nav,
-  TabContent,
-  TabPane,
-  ModalHeader,
-} from "reactstrap";
+import { Button, Card, Container, Row, Col, CardHeader } from "reactstrap";
 
-// core components
 import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
-import AuthContext from "../../../../context/auth-context";
+import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
 import ModalSingleItem from "../SingleItem/ModalSingleItem";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
@@ -70,10 +49,12 @@ const SingleItem = (props) => {
 
   function loggedUserIsOwner() {
     return (
-      props.location.state.props.creatorId ==
+      props.location.state.props.creatorId ===
         props.location.state.props.authUserId && context.token
     );
   }
+
+  function getNewState() {}
 
   return (
     <>
@@ -82,7 +63,6 @@ const SingleItem = (props) => {
           <CustomNavbar />
           <main className="profile-page">
             <section className="section-profile-cover section-shaped my-0">
-              {/* Circles background */}
               <div className="shape shape-style-1 shape-default alpha-4">
                 <span />
                 <span />
@@ -92,7 +72,6 @@ const SingleItem = (props) => {
                 <span />
                 <span />
               </div>
-              {/* SVG separator */}
               <div className="separator separator-bottom separator-skew">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -223,6 +202,7 @@ const SingleItem = (props) => {
                               props.location.state.props.ownerQuestion
                             }
                             itemId={props.location.state.props.id}
+                            state={() => getNewState()}
                             token={context.token}
                           />
                         ) : (

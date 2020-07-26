@@ -1,8 +1,8 @@
 /*!
 
-=========================================================
+=====================================================================================
 * Argon Design System React - v1.0.0
-=========================================================
+=====================================================================================
 
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
@@ -10,15 +10,14 @@
 
 * Coded by Creative Tim
 
-=========================================================
+=====================================================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-//import useForm from "../../forms/useForm";
-// reactstrap components
+
 import {
   Button,
   Card,
@@ -27,26 +26,19 @@ import {
   FormGroup,
   Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col,
-  FormFeedback,
 } from "reactstrap";
 
 import * as yup from "yup";
 
-// core components
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { useForm, Controller } from "react-hook-form";
 
 const Register = (props) => {
-  // const phoneRegExp = /^[\(]?[\+]?(\d{2}|\d{3})[\)]?[\s]?((\d{6}|\d{8})|(\d{3}[\*\.\-\s]){2}\d{3}|(\d{2}[\*\.\-\s]){3}\d{2}|(\d{4}[\*\.\-\s]){1}\d{4})|\d{8}|\d{10}|\d{12}$/;
-
   const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
 
   const defaultValues = {
@@ -65,7 +57,6 @@ const Register = (props) => {
       .string()
       .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
       .min(8, "La contraseña debe tener al menos 8 caracteres."),
-    // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     passwordCheck: yup
       .string()
       .required("Por favor escribe nuevamente tu contraseña.")
@@ -155,19 +146,6 @@ const Register = (props) => {
     });
   };
 
-  // function firstNameErrors() {
-  //   var errorsMsgs = [];
-  //   if (errors.firstName) {
-  //     errors.firstName.map((item, i) => {
-  //       errorsMsgs.push(item.message);
-  //     });
-  //   }
-
-  //   console.log("TCL: firstNameErrors -> errorsMsgs", errorsMsgs);
-
-  //   return <div>Hello World</div>;
-  // }
-
   return (
     <>
       <CustomNavbar />
@@ -236,7 +214,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.firstName &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.firstName
                             ? "has-danger"
@@ -252,7 +230,7 @@ const Register = (props) => {
                               placeholder="Nombre"
                               className={
                                 !formState.touched.firstName &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.firstName
@@ -276,7 +254,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.lastName &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.lastName
                             ? "has-danger"
@@ -291,7 +269,7 @@ const Register = (props) => {
                               placeholder="Apellido"
                               className={
                                 !formState.touched.lastName &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.lastName
@@ -315,7 +293,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.email &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.email
                             ? "has-danger"
@@ -330,7 +308,7 @@ const Register = (props) => {
                               placeholder="Email"
                               className={
                                 !formState.touched.email &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.email
@@ -353,7 +331,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.pasword &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.password
                             ? "has-danger"
@@ -369,7 +347,7 @@ const Register = (props) => {
                               placeholder="Contraseña"
                               className={
                                 !formState.touched.password &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.password
@@ -393,7 +371,7 @@ const Register = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.paswordCheck &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.passwordCheck
                             ? "has-danger"
@@ -409,7 +387,7 @@ const Register = (props) => {
                               placeholder="Escribir nuevamente la contraseña"
                               className={
                                 !formState.touched.passwordCheck &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.passwordCheck
@@ -465,15 +443,6 @@ const Register = (props) => {
                         )}
                       </FormGroup>
 
-                      {/* {data && (
-                        <div>
-                          <pre style={{ textAlign: "left" }}>
-                            {JSON.stringify(data, null, 2)}
-                          </pre>
-
-                        
-                        </div>
-                      )} */}
                       <div className="text-center">
                         <Button
                           disabled={formState.isValid ? false : true}
@@ -494,7 +463,6 @@ const Register = (props) => {
                           </Link>
                         </p>
                       </small>
-                      {/* <pre>{JSON.stringify(formState, null, 2)}</pre> */}
                     </Form>
                   </CardBody>
                 </Card>

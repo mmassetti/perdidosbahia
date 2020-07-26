@@ -1,5 +1,6 @@
 const Item = require("../../models/item");
 const User = require("../../models/user");
+const Claim = require("../../models/claim");
 
 const { transformItem } = require("./merge");
 
@@ -7,7 +8,7 @@ module.exports = {
   items: async () => {
     try {
       const items = await Item.find();
-      return items.map(item => {
+      return items.map((item) => {
         return transformItem(item);
       });
     } catch (error) {}
@@ -20,7 +21,6 @@ module.exports = {
       description: args.itemInput.description,
       type: args.itemInput.type,
       category: args.itemInput.category,
-      // date: args.itemInput.date,
       location: args.itemInput.location ? args.itemInput.location : null,
       ownerQuestion: args.itemInput.ownerQuestion
         ? args.itemInput.ownerQuestion
@@ -29,7 +29,7 @@ module.exports = {
         ? args.itemInput.claimerQuestion
         : null,
       date: new Date(args.itemInput.date),
-      creator: req.userId
+      creator: req.userId,
     });
 
     let createdItem;
@@ -49,5 +49,5 @@ module.exports = {
       console.log(err);
       throw err;
     }
-  }
+  },
 };

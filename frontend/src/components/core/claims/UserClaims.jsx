@@ -17,37 +17,20 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import Download from "../../theme/IndexSections/Download";
 import CardsFooter from "../../theme/Footers/CardsFooter";
 import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import ClaimCard from "../../core/claims/ClaimCard";
 import classnames from "classnames";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 
-// reactstrap components
 import {
-  Badge,
   Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
   Container,
   Row,
-  UncontrolledTooltip,
   Col,
-  Button,
   CardBody,
   NavItem,
   Nav,
@@ -56,12 +39,10 @@ import {
   TabContent,
 } from "reactstrap";
 
-const UserClaims = () => {
+const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [tabs, setTabs] = useState({ tabs: 1 });
   const [claims, setClaims] = useState({ claims: [] });
   const context = useContext(AuthContext);
-  const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
 
   const fetchClaims = () => {
@@ -84,7 +65,11 @@ const UserClaims = () => {
                   email
                 }
               }
-              claimerUser {
+              itemCreator {
+                _id
+                email
+              }
+              itemClaimer {
                 _id
                 email
               }
@@ -163,46 +148,28 @@ const UserClaims = () => {
   };
 
   useEffect(() => {
-    fetchClaims();
+    if (context.token) {
+      fetchClaims();
+    }
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     toggle();
-  }, []);
+  }, [context]);
 
-  const itemsUserIsOwner = claims.claims.map((claim) => {
-    if (claim.item.creator._id == context.userId) {
-      return (
-        <ClaimCard
-          key={claim._id}
-          claimId={claim._id}
-          claimerUser={claim.claimerUser}
-          authUserId={context.userId}
-          item={claim.item}
-          onDelete={deleteClaimHandler}
-        ></ClaimCard>
-      );
-    }
+  const itemsAuthUserIsParticipating = claims.claims.map((claim) => {
+    return (
+      <ClaimCard
+        key={claim._id}
+        claimId={claim._id}
+        claimState={claim.state}
+        itemCreator={claim.itemCreator}
+        itemClaimer={claim.itemClaimer}
+        authUserId={context.userId}
+        item={claim.item}
+        onDelete={deleteClaimHandler}
+      ></ClaimCard>
+    );
   });
-
-  const itemsUserIsClaimer = claims.claims.map((claim) => {
-    if (claim.claimerUser._id == context.userId) {
-      return (
-        <ClaimCard
-          key={claim._id}
-          claimerUser={claim.claimerUser}
-          authUserId={context.userId}
-          item={claim.item}
-        ></ClaimCard>
-      );
-    }
-  });
-
-  const toggleNavs = (e, state, index) => {
-    e.preventDefault();
-    setTabs({
-      [state]: index,
-    });
-  };
 
   return (
     <>
@@ -211,7 +178,6 @@ const UserClaims = () => {
       {context.token ? (
         <main>
           <div className="position-relative">
-            {/* shape Hero */}
             <section className="section section-sm, section-shaped">
               <div className="shape shape-style-1 shape-default">
                 <span />
@@ -230,8 +196,8 @@ const UserClaims = () => {
                   <Row>
                     <Col lg="12">
                       <h1 className="display-3 text-white">
-                        En esta sección aparecen las publicaciones abiertas en
-                        las que estas participando
+                        Controlá el estado de las publicaciones en las que estás
+                        participando
                       </h1>
                     </Col>
                   </Row>
@@ -239,7 +205,6 @@ const UserClaims = () => {
               </Container>
             </section>
           </div>
-          {/* Page content */}
 
           <Container>
             <Row
@@ -251,54 +216,19 @@ const UserClaims = () => {
                   <Spinner />
                 ) : (
                   <>
-                    <div className="nav-wrapper">
-                      <Nav
-                        className="nav-fill flex-column flex-md-row"
-                        id="tabs-icons-text"
-                        pills
-                        role="tablist"
-                      >
-                        <NavItem>
-                          <NavLink
-                            aria-selected={tabs.tabs === 1}
-                            className={classnames("mb-sm-3 mb-md-0", {
-                              active: tabs.tabs === 1,
-                            })}
-                            onClick={(e) => toggleNavs(e, "tabs", 1)}
-                            href="#pablo"
-                            role="tab"
-                          >
-                            <i className="ni ni-cloud-upload-96 mr-2" />
-                            Publicaciones creadas por mi
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            aria-selected={tabs.tabs === 2}
-                            className={classnames("mb-sm-3 mb-md-0", {
-                              active: tabs.tabs === 2,
-                            })}
-                            onClick={(e) => toggleNavs(e, "tabs", 2)}
-                            href="#pablo"
-                            role="tab"
-                          >
-                            <i className="ni ni-bell-55 mr-2" />
-                            Publicaciones creadas por otra persona
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                    </div>
-
                     <Card className="shadow">
                       <CardBody>
-                        <TabContent activeTab={"tabs" + tabs.tabs}>
+                        <Row className="row-grid">
+                          {itemsAuthUserIsParticipating}
+                        </Row>
+                        {/* <TabContent activeTab={"tabs" + tabs.tabs}>
                           <TabPane tabId="tabs1">
                             <Row className="row-grid">{itemsUserIsOwner}</Row>
                           </TabPane>
                           <TabPane tabId="tabs2">
                             <Row className="row-grid">{itemsUserIsClaimer}</Row>
                           </TabPane>
-                        </TabContent>
+                        </TabContent> */}
                       </CardBody>
                     </Card>
                   </>
@@ -333,11 +263,7 @@ const UserClaims = () => {
               </section>
             </div>
           </main>
-          <h2>
-            {" "}
-            Para poder publicar un objeto primero es necesario Registrarse o
-            Iniciar sesion
-          </h2>
+
           <MustLoginModal isShowing={isShowing} hide={toggle} />
         </>
       )}

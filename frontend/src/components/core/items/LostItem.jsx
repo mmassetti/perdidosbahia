@@ -1,8 +1,8 @@
 /*!
 
-=========================================================
+=====================================================================================
 * Argon Design System React - v1.0.0
-=========================================================
+=====================================================================================
 
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
@@ -10,24 +10,19 @@
 
 * Coded by Creative Tim
 
-=========================================================
+=====================================================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
 import React, { useState, useContext, useEffect } from "react";
-// nodejs library that concatenates classes
-import classnames from "classnames";
 
 import ReactDatetime from "react-datetime";
 
-// reactstrap components
 import {
-  Badge,
   Button,
   Card,
   CardBody,
-  CardImg,
   FormGroup,
   Input,
   InputGroupAddon,
@@ -36,28 +31,17 @@ import {
   Container,
   Row,
   Col,
-  Label,
   Modal,
   ButtonGroup,
-  Dropdown,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Form,
   CardHeader,
 } from "reactstrap";
 
-// core components
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import CardsFooter from "../../theme/Footers/CardsFooter";
-// index page sections
 import Download from "../../theme/IndexSections/Download";
-
-import AuthContext from "../../../context/auth-context";
-
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import * as yup from "yup";
-
 import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
@@ -85,7 +69,7 @@ const LostItem = (props) => {
     description: yup
       .string()
       .required("Por favor escribí una descripción del objeto")
-      .min(5, "La descripción es muy corta"),
+      .min(3, "La descripción es muy corta"),
     dateOfEvent: yup
       .date()
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
@@ -199,7 +183,6 @@ const LostItem = (props) => {
       <CustomNavbar />
       <main>
         <div className="position-relative">
-          {/* shape Hero */}
           <section className="section section-sm, section-shaped">
             <div className="shape shape-style-1 shape-default">
               <span />
@@ -238,19 +221,9 @@ const LostItem = (props) => {
                     <h2 className="display-3 text-white">
                       Formulario de objeto perdido
                     </h2>
-                    {/* <p className="lead text-white">
-                  Consideramos que es importante garantizar la seguridad de
-                  nuestros usuarios a la hora de publicar de un objeto, por lo
-                  que te pediremos que nos proporciones información sobre lo que
-                  perdiste, además de una o más preguntas que alguien que pueda
-                  llegar a encontrar tu objeto deberá contestar correctamente.
-                  De esta forma buscamos evitar fraudes y riesgos de seguridad
-                  personal.
-                </p> */}
                   </Col>
                 </Row>
               </Container>
-              {/* SVG separator */}
               <div className="separator separator-bottom separator-skew zindex-100">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -290,10 +263,6 @@ const LostItem = (props) => {
                         </h6>
                         <br></br>
 
-                        {/* <h2 className="mb-1 fon-weight-bold">
-                      Formulario de objeto perdido
-                    </h2> */}
-
                         <Form
                           noValidate
                           role="form"
@@ -319,7 +288,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -339,7 +308,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -357,7 +326,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -375,7 +344,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -393,7 +362,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -411,7 +380,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -431,7 +400,7 @@ const LostItem = (props) => {
                                 }
                                 outline
                                 color={
-                                  category.categoryName == "" &&
+                                  category.categoryName === "" &&
                                   buttonGroupTouched
                                     ? "danger"
                                     : "default"
@@ -447,7 +416,7 @@ const LostItem = (props) => {
                           <FormGroup
                             className={
                               !formState.touched.dateOfEvent &&
-                              (formState.submitCount == 0 ||
+                              (formState.submitCount === 0 ||
                                 formState.isSubmitted)
                                 ? ""
                                 : errors.dateOfEvent
@@ -489,7 +458,7 @@ const LostItem = (props) => {
                           <FormGroup
                             className={
                               !formState.touched.location &&
-                              (formState.submitCount == 0 ||
+                              (formState.submitCount === 0 ||
                                 formState.isSubmitted)
                                 ? ""
                                 : errors.location
@@ -505,7 +474,7 @@ const LostItem = (props) => {
                                   placeholder="Escribí la ubicación en donde perdiste tu objeto (calle y altura,lugar,zona,etc) "
                                   className={
                                     !formState.touched.location &&
-                                    (formState.submitCount == 0 ||
+                                    (formState.submitCount === 0 ||
                                       formState.isSubmitted)
                                       ? ""
                                       : errors.location
@@ -531,7 +500,7 @@ const LostItem = (props) => {
                           <FormGroup
                             className={
                               !formState.touched.description &&
-                              (formState.submitCount == 0 ||
+                              (formState.submitCount === 0 ||
                                 formState.isSubmitted)
                                 ? ""
                                 : errors.description
@@ -547,7 +516,7 @@ const LostItem = (props) => {
                                   placeholder="Escribí una descripción del objeto (recomendamos que guardes algún detalle de tu objeto para poner en una pregunta debajo)"
                                   className={
                                     !formState.touched.description &&
-                                    (formState.submitCount == 0 ||
+                                    (formState.submitCount === 0 ||
                                       formState.isSubmitted)
                                       ? ""
                                       : errors.description
@@ -616,7 +585,7 @@ const LostItem = (props) => {
                                         <FormGroup
                                           className={
                                             !formState.touched.ownerQuestion &&
-                                            (formState.submitCount == 0 ||
+                                            (formState.submitCount === 0 ||
                                               formState.isSubmitted)
                                               ? ""
                                               : errors.ownerQuestion
@@ -631,7 +600,7 @@ const LostItem = (props) => {
                                             className={
                                               !formState.touched
                                                 .ownerQuestion &&
-                                              (formState.submitCount == 0 ||
+                                              (formState.submitCount === 0 ||
                                                 formState.isSubmitted)
                                                 ? ""
                                                 : errors.ownerQuestion
@@ -660,10 +629,6 @@ const LostItem = (props) => {
                                           </span>
 
                                           <br />
-                                          {/* <span className="text-danger">
-                                        También le solicitaremos que envíe una
-                                        foto del objeto
-                                      </span> */}
                                         </h6>
 
                                         <div className="modal-footer">
@@ -692,8 +657,8 @@ const LostItem = (props) => {
                             </Col>
                             <Col md="4">
                               <Button
-                                hidden={ownerQuestion == ""}
-                                disabled={ownerQuestion == ""}
+                                hidden={ownerQuestion === ""}
+                                disabled={ownerQuestion === ""}
                                 className="ml-auto"
                                 color="danger"
                                 outline
@@ -706,7 +671,6 @@ const LostItem = (props) => {
                             </Col>
                           </Row>
 
-                          {/* //Submit */}
                           <div className="text-center">
                             <Button
                               className="my-4"

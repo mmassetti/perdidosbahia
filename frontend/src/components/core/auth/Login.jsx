@@ -17,9 +17,7 @@
 */
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../../context/auth-context";
-
-// reactstrap components
+import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import {
   Button,
   Card,
@@ -28,20 +26,13 @@ import {
   FormGroup,
   Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col,
 } from "reactstrap";
-
-// core components
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../theme/Footers/SimpleFooter";
-
 import * as yup from "yup";
-
 import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";
 
@@ -205,7 +196,6 @@ const Login = (props) => {
                           as={
                             <Input
                               ref={register()}
-                              // autoComplete="off"
                               placeholder="Email"
                               className={
                                 !formState.touched.email &&
@@ -244,7 +234,6 @@ const Login = (props) => {
                             <Input
                               type="password"
                               ref={register()}
-                              // autoComplete="off"
                               placeholder="Contraseña"
                               className={
                                 !formState.touched.password &&
@@ -291,6 +280,16 @@ const Login = (props) => {
                           Iniciar sesión
                         </Button>
                       </div>
+                      <br></br>
+                      <small className="text-center">
+                        <p>
+                          {" "}
+                          ¿Todavía no tenés una cuenta?{" "}
+                          <Link className="label" to="/registro">
+                            Registrate
+                          </Link>
+                        </p>
+                      </small>
                     </Form>
                   </CardBody>
                 </Card>
