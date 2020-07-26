@@ -36,6 +36,18 @@ const claimSchema = new Schema(
       ],
       default: "EsperandoRespuestaMia",
     },
+    flagClaimer: {
+      type: Number,
+      required: true,
+      enum: [0, 1],
+      default: 0,
+    },
+    flagItemCreator: {
+      type: Number,
+      required: true,
+      enum: [0, 1],
+      default: 1,
+    },
   },
   { timestamps: true }
 );

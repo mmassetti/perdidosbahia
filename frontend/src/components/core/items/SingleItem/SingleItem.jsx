@@ -23,7 +23,7 @@ import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
-import ModalFirstStep from "./ModalFirstStep";
+import ModalFirstStep from "../SingleItem/modals/ModalFirstStep";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
 

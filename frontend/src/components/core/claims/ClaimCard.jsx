@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import ModalFirstStep from "../items/SingleItem/ModalFirstStep";
+import ModalSecondStep from "../items/SingleItem/modals/ModalSecondStep";
 import useModal from "../Helpers/useModal";
 
 var moment = require("moment");
@@ -34,19 +34,45 @@ const ClaimCard = (props) => {
   const showExtraInfo = () => {
     return (
       <React.Fragment>
-        <h6 className="text-warning font-weight-light mb-2">
-          ¡Alguien se comunicó con vos!
-        </h6>
-        <Button
-          className=""
-          style={{ marginBottom: "1rem" }}
-          color="warning"
-          size="sm"
-          outline
-          onClick={toggle}
-        >
-          Ver
-        </Button>
+        {/*TODO: Sacar estos 3 controles a un componente aparte*/}
+        {props.authUserId == props.itemCreator._id &&
+        props.flagItemCreator == 1 &&
+        props.flagClaimer == 0 ? (
+          <React.Fragment>
+            <h6 className="text-warning font-weight-light mb-2">
+              ¡Alguien se comunicó con vos!
+            </h6>
+            <Button
+              className=""
+              style={{ marginBottom: "1rem" }}
+              color="warning"
+              size="sm"
+              outline
+              onClick={toggle}
+            >
+              Ver
+            </Button>
+          </React.Fragment>
+        ) : (
+          ""
+        )}
+        {props.authUserId == props.itemClaimer._id &&
+        props.flagItemCreator == 0 &&
+        props.flagClaimer == 1 ? (
+          <h6 className="text-warning font-weight-light mb-2">
+            ¡Alguien se comunicó con vos!
+          </h6>
+        ) : (
+          ""
+        )}
+        {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
+          <h6 className="text-warning font-weight-light mb-2">
+            Tanto vos como la otra persona confirmaron el contacto. Te dejamos
+            sus datos:
+          </h6>
+        ) : (
+          ""
+        )}
       </React.Fragment>
     );
   };
@@ -105,7 +131,12 @@ const ClaimCard = (props) => {
                 Eliminar
               </Button>
             ) : (
-              <Button className="mt-4" color="warning" onClick={props.onDelete}>
+              <Button
+                className="mt-4"
+                color="warning"
+                size="sm"
+                onClick={props.onDelete}
+              >
                 Cancelar contacto
               </Button>
             )}
@@ -113,13 +144,19 @@ const ClaimCard = (props) => {
         </Card>
       </Col>
 
-      <ModalFirstStep
-        isShowing={isShowing}
-        hide={toggle}
-        ownerQuestion={props.item.ownerQuestion}
-        itemId={props.item.id}
-        token={props.token}
-      />
+      {props.flagItemCreator == 1 && props.flagClaimer == 0 ? (
+        <ModalSecondStep
+          isShowing={isShowing}
+          hide={toggle}
+          info={props}
+          // ownerQuestion={props.item.ownerQuestion}
+          // claimerQuestion={props.item.claimerQuestion}
+          // item={props.item}
+          // token={props.token}
+        />
+      ) : (
+        ""
+      )}
     </React.Fragment>
   );
 };

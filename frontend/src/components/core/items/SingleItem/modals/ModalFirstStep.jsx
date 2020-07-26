@@ -20,7 +20,7 @@ import {
 } from "reactstrap";
 
 import classnames from "classnames";
-import SingleItemQuestionExplain from "../../Helpers/SingleItemQuestionExplain";
+import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 
 const ModalFirstStep = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -66,6 +66,8 @@ const ModalFirstStep = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
             }
             stateForClaimer
             stateForItemCreator
+            flagForClaimer
+            flagForItemCreator
             createdAt
             updatedAt
           }

@@ -11,6 +11,8 @@ module.exports = buildSchema(`
         updatedAt: String!
         stateForItemCreator: String!
         stateForClaimer: String!
+        flagClaimer: Int!
+        flagItemCreator: Int!
     }
         
     type Item {
@@ -71,7 +73,7 @@ module.exports = buildSchema(`
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
         createClaim(itemId : ID!): Claim!
-        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!): Claim!
+        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagForClaimer: Int!, newFlagForItemCreator: Int!): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 

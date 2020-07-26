@@ -36,7 +36,7 @@ module.exports = {
         item: fetchedItem._id,
         itemClaimer: claimerId,
         itemCreator: creatorId,
-        //los estados se crean por defecto para ambos usuarios
+        //los estados y los flags se crean por defecto para ambos usuarios
       });
 
       //Se agrega el Claim a la lista de ambos usuarios
@@ -64,6 +64,8 @@ module.exports = {
       const fetchedClaim = await Claim.findOne({ _id: args.claimId });
       fetchedClaim.stateForClaimer = args.newStateForClaimer;
       fetchedClaim.stateForItemCreator = args.newStateForItemCreator;
+      fetchedClaim.flagClaimer = args.newFlagForClaimer;
+      fetchedClaim.flagItemCreator = args.newFlagForItemCreator;
       const result = await fetchedClaim.save();
       return transformClaim(result);
     } catch (err) {
