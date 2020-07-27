@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Headroom from "headroom.js";
 import {
@@ -39,23 +39,10 @@ import {
 import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 
 const CustomNavbar = (props) => {
-  // const [token, setToken] = useState(null);
-  // const [userId, setUserId] = useState(null);
-
   useEffect(() => {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     headroom.init();
   });
-
-  // const login = (token, userId, tokenExpiration) => {
-  //   setToken(token);
-  //   setUserId(userId);
-  // };
-
-  // const logout = () => {
-  //   setToken(null);
-  //   setUserId(null);
-  // };
 
   return (
     <React.Fragment>
@@ -220,23 +207,36 @@ const CustomNavbar = (props) => {
                       )}
                       {/* Cerrar sesion */}
                       {context.token && (
-                        <NavItem className="d-none d-lg-block ml-lg-4">
-                          <Button
-                            className="btn-neutral btn-icon"
-                            color="default"
-                            onClick={context.logout}
+                        <React.Fragment>
+                          <i
+                            style={{ fontSize: "22px" }}
+                            className="fa fa-user-circle text-white "
+                            aria-hidden="true"
+                          ></i>
+                          <span
+                            style={{ paddingLeft: "0.5rem" }}
+                            className="text-white "
                           >
-                            <span className="btn-inner--icon">
-                              <i
-                                className="fa fa-sign-out mr-2"
-                                aria-hidden="true"
-                              />
-                            </span>
-                            <span className="nav-link-inner--text ml-1">
-                              Cerrar sesión
-                            </span>
-                          </Button>
-                        </NavItem>
+                            {context.firstName}
+                          </span>
+                          <NavItem className="d-none d-lg-block ml-lg-4">
+                            <Button
+                              className="btn-neutral btn-icon"
+                              color="default"
+                              onClick={context.logout}
+                            >
+                              <span className="btn-inner--icon">
+                                <i
+                                  className="fa fa-sign-out mr-2"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                              <span className="nav-link-inner--text ml-1">
+                                Cerrar sesión
+                              </span>
+                            </Button>
+                          </NavItem>
+                        </React.Fragment>
                       )}
                     </Nav>
                   </UncontrolledCollapse>

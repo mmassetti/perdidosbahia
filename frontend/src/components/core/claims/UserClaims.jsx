@@ -59,7 +59,7 @@ const UserClaims = (props) => {
                 type
                 date
                 location
-                claimerQuestion
+                itemCreatorQuestion
                 creator {
                   _id
                   email
@@ -77,6 +77,7 @@ const UserClaims = (props) => {
               stateForItemCreator
               flagClaimer
               flagItemCreator
+              claimerQuestion
             }
           }
         `,
@@ -174,6 +175,7 @@ const UserClaims = (props) => {
         stateForItemCreator={claim.stateForItemCreator}
         flagClaimer={claim.flagClaimer}
         flagItemCreator={claim.flagItemCreator}
+        claimerQuestion={claim.claimerQuestion}
         onDelete={deleteClaimHandler}
       ></ClaimCard>
     );

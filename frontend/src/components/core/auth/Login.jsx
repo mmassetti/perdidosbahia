@@ -78,6 +78,7 @@ const Login = (props) => {
             userId
             token
             tokenExpiration
+            firstName
           }
         }
       `,
@@ -100,11 +101,13 @@ const Login = (props) => {
         return res.json();
       })
       .then((resData) => {
+        console.log("submitForm -> resData", resData);
         if (resData.data.login.token) {
           context.login(
             resData.data.login.token,
             resData.data.login.userId,
-            resData.data.login.tokenExpiration
+            resData.data.login.tokenExpiration,
+            resData.data.login.firstName
           );
         }
       })

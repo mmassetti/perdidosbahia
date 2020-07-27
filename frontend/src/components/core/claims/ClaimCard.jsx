@@ -1,8 +1,10 @@
 import React from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import ModalSecondStep from "../items/SingleItem/modals/ModalSecondStep";
 import useModal from "../Helpers/useModal";
+import ModalSecondStep from "../items/SingleItem/modals/ModalSecondStep";
+import ModalThirdStep from "../items/SingleItem/modals/ModalThirdStep";
+import ModalFinalStep from "../items/SingleItem/modals/ModalFinalStep";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -35,6 +37,8 @@ const ClaimCard = (props) => {
     return (
       <React.Fragment>
         {/*TODO: Sacar estos 3 controles a un componente aparte*/}
+
+        {/* SECOND MODAL*/}
         {props.authUserId == props.itemCreator._id &&
         props.flagItemCreator == 1 &&
         props.flagClaimer == 0 ? (
@@ -56,20 +60,48 @@ const ClaimCard = (props) => {
         ) : (
           ""
         )}
+
+        {/* THIRD MODAL */}
         {props.authUserId == props.itemClaimer._id &&
         props.flagItemCreator == 0 &&
         props.flagClaimer == 1 ? (
-          <h6 className="text-warning font-weight-light mb-2">
-            ¡Alguien se comunicó con vos!
-          </h6>
+          <React.Fragment>
+            <h6 className="text-warning font-weight-light mb-2">
+              ¡Alguien se comunicó con vos!
+            </h6>
+            <Button
+              className=""
+              style={{ marginBottom: "1rem" }}
+              color="warning"
+              size="sm"
+              outline
+              onClick={toggle}
+            >
+              Ver
+            </Button>
+          </React.Fragment>
         ) : (
           ""
         )}
+
+        {/* LAST MODAL */}
+
         {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
-          <h6 className="text-warning font-weight-light mb-2">
-            Tanto vos como la otra persona confirmaron el contacto. Te dejamos
-            sus datos:
-          </h6>
+          <React.Fragment>
+            <h6 className="text-warning font-weight-light mb-2">
+              Tanto vos como la otra persona confirmaron el contacto.
+            </h6>
+            <Button
+              className=""
+              style={{ marginBottom: "1rem" }}
+              color="warning"
+              size="sm"
+              outline
+              onClick={toggle}
+            >
+              Ver info contacto
+            </Button>
+          </React.Fragment>
         ) : (
           ""
         )}
@@ -103,8 +135,13 @@ const ClaimCard = (props) => {
               </Badge>
             </div>
             <div style={{ marginTop: "1rem" }}>
-              <span className="h6 font-weight-bold ">Estado actual:</span>
-              <Badge color="success" pill className="mr-1">
+              <span className="h6 font-weight-bold">Estado actual:</span>
+              <Badge
+                color="success"
+                pill
+                className="mr-1"
+                style={{ marginLeft: "0.5rem" }}
+              >
                 {getStateForAuthUser()}
               </Badge>
             </div>
@@ -131,29 +168,41 @@ const ClaimCard = (props) => {
                 Eliminar
               </Button>
             ) : (
-              <Button
-                className="mt-4"
-                color="warning"
-                size="sm"
-                onClick={props.onDelete}
-              >
-                Cancelar contacto
-              </Button>
+              [
+                props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
+                  ""
+                ) : (
+                  <Button
+                    className="mt-4"
+                    color="warning"
+                    size="sm"
+                    onClick={props.onDelete}
+                  >
+                    Cancelar contacto
+                  </Button>
+                ),
+              ]
             )}
           </CardBody>
         </Card>
       </Col>
 
+      {/*Show proper modal acording flags*/}
+
       {props.flagItemCreator == 1 && props.flagClaimer == 0 ? (
-        <ModalSecondStep
-          isShowing={isShowing}
-          hide={toggle}
-          info={props}
-          // itemCreatorQuestion={props.item.itemCreatorQuestion}
-          // claimerQuestion={props.item.claimerQuestion}
-          // item={props.item}
-          // token={props.token}
-        />
+        <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
+      ) : (
+        ""
+      )}
+      {/* THIRD MODAL */}
+      {props.flagItemCreator == 0 && props.flagClaimer == 1 ? (
+        <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
+      ) : (
+        ""
+      )}
+      {/*FINAL MODAL */}
+      {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
+        <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""
       )}
