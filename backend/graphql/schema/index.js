@@ -42,6 +42,7 @@ module.exports = buildSchema(`
         userId: ID!
         token: String!
         tokenExpiration: Int!
+        firstName: String
     }
 
     input ItemInput {

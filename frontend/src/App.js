@@ -22,6 +22,7 @@ import MustLoginModal from "components/core/Helpers/MustLoginModal";
 const App = (props) => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [firstName, setFirstName] = useState(null);
 
   useEffect(() => {
     const userToken = localStorage.getItem("token");
@@ -34,14 +35,20 @@ const App = (props) => {
       if (new Date(tokenExpiration) <= new Date()) {
         logout();
       } else {
-        login(userToken, localStorage.getItem("userId"), dateDifference);
+        login(
+          userToken,
+          localStorage.getItem("userId"),
+          dateDifference,
+          localStorage.getItem("firstName")
+        );
       }
     }
   });
 
-  const login = (token, userId, tokenExpiration) => {
+  const login = (token, userId, tokenExpiration, firstName) => {
     setToken(token);
     setUserId(userId);
+    setFirstName(firstName);
     localStorage.setItem("token", token);
     const expirationDate = new Date(
       new Date().getTime() + tokenExpiration * 3600000
@@ -50,15 +57,18 @@ const App = (props) => {
       localStorage.setItem("expirationDate", expirationDate);
     }
     localStorage.setItem("userId", userId);
+    localStorage.setItem("firstName", firstName);
     return <Redirect to="/" />;
   };
 
   const logout = () => {
     setToken(null);
     setUserId(null);
+    setFirstName(null);
     localStorage.removeItem("token");
     localStorage.removeItem("expirationDate");
     localStorage.removeItem("userId");
+    localStorage.removeItem("firstName");
     //TODO: Achive this behavior:
     // if (!localStorage.getItem("token")) {
     //   return <MustLoginModal isShowing="true" />;
@@ -73,6 +83,7 @@ const App = (props) => {
           userId: userId,
           login: login,
           logout: logout,
+          firstName: firstName,
         }}
       >
         <APIErrorProvider>

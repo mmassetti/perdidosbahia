@@ -3,6 +3,7 @@ import React from "react";
 export default React.createContext({
   token: null,
   userId: null,
-  login: (token, userId, tokenExpiration) => {},
+  firstName: null,
+  login: (token, userId, tokenExpiration, firstName) => {},
   logout: () => {},
 });
