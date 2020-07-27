@@ -35,6 +35,9 @@ const ClaimCard = (props) => {
     return (
       <React.Fragment>
         {/*TODO: Sacar estos 3 controles a un componente aparte*/}
+
+        {/* FIRST STEP*/}
+
         {props.authUserId == props.itemCreator._id &&
         props.flagItemCreator == 1 &&
         props.flagClaimer == 0 ? (
@@ -56,6 +59,9 @@ const ClaimCard = (props) => {
         ) : (
           ""
         )}
+
+        {/* SECOND STEP*/}
+
         {props.authUserId == props.itemClaimer._id &&
         props.flagItemCreator == 0 &&
         props.flagClaimer == 1 ? (
@@ -65,6 +71,9 @@ const ClaimCard = (props) => {
         ) : (
           ""
         )}
+
+        {/* THIRD STEP*/}
+
         {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
           <h6 className="text-warning font-weight-light mb-2">
             Tanto vos como la otra persona confirmaron el contacto. Te dejamos

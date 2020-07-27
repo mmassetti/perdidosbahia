@@ -90,6 +90,11 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
         }
         return res.json();
       })
+      .then((res) => {
+        history.push({
+          pathname: "/",
+        });
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -98,7 +103,6 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    setTabs({ tab: 1 });
   }, [handleSubmitModalForm]);
 
   return isShowing
