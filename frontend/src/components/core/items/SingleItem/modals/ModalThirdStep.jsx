@@ -9,8 +9,6 @@ import {
   CardBody,
   Modal,
   Form,
-  FormGroup,
-  Input,
   NavItem,
   NavLink,
   Nav,
@@ -22,42 +20,25 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 
-const ModalFirstStep = ({
-  isShowing,
-  hide,
-  itemCreatorQuestion,
-  itemId,
-  token,
-}) => {
+const ModalThirdStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
-  const [claimerAnswer, setClaimerAnswer] = useState("");
-  const [claimerQuestion, setClaimerQuestion] = useState("");
   let history = useHistory();
-
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    setTabs({ tab: 1 });
-  }, []);
 
   const toggleNavs = (e, index) => {
     e.preventDefault();
     setTabs({ tab: index });
   };
 
-  const handleClaimerAnswerChange = (event) => {
-    setClaimerAnswer(event.target.value.toString());
-  };
-
-  const handleClaimerQuestionChange = (event) => {
-    setClaimerQuestion(event.target.value.toString());
-  };
-
   const handleSubmitModalForm = (e) => {
+    const newStateForClaimer = "EnContacto";
+    const newStateForItemCreator = "EnContacto";
+    const newFlagClaimer = 1;
+    const newFlagItemCreator = 1;
+
     let requestBody = {
       query: `
-        mutation CreateClaim($id: ID!,$claimerQuestion: String!) {
-          createClaim(itemId: $id, claimerQuestion: $claimerQuestion) {
+        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!) {
+          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator) {
             _id
             itemClaimer {
               email
@@ -70,29 +51,27 @@ const ModalFirstStep = ({
             }
             stateForClaimer
             stateForItemCreator
-            flagClaimer
-            flagItemCreator
-            claimerQuestion
             createdAt
             updatedAt
+            claimerQuestion
           }
         }
       `,
       variables: {
-        id: itemId,
-        claimerQuestion: claimerQuestion,
+        claimId: info.claimId,
+        newStateForClaimer: newStateForClaimer,
+        newStateForItemCreator: newStateForItemCreator,
+        newFlagClaimer: newFlagClaimer,
+        newFlagItemCreator: newFlagItemCreator,
       },
     };
-
-    setClaimerQuestion("");
-    setClaimerAnswer("");
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + info.token,
       },
     })
       .then((res) => {
@@ -101,15 +80,20 @@ const ModalFirstStep = ({
         }
         return res.json();
       })
-      .then((resData) => {
+      .then((res) => {
         history.push({
-          pathname: "/mis-publicaciones",
+          pathname: "/",
         });
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, [handleSubmitModalForm]);
 
   return isShowing
     ? ReactDOM.createPortal(
@@ -126,9 +110,7 @@ const ModalFirstStep = ({
                 toggle={hide}
               >
                 <div className="text-center">
-                  <span style={{ marginRight: "0.5rem" }}>
-                    Completá estos datos
-                  </span>
+                  <span style={{ marginRight: "0.5rem" }}>Último paso</span>
                   <SingleItemQuestionExplain />
                 </div>
               </ModalHeader>
@@ -166,19 +148,6 @@ const ModalFirstStep = ({
                       Paso 2
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      aria-selected={tabs === 3}
-                      className={classnames("mb-sm-3 mb-md-0", {
-                        active: tabs.tab === 3,
-                      })}
-                      onClick={(e) => e.preventDefault()}
-                      role="tab"
-                    >
-                      <i className="ni ni-calendar-grid-58 mr-2" />
-                      Paso 3
-                    </NavLink>
-                  </NavItem>
                 </Nav>
               </div>
 
@@ -188,41 +157,40 @@ const ModalFirstStep = ({
                     <TabPane tabId="tabs1">
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 font-weight-bold">
-                          Respuesta sobre el objeto
+                          La otra persona te respondió. Te recordamos tu
+                          pregunta:
                         </span>
                       </div>
 
-                      <div className="text-center text-muted mb-4">
-                        <h6>
-                          Deberás contestar esta pregunta que dejó el usuario
-                          que publicó el objeto:
-                        </h6>
+                      <div className="text-muted text-center mt-2 mb-3">
+                        <span className="h6 text-primary font-weight-bold ">
+                          {info.claimerQuestion}
+                        </span>
+                      </div>
+
+                      <div className="text-muted text-center mt-2 mb-3">
+                        <span className="h6 font-weight-bold">
+                          Esta fue la respuesta que te dieron:
+                        </span>
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {itemCreatorQuestion}
+                          ...respuesta..
                         </span>
                       </div>
                       <Form role="form">
-                        <FormGroup>
-                          <Input
-                            autoComplete="off"
-                            placeholder="Tu respuesta..."
-                            cols="80"
-                            rows="4"
-                            type="textarea"
-                            name="answer"
-                            value={claimerAnswer}
-                            onChange={handleClaimerAnswerChange}
-                          />
-                        </FormGroup>
                         <div className="modal-footer">
+                          <div className="text-muted text-center mt-2 mb-3">
+                            <span className="h6 text-danger font-weight-bold">
+                              ¿Estás de acuerdo con la respuesta?
+                            </span>
+                          </div>
                           <Button
                             color="primary"
                             type="button"
                             onClick={(e) => toggleNavs(e, 2)}
                           >
-                            Continuar
+                            Si
                           </Button>
                           <Button
                             className="ml-auto"
@@ -231,71 +199,27 @@ const ModalFirstStep = ({
                             type="button"
                             onClick={hide}
                           >
-                            Cancelar
+                            No
                           </Button>
+                          {/* TODO: BLOQUEAR CLAIM PARA EL CLAIMER*/}
                         </div>
                       </Form>
                     </TabPane>
                     <TabPane tabId="tabs2">
                       <div className="text-muted text-center mt-2 mb-3">
-                        <span className="h6 font-weight-bold">
-                          Pregunta sobre el objeto
-                        </span>
+                        <div className="text-center text-muted mb-4">
+                          <h6>
+                            ¡Listo! Ya le enviamos tus datos de contacto a la
+                            otra persona y te dejamos los suyos:
+                          </h6>
+                        </div>
                       </div>
 
-                      <div className="text-center text-muted mb-4">
-                        <h6>
-                          Te pedimos que escribas una pregunta sobre el objeto.
-                          La persona que realizó esta publicación deberá
-                          contestarla y te mostraremos su respuesta para que
-                          puedas verificar su identidad.
-                        </h6>
-                      </div>
-                      <Form role="form">
-                        <FormGroup>
-                          <Input
-                            autoComplete="off"
-                            placeholder="Escribí una pregunta. Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
-                            cols="80"
-                            rows="4"
-                            type="textarea"
-                            name="claimerQuestion"
-                            value={claimerQuestion}
-                            onChange={handleClaimerQuestionChange}
-                          />
-                        </FormGroup>
-                        <div className="modal-footer">
-                          <Button
-                            color="primary"
-                            type="button"
-                            onClick={(e) => toggleNavs(e, 3)}
-                          >
-                            Continuar
-                          </Button>
-                          <Button
-                            className="ml-auto"
-                            color="link"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={(e) => toggleNavs(e, 1)}
-                          >
-                            Volver
-                          </Button>
-                        </div>
-                      </Form>
-                    </TabPane>
-                    <TabPane tabId="tabs3">
                       <div className="text-muted text-center mt-2 mb-3">
-                        <span className="h6 font-weight-bold">
-                          Ya falta menos...
+                        <span className="h6 text-primary font-weight-bold ">
+                          ..datos de contacto...
                         </span>
                       </div>
-                      <p className="description">
-                        Enviaremos esta información al otro usuario y te
-                        notificaremos cuando haya novedades. Si todo va bien,
-                        podrás obtener el contacto del usuario que publicó el
-                        objeto
-                      </p>
                       <Form role="form">
                         <div className="modal-footer">
                           <Button
@@ -303,16 +227,7 @@ const ModalFirstStep = ({
                             type="button"
                             onClick={(e) => handleSubmitModalForm(e)}
                           >
-                            Confirmar
-                          </Button>
-                          <Button
-                            className="ml-auto"
-                            color="link"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={(e) => toggleNavs(e, 2)}
-                          >
-                            Volver
+                            Salir
                           </Button>
                         </div>
                       </Form>
@@ -328,4 +243,4 @@ const ModalFirstStep = ({
     : null;
 };
 
-export default ModalFirstStep;
+export default ModalThirdStep;
