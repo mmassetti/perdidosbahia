@@ -168,9 +168,6 @@ const CustomNavbar = (props) => {
                           <span className="nav-link-inner--text">Ayuda</span>
                         </DropdownToggle>
                         <DropdownMenu>
-                          <DropdownItem to="/" tag={Link}>
-                            Tutorial
-                          </DropdownItem>
                           <DropdownItem href="https://www.facebook.com/groups/1265778186835612">
                             Grupo de Facebook
                           </DropdownItem>
