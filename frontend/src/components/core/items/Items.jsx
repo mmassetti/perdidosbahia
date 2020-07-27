@@ -146,7 +146,6 @@ const Items = () => {
           </Row>
         </Container>
       </main>
-      <CardsFooter />
     </>
   );
 };

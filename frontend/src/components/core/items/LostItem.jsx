@@ -694,7 +694,6 @@ const LostItem = (props) => {
                 </Row>
               </Container>
             </section>
-            <Download />
           </>
         ) : (
           <>
@@ -707,7 +706,6 @@ const LostItem = (props) => {
           </>
         )}
       </main>
-      <CardsFooter />
     </>
   );
 };

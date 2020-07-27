@@ -168,17 +168,11 @@ const CustomNavbar = (props) => {
                           <span className="nav-link-inner--text">Ayuda</span>
                         </DropdownToggle>
                         <DropdownMenu>
-                          <DropdownItem to="/landing-page" tag={Link}>
+                          <DropdownItem to="/" tag={Link}>
                             Tutorial
                           </DropdownItem>
-                          <DropdownItem to="/profile-page" tag={Link}>
-                            Redes sociales
-                          </DropdownItem>
-                          <DropdownItem to="/inicio-sesion" tag={Link}>
-                            Contacto
-                          </DropdownItem>
-                          <DropdownItem to="/registro" tag={Link}>
-                            Otra ayuda
+                          <DropdownItem href="https://www.facebook.com/groups/1265778186835612">
+                            Grupo de Facebook
                           </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>
