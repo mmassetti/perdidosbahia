@@ -22,13 +22,8 @@ module.exports = {
       type: args.itemInput.type,
       category: args.itemInput.category,
       location: args.itemInput.location ? args.itemInput.location : null,
-      itemCreatorQuestion: args.itemInput.creatorQuestion
-        ? args.itemInput.creatorQuestion
-        : null,
-      claimerQuestion: args.itemInput.claimerQuestion
-        ? args.itemInput.claimerQuestion
-        : null,
       date: new Date(args.itemInput.date),
+      itemCreatorQuestion: args.itemInput.itemCreatorQuestion,
       creator: req.userId,
     });
 

@@ -122,7 +122,7 @@ const LostItem = (props) => {
 
     let requestBody = {
       query: `
-          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String) {
+          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String!) {
             createItem(
               itemInput: 
                 {description: $description, 

@@ -36,6 +36,7 @@ module.exports = {
         item: fetchedItem._id,
         itemClaimer: claimerId,
         itemCreator: creatorId,
+        claimerQuestion: args.claimerQuestion,
         //los estados y los flags se crean por defecto para ambos usuarios
       });
 
@@ -66,6 +67,9 @@ module.exports = {
       fetchedClaim.stateForItemCreator = args.newStateForItemCreator;
       fetchedClaim.flagClaimer = args.newFlagForClaimer;
       fetchedClaim.flagItemCreator = args.newFlagForItemCreator;
+      fetchedClaim.claimerQuestion = args.newClaimerQuestion
+        ? args.newClaimerQuestion
+        : fetchedClaim.claimerQuestion;
       const result = await fetchedClaim.save();
       return transformClaim(result);
     } catch (err) {
@@ -80,7 +84,6 @@ module.exports = {
     }
     try {
       const claim = await Claim.findById(args.claimId).populate("item");
-      console.log("claim ", claim);
       const item = transformItem(claim.item);
       await Claim.deleteOne({ _id: args.claimId });
 

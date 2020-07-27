@@ -29,6 +29,10 @@ const itemSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  itemCreatorQuestion: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Item", itemSchema);

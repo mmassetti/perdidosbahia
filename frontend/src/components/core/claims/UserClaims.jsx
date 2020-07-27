@@ -59,7 +59,6 @@ const UserClaims = (props) => {
                 type
                 date
                 location
-                itemCreatorQuestion
                 claimerQuestion
                 creator {
                   _id

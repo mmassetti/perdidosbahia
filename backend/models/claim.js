@@ -48,12 +48,9 @@ const claimSchema = new Schema(
       enum: [0, 1],
       default: 1,
     },
-    itemCreatorQuestion: {
-      type: String,
-      required: true,
-    },
     claimerQuestion: {
       type: String,
+      required: true,
     },
   },
   { timestamps: true }
