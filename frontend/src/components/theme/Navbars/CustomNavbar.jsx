@@ -208,9 +208,13 @@ const CustomNavbar = (props) => {
                       {/* Cerrar sesion */}
                       {context.token && (
                         <React.Fragment>
-                          <i className="fa fa-user-circle text-white"></i>
+                          <i
+                            style={{ fontSize: "22px" }}
+                            className="fa fa-user-circle text-white "
+                            aria-hidden="true"
+                          ></i>
                           <span
-                            style={{ paddingLeft: "0.2rem" }}
+                            style={{ paddingLeft: "0.5rem" }}
                             className="text-white "
                           >
                             {context.firstName}
