@@ -244,21 +244,21 @@ const LostItem = (props) => {
                     <Card className="bg-gradient-secondary shadow">
                       <CardBody className="p-lg-5">
                         <h6 className="mt-0" style={{ color: "#cc3300" }}>
-                          <b>IMPORTANTE</b>: Recomendamos que en la descripción
-                          del objeto <b>NO</b> brindes todos los detalles de tu
-                          objeto. Más abajo podrás agregar una pregunta que
-                          deberá contestar quien encuentre un objeto similar al
-                          tuyo. De esta forma buscamos evitar fraudes
+                          <b>IMPORTANTE</b>: En la descripción del objeto{" "}
+                          <b>NO</b> brindes todos los detalles de tu objeto. Más
+                          abajo deberás agregar una pregunta que tendrá que
+                          contestar quien encuentre un objeto similar al tuyo.
+                          De esta forma buscamos evitar fraudes
                         </h6>
 
-                        <h6 className="h6 text-primary  ">
+                        {/* <h6 className="h6 text-primary  ">
                           ¿Necesitás ayuda?{" "}
                           <a href="#" className="mr-1 font-weight-bold">
                             Acá
                           </a>
                           hay un ejemplo de como completar el formulario
                         </h6>
-                        <br></br>
+                        <br></br> */}
 
                         <Form
                           noValidate
@@ -510,7 +510,7 @@ const LostItem = (props) => {
                                 <Input
                                   ref={register()}
                                   autoComplete="off"
-                                  placeholder="Escribí una descripción del objeto (recomendamos que guardes algún detalle de tu objeto para poner en una pregunta debajo)"
+                                  placeholder="Escribí una descripción del objeto (recordá guardar algún detalle de tu objeto para poner en una pregunta debajo)"
                                   className={
                                     !formState.touched.description &&
                                     (formState.submitCount === 0 ||
@@ -537,10 +537,7 @@ const LostItem = (props) => {
 
                           <div style={{ marginBottom: "1rem" }}>
                             <span className="h6 font-weight-bold ">
-                              Recomendamos que agregues una o más preguntas que
-                              deberá contestar quien encuentre un objeto similar
-                              al tuyo. También le solicitaremos a la persona que
-                              envíe una foto
+                              Necesitamos que agregues una pregunta.
                             </span>
                           </div>
 
@@ -550,6 +547,7 @@ const LostItem = (props) => {
                               <Button
                                 color="default"
                                 type="button"
+                                size="sm"
                                 onClick={toggleTrueFalse}
                               >
                                 Agregar pregunta
@@ -667,6 +665,7 @@ const LostItem = (props) => {
                                 outline
                                 data-dismiss="modal"
                                 type="button"
+                                size="sm"
                                 onClick={removeItemCreatorQuestion}
                               >
                                 Eliminar pregunta

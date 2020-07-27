@@ -73,7 +73,7 @@ module.exports = buildSchema(`
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
         createClaim(itemId : ID!, claimerQuestion: String!): Claim!
-        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagForClaimer: Int!, newFlagForItemCreator: Int!, newClaimerQuestion: String): Claim!
+        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 

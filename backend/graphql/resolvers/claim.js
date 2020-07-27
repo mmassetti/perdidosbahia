@@ -65,8 +65,8 @@ module.exports = {
       const fetchedClaim = await Claim.findOne({ _id: args.claimId });
       fetchedClaim.stateForClaimer = args.newStateForClaimer;
       fetchedClaim.stateForItemCreator = args.newStateForItemCreator;
-      fetchedClaim.flagClaimer = args.newFlagForClaimer;
-      fetchedClaim.flagItemCreator = args.newFlagForItemCreator;
+      fetchedClaim.flagClaimer = args.newFlagClaimer;
+      fetchedClaim.flagItemCreator = args.newFlagItemCreator;
       fetchedClaim.claimerQuestion = args.newClaimerQuestion
         ? args.newClaimerQuestion
         : fetchedClaim.claimerQuestion;

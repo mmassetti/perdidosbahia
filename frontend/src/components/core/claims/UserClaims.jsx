@@ -59,7 +59,7 @@ const UserClaims = (props) => {
                 type
                 date
                 location
-                claimerQuestion
+                itemCreatorQuestion
                 creator {
                   _id
                   email
@@ -77,6 +77,7 @@ const UserClaims = (props) => {
               stateForItemCreator
               flagClaimer
               flagItemCreator
+              claimerQuestion
             }
           }
         `,

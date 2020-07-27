@@ -51,15 +51,15 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
   const handleSubmitModalForm = (e) => {
     const newStateForClaimer = "EsperandoRespuestaOtroUsuario";
     const newStateForItemCreator = "EsperandoRespuestaOtroUsuario";
-    const newFlagForClaimer = 1;
-    const newFlagForItemCreator = 0;
+    const newFlagClaimer = 1;
+    const newFlagItemCreator = 0;
 
     setClaimerQuestion("");
     setClaimerAnswer("");
     let requestBody = {
       query: `
-        mutation EditClaim($claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!, newFlagForClaimer: Int!, newFlagForItemCreator: Int!) {
-          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagForClaimer: $newFlagForClaimer, newFlagForItemCreator: $newFlagForItemCreator) {
+        mutation EditClaim($claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!, newFlagClaimer: Int!, newFlagItemCreator: Int!) {
+          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator) {
             _id
             itemClaimer {
               email
@@ -81,8 +81,8 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
         claimId: info.claimId,
         newStateForClaimer: newStateForClaimer,
         newStateForItemCreator: newStateForItemCreator,
-        newFlagForClaimer: newFlagForClaimer,
-        newFlagForItemCreator: newFlagForItemCreator,
+        newFlagClaimer: newFlagClaimer,
+        newFlagItemCreator: newFlagItemCreator,
       },
     };
 

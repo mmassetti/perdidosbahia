@@ -54,12 +54,10 @@ const ModalFirstStep = ({
   };
 
   const handleSubmitModalForm = (e) => {
-    setClaimerQuestion("");
-    setClaimerAnswer("");
     let requestBody = {
       query: `
-        mutation CreateClaim($id: ID!) {
-          createClaim(itemId: $id) {
+        mutation CreateClaim($id: ID!,$claimerQuestion: String!) {
+          createClaim(itemId: $id, claimerQuestion: $claimerQuestion) {
             _id
             itemClaimer {
               email
@@ -72,8 +70,9 @@ const ModalFirstStep = ({
             }
             stateForClaimer
             stateForItemCreator
-            flagForClaimer
-            flagForItemCreator
+            flagClaimer
+            flagItemCreator
+            claimerQuestion
             createdAt
             updatedAt
           }
@@ -81,8 +80,12 @@ const ModalFirstStep = ({
       `,
       variables: {
         id: itemId,
+        claimerQuestion: claimerQuestion,
       },
     };
+
+    setClaimerQuestion("");
+    setClaimerAnswer("");
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -118,340 +121,205 @@ const ModalFirstStep = ({
             isOpen={isShowing}
             toggle={hide}
           >
-            {itemCreatorQuestion ? (
-              <>
-                <ModalHeader
-                  className="text-default text-center mb-2"
-                  toggle={hide}
+            <React.Fragment>
+              <ModalHeader
+                className="text-default text-center mb-2"
+                toggle={hide}
+              >
+                <div className="text-center">
+                  <span style={{ marginRight: "0.5rem" }}>
+                    Completá estos datos
+                  </span>
+                  <SingleItemQuestionExplain />
+                </div>
+              </ModalHeader>
+              <div className="nav-wrapper">
+                <Nav
+                  style={{ padding: "0.5rem" }}
+                  className="nav-fill flex-column flex-md-row"
+                  id="tabs-icons-text"
+                  pills
+                  role="tablist"
                 >
-                  <div className="text-center">
-                    <span style={{ marginRight: "0.5rem" }}>
-                      Completá estos datos
-                    </span>
-                    <SingleItemQuestionExplain />
-                  </div>
-                </ModalHeader>
-                <div className="nav-wrapper">
-                  <Nav
-                    style={{ padding: "0.5rem" }}
-                    className="nav-fill flex-column flex-md-row"
-                    id="tabs-icons-text"
-                    pills
-                    role="tablist"
-                  >
-                    <NavItem>
-                      <NavLink
-                        aria-selected={tabs.tab === 1}
-                        className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 1,
-                        })}
-                        onClick={(e) => e.preventDefault()}
-                        role="tab"
-                      >
-                        <i className="ni ni-cloud-upload-96 mr-2" />
-                        Paso 1
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        aria-selected={tabs.tab === 2}
-                        className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 2,
-                        })}
-                        onClick={(e) => e.preventDefault()}
-                        role="tab"
-                      >
-                        <i className="ni ni-bell-55 mr-2" />
-                        Paso 2
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        aria-selected={tabs === 3}
-                        className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 3,
-                        })}
-                        onClick={(e) => e.preventDefault()}
-                        role="tab"
-                      >
-                        <i className="ni ni-calendar-grid-58 mr-2" />
-                        Paso 3
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                </div>
+                  <NavItem>
+                    <NavLink
+                      aria-selected={tabs.tab === 1}
+                      className={classnames("mb-sm-3 mb-md-0", {
+                        active: tabs.tab === 1,
+                      })}
+                      onClick={(e) => e.preventDefault()}
+                      role="tab"
+                    >
+                      <i className="ni ni-cloud-upload-96 mr-2" />
+                      Paso 1
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      aria-selected={tabs.tab === 2}
+                      className={classnames("mb-sm-3 mb-md-0", {
+                        active: tabs.tab === 2,
+                      })}
+                      onClick={(e) => e.preventDefault()}
+                      role="tab"
+                    >
+                      <i className="ni ni-bell-55 mr-2" />
+                      Paso 2
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      aria-selected={tabs === 3}
+                      className={classnames("mb-sm-3 mb-md-0", {
+                        active: tabs.tab === 3,
+                      })}
+                      onClick={(e) => e.preventDefault()}
+                      role="tab"
+                    >
+                      <i className="ni ni-calendar-grid-58 mr-2" />
+                      Paso 3
+                    </NavLink>
+                  </NavItem>
+                </Nav>
+              </div>
 
-                <Card className="shadow">
-                  <CardBody>
-                    <TabContent activeTab={"tabs" + tabs.tab}>
-                      <TabPane tabId="tabs1">
-                        <div className="text-muted text-center mt-2 mb-3">
-                          <span className="h6 font-weight-bold">
-                            Respuesta sobre el objeto
-                          </span>
-                        </div>
+              <Card className="shadow">
+                <CardBody>
+                  <TabContent activeTab={"tabs" + tabs.tab}>
+                    <TabPane tabId="tabs1">
+                      <div className="text-muted text-center mt-2 mb-3">
+                        <span className="h6 font-weight-bold">
+                          Respuesta sobre el objeto
+                        </span>
+                      </div>
 
-                        <div className="text-center text-muted mb-4">
-                          <h6>
-                            Deberás contestar esta pregunta que dejó el usuario
-                            que publicó el objeto:
-                          </h6>
+                      <div className="text-center text-muted mb-4">
+                        <h6>
+                          Deberás contestar esta pregunta que dejó el usuario
+                          que publicó el objeto:
+                        </h6>
+                      </div>
+                      <div className="text-muted text-center mt-2 mb-3">
+                        <span className="h6 text-primary font-weight-bold ">
+                          {itemCreatorQuestion}
+                        </span>
+                      </div>
+                      <Form role="form">
+                        <FormGroup>
+                          <Input
+                            autoComplete="off"
+                            placeholder="Tu respuesta..."
+                            cols="80"
+                            rows="4"
+                            type="textarea"
+                            name="answer"
+                            value={claimerAnswer}
+                            onChange={handleClaimerAnswerChange}
+                          />
+                        </FormGroup>
+                        <div className="modal-footer">
+                          <Button
+                            color="primary"
+                            type="button"
+                            onClick={(e) => toggleNavs(e, 2)}
+                          >
+                            Continuar
+                          </Button>
+                          <Button
+                            className="ml-auto"
+                            color="link"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={hide}
+                          >
+                            Cancelar
+                          </Button>
                         </div>
-                        <div className="text-muted text-center mt-2 mb-3">
-                          <span className="h6 text-primary font-weight-bold ">
-                            {itemCreatorQuestion}
-                          </span>
-                        </div>
-                        <Form role="form">
-                          <FormGroup>
-                            <Input
-                              autoComplete="off"
-                              placeholder="Tu respuesta..."
-                              cols="80"
-                              rows="4"
-                              type="textarea"
-                              name="answer"
-                              value={claimerAnswer}
-                              onChange={handleClaimerAnswerChange}
-                            />
-                          </FormGroup>
-                          <div className="modal-footer">
-                            <Button
-                              color="primary"
-                              type="button"
-                              onClick={(e) => toggleNavs(e, 2)}
-                            >
-                              Continuar
-                            </Button>
-                            <Button
-                              className="ml-auto"
-                              color="link"
-                              data-dismiss="modal"
-                              type="button"
-                              onClick={hide}
-                            >
-                              Cancelar
-                            </Button>
-                          </div>
-                        </Form>
-                      </TabPane>
-                      <TabPane tabId="tabs2">
-                        <div className="text-muted text-center mt-2 mb-3">
-                          <span className="h6 font-weight-bold">
-                            Pregunta sobre el objeto
-                          </span>
-                        </div>
+                      </Form>
+                    </TabPane>
+                    <TabPane tabId="tabs2">
+                      <div className="text-muted text-center mt-2 mb-3">
+                        <span className="h6 font-weight-bold">
+                          Pregunta sobre el objeto
+                        </span>
+                      </div>
 
-                        <div className="text-center text-muted mb-4">
-                          <h6>
-                            Te pedimos que escribas una pregunta sobre el
-                            objeto. La persona que realizó esta publicación
-                            deberá contestarla y te mostraremos su respuesta
-                            para que puedas verificar que realmente es el dueño
-                            el objeto.
-                          </h6>
+                      <div className="text-center text-muted mb-4">
+                        <h6>
+                          Te pedimos que escribas una pregunta sobre el objeto.
+                          La persona que realizó esta publicación deberá
+                          contestarla y te mostraremos su respuesta para que
+                          puedas verificar su identidad.
+                        </h6>
+                      </div>
+                      <Form role="form">
+                        <FormGroup>
+                          <Input
+                            autoComplete="off"
+                            placeholder="Escribí una pregunta. Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
+                            cols="80"
+                            rows="4"
+                            type="textarea"
+                            name="claimerQuestion"
+                            value={claimerQuestion}
+                            onChange={handleClaimerQuestionChange}
+                          />
+                        </FormGroup>
+                        <div className="modal-footer">
+                          <Button
+                            color="primary"
+                            type="button"
+                            onClick={(e) => toggleNavs(e, 3)}
+                          >
+                            Continuar
+                          </Button>
+                          <Button
+                            className="ml-auto"
+                            color="link"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={(e) => toggleNavs(e, 1)}
+                          >
+                            Volver
+                          </Button>
                         </div>
-                        <Form role="form">
-                          <FormGroup>
-                            <Input
-                              autoComplete="off"
-                              placeholder="Escribí una pregunta. Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
-                              cols="80"
-                              rows="4"
-                              type="textarea"
-                              name="claimerQuestion"
-                              value={claimerQuestion}
-                              onChange={handleClaimerQuestionChange}
-                            />
-                          </FormGroup>
-                          <div className="modal-footer">
-                            <Button
-                              color="primary"
-                              type="button"
-                              onClick={(e) => toggleNavs(e, 3)}
-                            >
-                              Continuar
-                            </Button>
-                            <Button
-                              className="ml-auto"
-                              color="link"
-                              data-dismiss="modal"
-                              type="button"
-                              onClick={(e) => toggleNavs(e, 1)}
-                            >
-                              Volver
-                            </Button>
-                          </div>
-                        </Form>
-                      </TabPane>
-                      <TabPane tabId="tabs3">
-                        <div className="text-muted text-center mt-2 mb-3">
-                          <span className="h6 font-weight-bold">
-                            Último paso
-                          </span>
+                      </Form>
+                    </TabPane>
+                    <TabPane tabId="tabs3">
+                      <div className="text-muted text-center mt-2 mb-3">
+                        <span className="h6 font-weight-bold">¡Listo!</span>
+                      </div>
+                      <p className="description">
+                        Enviaremos esta información al otro usuario y te
+                        notificaremos cuando haya novedades. Si todo va bien,
+                        podrás obtener el contacto del usuario que publicó el
+                        objeto
+                      </p>
+                      <Form role="form">
+                        <div className="modal-footer">
+                          <Button
+                            color="primary"
+                            type="button"
+                            onClick={(e) => handleSubmitModalForm(e)}
+                          >
+                            Confirmar
+                          </Button>
+                          <Button
+                            className="ml-auto"
+                            color="link"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={(e) => toggleNavs(e, 2)}
+                          >
+                            Volver
+                          </Button>
                         </div>
-                        <p className="description">
-                          Enviaremos esta información al otro usuario y te
-                          notificaremos cuando haya novedades. Si todo va bien,
-                          podrás obtener el contacto del usuario que publicó el
-                          objeto
-                        </p>
-                        <Form role="form">
-                          <div className="modal-footer">
-                            <Button
-                              color="primary"
-                              type="button"
-                              onClick={(e) => handleSubmitModalForm(e)}
-                            >
-                              Confirmar
-                            </Button>
-                            <Button
-                              className="ml-auto"
-                              color="link"
-                              data-dismiss="modal"
-                              type="button"
-                              onClick={(e) => toggleNavs(e, 2)}
-                            >
-                              Volver
-                            </Button>
-                          </div>
-                        </Form>
-                      </TabPane>
-                    </TabContent>
-                  </CardBody>
-                </Card>
-              </>
-            ) : (
-              /* //*TODO: REFACTOR */
-              /* //* IF ITEM DOES NOT HAVE A QUESTION */
-              <>
-                <div className="nav-wrapper">
-                  <Nav
-                    style={{ padding: "0.5rem" }}
-                    className="nav-fill flex-column flex-md-row"
-                    id="tabs-icons-text"
-                    pills
-                    role="tablist"
-                  >
-                    <NavItem>
-                      <NavLink
-                        aria-selected={tabs.tab === 1}
-                        className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 1,
-                        })}
-                        onClick={(e) => e.preventDefault()}
-                        role="tab"
-                      >
-                        <i className="ni ni-cloud-upload-96 mr-2" />
-                        Paso 1
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        aria-selected={tabs.tab === 2}
-                        className={classnames("mb-sm-3 mb-md-0", {
-                          active: tabs.tab === 2,
-                        })}
-                        onClick={(e) => e.preventDefault()}
-                        role="tab"
-                      >
-                        <i className="ni ni-bell-55 mr-2" />
-                        Paso 2
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                </div>
-
-                <Card className="shadow">
-                  <CardBody>
-                    <TabContent activeTab={"tabs" + tabs.tab}>
-                      <TabPane tabId="tabs1">
-                        <div className="text-muted text-center mt-2 mb-3">
-                          <span className="h6 font-weight-bold">
-                            Pregunta sobre el objeto
-                          </span>
-                        </div>
-
-                        <div className="text-center text-muted mb-4">
-                          <h6>
-                            Te pedimos que escribas una pregunta sobre el
-                            objeto. La persona que realizó esta publicación
-                            deberá contestarla y te mostraremos su respuesta
-                            para que puedas verificar que realmente es quién
-                            perdió el objeto.
-                          </h6>
-                        </div>
-                        <Form role="form">
-                          <FormGroup>
-                            <Input
-                              autoComplete="off"
-                              placeholder="Escribí una pregunta. Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
-                              cols="80"
-                              rows="4"
-                              type="textarea"
-                              name="claimerQuestion"
-                              value={claimerQuestion}
-                              onChange={handleClaimerQuestionChange}
-                            />
-                          </FormGroup>
-                          <div className="modal-footer">
-                            <Button
-                              color="primary"
-                              type="button"
-                              onClick={(e) => toggleNavs(e, 2)}
-                            >
-                              Continuar
-                            </Button>
-                            <Button
-                              className="ml-auto"
-                              color="link"
-                              data-dismiss="modal"
-                              type="button"
-                              onClick={hide}
-                            >
-                              Cancelar
-                            </Button>
-                          </div>
-                        </Form>
-                      </TabPane>
-                      <TabPane tabId="tabs2">
-                        <div className="text-muted text-center mt-2 mb-3">
-                          <span className="h6 font-weight-bold">
-                            Último paso
-                          </span>
-                        </div>
-                        <p className="description">
-                          Enviaremos esta información al otro usuario y te
-                          notificaremos cuando haya novedades. Si todo va bien,
-                          podrás obtener el contacto del usuario que publicó el
-                          objeto
-                        </p>
-                        <Form role="form">
-                          <div className="modal-footer">
-                            <Button
-                              color="primary"
-                              type="button"
-                              onClick={handleSubmitModalForm}
-                            >
-                              Confirmar
-                            </Button>
-                            <Button
-                              className="ml-auto"
-                              color="link"
-                              data-dismiss="modal"
-                              type="button"
-                              onClick={(e) => toggleNavs(e, 1)}
-                            >
-                              Volver
-                            </Button>
-                          </div>
-                        </Form>
-                      </TabPane>
-                    </TabContent>
-                  </CardBody>
-                </Card>
-              </>
-            )}
+                      </Form>
+                    </TabPane>
+                  </TabContent>
+                </CardBody>
+              </Card>
+            </React.Fragment>
           </Modal>
         </React.Fragment>,
         document.body
