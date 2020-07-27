@@ -135,8 +135,13 @@ const ClaimCard = (props) => {
               </Badge>
             </div>
             <div style={{ marginTop: "1rem" }}>
-              <span className="h6 font-weight-bold ">Estado actual:</span>
-              <Badge color="success" pill className="mr-1">
+              <span className="h6 font-weight-bold">Estado actual:</span>
+              <Badge
+                color="success"
+                pill
+                className="mr-1"
+                style={{ marginLeft: "0.5rem" }}
+              >
                 {getStateForAuthUser()}
               </Badge>
             </div>
