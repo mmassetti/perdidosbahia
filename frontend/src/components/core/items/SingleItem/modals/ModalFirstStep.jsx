@@ -287,7 +287,9 @@ const ModalFirstStep = ({
                     </TabPane>
                     <TabPane tabId="tabs3">
                       <div className="text-muted text-center mt-2 mb-3">
-                        <span className="h6 font-weight-bold">¡Listo!</span>
+                        <span className="h6 font-weight-bold">
+                          Ya falta menos...
+                        </span>
                       </div>
                       <p className="description">
                         Enviaremos esta información al otro usuario y te

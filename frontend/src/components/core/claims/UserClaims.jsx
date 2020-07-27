@@ -175,6 +175,7 @@ const UserClaims = (props) => {
         stateForItemCreator={claim.stateForItemCreator}
         flagClaimer={claim.flagClaimer}
         flagItemCreator={claim.flagItemCreator}
+        claimerQuestion={claim.claimerQuestion}
         onDelete={deleteClaimHandler}
       ></ClaimCard>
     );
