@@ -23,7 +23,7 @@ import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
-import ModalSingleItem from "../SingleItem/ModalSingleItem";
+import ModalFirstStep from "../SingleItem/modals/ModalFirstStep";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
 
@@ -47,14 +47,31 @@ const SingleItem = (props) => {
     });
   };
 
-  function loggedUserIsOwner() {
+  function loggedUserIsItemCreator() {
     return (
       props.location.state.props.creatorId ===
         props.location.state.props.authUserId && context.token
     );
   }
 
-  function getNewState() {}
+  const getActionForTypeOfItem = () => {
+    let itemType = props.location.state.props.type;
+    if (itemType == "perdido") {
+      return (
+        <Button color="primary" size="sm" onClick={toggle}>
+          <span className="btn-inner--text">
+            ¡Creo que encontré este objeto!
+          </span>
+        </Button>
+      );
+    } else if (itemType == "encontrado") {
+      return (
+        <Button color="primary" size="sm" onClick={toggle}>
+          <span className="btn-inner--text">¡Este objeto es mío!</span>
+        </Button>
+      );
+    }
+  };
 
   return (
     <>
@@ -180,29 +197,24 @@ const SingleItem = (props) => {
                   <div className="px-lg-5 py-lg-5">
                     <CardHeader className="bg-white pb-5">
                       <div className="btn-wrapper text-center">
-                        {loggedUserIsOwner() ? (
+                        {loggedUserIsItemCreator() ? (
                           <Button color="primary" size="sm" onClick={toggle}>
                             <span className="btn-inner--text">
                               Editar publicación
                             </span>
                           </Button>
                         ) : (
-                          <Button color="primary" size="sm" onClick={toggle}>
-                            <span className="btn-inner--text">
-                              ¡Creo que encontré este objeto!
-                            </span>
-                          </Button>
+                          getActionForTypeOfItem()
                         )}
 
                         {context.token ? (
-                          <ModalSingleItem
+                          <ModalFirstStep
                             isShowing={isShowing}
                             hide={toggle}
-                            ownerQuestion={
-                              props.location.state.props.ownerQuestion
+                            itemCreatorQuestion={
+                              props.location.state.props.itemCreatorQuestion
                             }
                             itemId={props.location.state.props.id}
-                            state={() => getNewState()}
                             token={context.token}
                           />
                         ) : (

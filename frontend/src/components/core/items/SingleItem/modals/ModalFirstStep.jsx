@@ -20,9 +20,15 @@ import {
 } from "reactstrap";
 
 import classnames from "classnames";
-import SingleItemQuestionExplain from "../../Helpers/SingleItemQuestionExplain";
+import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 
-const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
+const ModalFirstStep = ({
+  isShowing,
+  hide,
+  itemCreatorQuestion,
+  itemId,
+  token,
+}) => {
   const [tabs, setTabs] = useState({ tab: 1 });
   const [claimerAnswer, setClaimerAnswer] = useState("");
   const [claimerQuestion, setClaimerQuestion] = useState("");
@@ -52,13 +58,22 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
     setClaimerAnswer("");
     let requestBody = {
       query: `
-        mutation EditClaim($id: ID!,$newState: String!) {
-          editClaim(itemId: $id,newState: $newState) {
+        mutation CreateClaim($id: ID!) {
+          createClaim(itemId: $id) {
             _id
-            state
+            itemClaimer {
+              email
+            }
             itemCreator {
               email
             }
+            item { 
+              description
+            }
+            stateForClaimer
+            stateForItemCreator
+            flagForClaimer
+            flagForItemCreator
             createdAt
             updatedAt
           }
@@ -66,7 +81,6 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
       `,
       variables: {
         id: itemId,
-        newState: "SinRespuestas",
       },
     };
 
@@ -89,7 +103,6 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
         history.push({
           pathname: "/mis-publicaciones",
         });
-        console.log("TCL: resData ", resData);
       })
       .catch((err) => {
         console.log(err);
@@ -105,7 +118,7 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
             isOpen={isShowing}
             toggle={hide}
           >
-            {ownerQuestion ? (
+            {itemCreatorQuestion ? (
               <>
                 <ModalHeader
                   className="text-default text-center mb-2"
@@ -181,12 +194,12 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                         <div className="text-center text-muted mb-4">
                           <h6>
                             Deberás contestar esta pregunta que dejó el usuario
-                            que perdió el objeto:
+                            que publicó el objeto:
                           </h6>
                         </div>
                         <div className="text-muted text-center mt-2 mb-3">
                           <span className="h6 text-primary font-weight-bold ">
-                            {ownerQuestion}
+                            {itemCreatorQuestion}
                           </span>
                         </div>
                         <Form role="form">
@@ -234,8 +247,8 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
                             Te pedimos que escribas una pregunta sobre el
                             objeto. La persona que realizó esta publicación
                             deberá contestarla y te mostraremos su respuesta
-                            para que puedas verificar que realmente es quién
-                            perdió el objeto.
+                            para que puedas verificar que realmente es el dueño
+                            el objeto.
                           </h6>
                         </div>
                         <Form role="form">
@@ -446,4 +459,4 @@ const ModalSingleItem = ({ isShowing, hide, ownerQuestion, itemId, token }) => {
     : null;
 };
 
-export default ModalSingleItem;
+export default ModalFirstStep;

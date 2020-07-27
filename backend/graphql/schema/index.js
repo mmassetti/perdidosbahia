@@ -9,8 +9,11 @@ module.exports = buildSchema(`
         itemClaimer: User!
         createdAt: String!
         updatedAt: String!
-        stateForCreator: String!
+        stateForItemCreator: String!
         stateForClaimer: String!
+        flagClaimer: Int!
+        flagItemCreator: Int!
+        claimerQuestion: String
     }
         
     type Item {
@@ -20,8 +23,7 @@ module.exports = buildSchema(`
         category: String!
         date: String!
         location: String
-        ownerQuestion: String
-        claimerQuestion: String
+        itemCreatorQuestion: String!
         creator: User!
     }
 
@@ -48,8 +50,7 @@ module.exports = buildSchema(`
         category: String!
         date: String!
         location: String
-        ownerQuestion: String
-        claimerQuestion: String
+        itemCreatorQuestion: String!
     }
 
     input UserInput {
@@ -70,8 +71,8 @@ module.exports = buildSchema(`
     type RootMutation {
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
-        createClaim(itemId : ID!): Claim!
-        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForCreator: String!): Claim!
+        createClaim(itemId : ID!, claimerQuestion: String!): Claim!
+        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagForClaimer: Int!, newFlagForItemCreator: Int!, newClaimerQuestion: String): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 

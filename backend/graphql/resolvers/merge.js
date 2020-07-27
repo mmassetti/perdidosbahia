@@ -43,7 +43,7 @@ const user = async (userId) => {
       ...user._doc,
       _id: user.id,
       createdItems: () => itemLoader.loadMany(this, user._doc.createdItems),
-      claimsInvoled: () => itemLoader.loadMany(this, user._doc.claimsInvoled),
+      claimsInvolved: () => itemLoader.loadMany(this, user._doc.claimsInvolved),
     };
   } catch (err) {
     throw err;
@@ -68,7 +68,6 @@ const transformClaim = (claim) => {
     item: singleItem.bind(this, claim._doc.item),
     createdAt: dateToString(claim._doc.createdAt),
     updatedAt: dateToString(claim._doc.updatedAt),
-    //TODO: Transform stateForCreator and stateForClaimer (Enums)
   };
 };
 

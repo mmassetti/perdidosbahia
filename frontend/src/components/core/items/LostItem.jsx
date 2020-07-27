@@ -53,7 +53,7 @@ const LostItem = (props) => {
   const context = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [category, setCategory] = useState({ categoryName: "" });
-  const [ownerQuestion, setOwnerQuestion] = useState("");
+  const [itemCreatorQuestion, setItemCreatorQuestion] = useState("");
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
   const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
@@ -62,7 +62,7 @@ const LostItem = (props) => {
     description: "",
     category: "",
     date: "",
-    ownerQuestion: "",
+    itemCreatorQuestion: "",
   };
 
   const ItemSchema = yup.object().shape({
@@ -75,7 +75,7 @@ const LostItem = (props) => {
       .max(new Date(), "La fecha no puede ser posterior al día de hoy")
       .typeError("Por favor selecciona la fecha en que perdiste el objeto"),
     location: yup.string().required("Por favor escribí una ubicación"),
-    ownerQuestion: yup.string(),
+    itemCreatorQuestion: yup.string(),
     // category: yup
     //   .string()
     //   .required("Por favor selecciona la categoría del objeto"),
@@ -102,30 +102,27 @@ const LostItem = (props) => {
 
   const toggleTrueFalse = () => setToggled(!isToggled);
 
-  const handleOwnerQuestionChange = (event) => {
-    setOwnerQuestion(event.target.value.toString());
+  const handleItemCreatorQuestionChange = (event) => {
+    setItemCreatorQuestion(event.target.value.toString());
   };
 
-  const cancelOwnerQuestion = () => {
+  const cancelItemCreatorQuestion = () => {
     toggleTrueFalse();
-    setOwnerQuestion("");
+    setItemCreatorQuestion("");
   };
 
-  const removeOwnerQuestion = () => {
-    setOwnerQuestion("");
+  const removeItemCreatorQuestion = () => {
+    setItemCreatorQuestion("");
   };
 
   const submitForm = async (data) => {
     setData(data);
 
-    console.log("Data: ", data);
-    console.log("ownerQuestion: ", ownerQuestion);
-
     const transformedDate = moment(data.dateOfEvent).toDate();
 
     let requestBody = {
       query: `
-          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $ownerQuestion: String) {
+          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String!) {
             createItem(
               itemInput: 
                 {description: $description, 
@@ -133,14 +130,14 @@ const LostItem = (props) => {
                 category: $category, 
                 location: $location,
                 date: $date,
-                ownerQuestion: $ownerQuestion }) {
+                itemCreatorQuestion: $itemCreatorQuestion }) {
                   _id
                   description
                   type
                   category
                   location
                   date
-                  ownerQuestion
+                  itemCreatorQuestion
             }
           }
         `,
@@ -149,7 +146,7 @@ const LostItem = (props) => {
         category: category.categoryName,
         location: data.location,
         date: transformedDate,
-        ownerQuestion: ownerQuestion,
+        itemCreatorQuestion: itemCreatorQuestion,
       },
     };
 
@@ -584,11 +581,12 @@ const LostItem = (props) => {
                                         {/* //* Question */}
                                         <FormGroup
                                           className={
-                                            !formState.touched.ownerQuestion &&
+                                            !formState.touched
+                                              .itemCreatorQuestion &&
                                             (formState.submitCount === 0 ||
                                               formState.isSubmitted)
                                               ? ""
-                                              : errors.ownerQuestion
+                                              : errors.itemCreatorQuestion
                                               ? "has-danger"
                                               : "has-success"
                                           }
@@ -599,25 +597,30 @@ const LostItem = (props) => {
                                             placeholder="Ejemplos: Qué tipo de funda tiene el celular? Cómo es el estuche de los lentes? Qué fecha de nacimiento figura en el documento?"
                                             className={
                                               !formState.touched
-                                                .ownerQuestion &&
+                                                .itemCreatorQuestion &&
                                               (formState.submitCount === 0 ||
                                                 formState.isSubmitted)
                                                 ? ""
-                                                : errors.ownerQuestion
+                                                : errors.itemCreatorQuestion
                                                 ? "is-invalid"
                                                 : "is-valid"
                                             }
                                             cols="80"
                                             rows="4"
                                             type="textarea"
-                                            name="ownerQuestion"
-                                            value={ownerQuestion}
-                                            onChange={handleOwnerQuestionChange}
+                                            name="itemCreatorQuestion"
+                                            value={itemCreatorQuestion}
+                                            onChange={
+                                              handleItemCreatorQuestionChange
+                                            }
                                           />
 
-                                          {errors.ownerQuestion && (
+                                          {errors.itemCreatorQuestion && (
                                             <small style={{ color: "red" }}>
-                                              {errors.ownerQuestion.message}
+                                              {
+                                                errors.itemCreatorQuestion
+                                                  .message
+                                              }
                                             </small>
                                           )}
                                         </FormGroup>
@@ -644,7 +647,7 @@ const LostItem = (props) => {
                                             color="link"
                                             data-dismiss="modal"
                                             type="button"
-                                            onClick={cancelOwnerQuestion}
+                                            onClick={cancelItemCreatorQuestion}
                                           >
                                             Volver
                                           </Button>
@@ -657,14 +660,14 @@ const LostItem = (props) => {
                             </Col>
                             <Col md="4">
                               <Button
-                                hidden={ownerQuestion === ""}
-                                disabled={ownerQuestion === ""}
+                                hidden={itemCreatorQuestion === ""}
+                                disabled={itemCreatorQuestion === ""}
                                 className="ml-auto"
                                 color="danger"
                                 outline
                                 data-dismiss="modal"
                                 type="button"
-                                onClick={removeOwnerQuestion}
+                                onClick={removeItemCreatorQuestion}
                               >
                                 Eliminar pregunta
                               </Button>

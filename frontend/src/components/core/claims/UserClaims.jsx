@@ -59,7 +59,7 @@ const UserClaims = (props) => {
                 type
                 date
                 location
-                ownerQuestion
+                claimerQuestion
                 creator {
                   _id
                   email
@@ -73,6 +73,10 @@ const UserClaims = (props) => {
                 _id
                 email
               }
+              stateForClaimer
+              stateForItemCreator
+              flagClaimer
+              flagItemCreator
             }
           }
         `,
@@ -161,11 +165,15 @@ const UserClaims = (props) => {
       <ClaimCard
         key={claim._id}
         claimId={claim._id}
-        claimState={claim.state}
         itemCreator={claim.itemCreator}
         itemClaimer={claim.itemClaimer}
         authUserId={context.userId}
+        token={context.token}
         item={claim.item}
+        stateForClaimer={claim.stateForClaimer}
+        stateForItemCreator={claim.stateForItemCreator}
+        flagClaimer={claim.flagClaimer}
+        flagItemCreator={claim.flagItemCreator}
         onDelete={deleteClaimHandler}
       ></ClaimCard>
     );
@@ -221,14 +229,6 @@ const UserClaims = (props) => {
                         <Row className="row-grid">
                           {itemsAuthUserIsParticipating}
                         </Row>
-                        {/* <TabContent activeTab={"tabs" + tabs.tabs}>
-                          <TabPane tabId="tabs1">
-                            <Row className="row-grid">{itemsUserIsOwner}</Row>
-                          </TabPane>
-                          <TabPane tabId="tabs2">
-                            <Row className="row-grid">{itemsUserIsClaimer}</Row>
-                          </TabPane>
-                        </TabContent> */}
                       </CardBody>
                     </Card>
                   </>
@@ -263,12 +263,16 @@ const UserClaims = (props) => {
               </section>
             </div>
           </main>
+          <div className="text-center mt-5">
+            <h3>
+              Para poder ver tus publicaciones primero tenés que iniciar sesión.
+            </h3>
+          </div>
+          <h1 className="display-3 text-center"></h1>
 
           <MustLoginModal isShowing={isShowing} hide={toggle} />
         </>
       )}
-
-      <CardsFooter />
     </>
   );
 };
