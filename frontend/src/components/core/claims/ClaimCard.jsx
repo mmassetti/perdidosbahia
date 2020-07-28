@@ -14,17 +14,6 @@ const ClaimCard = (props) => {
   let history = useHistory();
   const { isShowing, toggle } = useModal();
 
-  function goToSingleItem() {
-    history.push({
-      pathname: "/detalle",
-      state: { props: props },
-    });
-  }
-
-  function cancelClaim() {
-    alert("publicacion cancelada");
-  }
-
   const getStateForAuthUser = () => {
     if (props.authUserId == props.itemCreator._id) {
       return props.stateForItemCreator;
@@ -158,7 +147,7 @@ const ClaimCard = (props) => {
         className="mt-4"
         color="danger"
         size="sm"
-        onClick={props.onDelete}
+        onClick={() => props.onDelete(props.claimId)}
       >
         Rechazar contacto
       </Button>
@@ -171,7 +160,7 @@ const ClaimCard = (props) => {
         className="mt-4"
         color="danger"
         size="sm"
-        onClick={() => props.onDelete(props.claimId)}
+        // onClick={() => props.onDelete(props.claimId)}
       >
         Eliminar objeto
       </Button>
