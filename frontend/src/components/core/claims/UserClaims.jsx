@@ -214,7 +214,7 @@ const UserClaims = (props) => {
                     <Spinner />
                   ) : (
                     [
-                      claims.length > 0 ? (
+                      claims.claims && claims.claims.length > 0 ? (
                         <Card className="shadow">
                           <CardBody>
                             <Row className="row-grid">
@@ -225,8 +225,7 @@ const UserClaims = (props) => {
                       ) : (
                         <div className="text-center mt-5">
                           <h3>
-                            Todavía nadie no iniciaste contacto con ninguna
-                            persona
+                            Todavía no iniciaste contacto con ninguna persona
                           </h3>
                         </div>
                       ),
