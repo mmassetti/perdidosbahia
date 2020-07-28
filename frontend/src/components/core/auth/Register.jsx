@@ -471,7 +471,6 @@ const Register = (props) => {
           </Container>
         </section>
       </main>
-      <SimpleFooter />
     </>
   );
 };

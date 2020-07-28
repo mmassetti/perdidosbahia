@@ -17,27 +17,14 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import CardsFooter from "../../theme/Footers/CardsFooter";
 import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import ClaimCard from "../../core/claims/ClaimCard";
-import classnames from "classnames";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  CardBody,
-  NavItem,
-  Nav,
-  NavLink,
-  TabPane,
-  TabContent,
-} from "reactstrap";
+import { Card, Container, Row, Col, CardBody } from "reactstrap";
 
 const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -68,16 +55,24 @@ const UserClaims = (props) => {
               itemCreator {
                 _id
                 email
+                firstName
+                lastName
+                phoneNumber
               }
               itemClaimer {
                 _id
                 email
+                firstName
+                lastName
+                phoneNumber
               }
               stateForClaimer
               stateForItemCreator
               flagClaimer
               flagItemCreator
               claimerQuestion
+              claimerAnswer
+              itemCreatorAnswer
             }
           }
         `,
@@ -176,6 +171,8 @@ const UserClaims = (props) => {
         flagClaimer={claim.flagClaimer}
         flagItemCreator={claim.flagItemCreator}
         claimerQuestion={claim.claimerQuestion}
+        claimerAnswer={claim.claimerAnswer}
+        itemCreatorAnswer={claim.itemCreatorAnswer}
         onDelete={deleteClaimHandler}
       ></ClaimCard>
     );
@@ -186,60 +183,70 @@ const UserClaims = (props) => {
       <CustomNavbar />
 
       {context.token ? (
-        <main>
-          <div className="position-relative">
-            <section className="section section-sm, section-shaped">
-              <div className="shape shape-style-1 shape-default">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-
-              <Container className="py-lg-md d-flex">
-                <div className="col px-0">
-                  <Row>
-                    <Col lg="12">
-                      <h1 className="display-3 text-white">
-                        Controlá el estado de las publicaciones en las que estás
-                        participando
-                      </h1>
-                    </Col>
-                  </Row>
+        <React.Fragment>
+          <main>
+            <div className="position-relative">
+              <section className="section section-sm, section-shaped">
+                <div className="shape shape-style-1 shape-default">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
                 </div>
-              </Container>
-            </section>
-          </div>
 
-          <Container>
-            <Row
-              className="justify-content-center"
-              style={{ marginTop: "2rem" }}
-            >
-              <Col lg="12">
-                {isLoading ? (
-                  <Spinner />
-                ) : (
-                  <>
-                    <Card className="shadow">
-                      <CardBody>
-                        <Row className="row-grid">
-                          {itemsAuthUserIsParticipating}
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </>
-                )}
-              </Col>
-            </Row>
-          </Container>
-          {/* <Download /> */}
-        </main>
+                <Container className="py-lg-md d-flex">
+                  <div className="col px-0">
+                    <Row>
+                      <Col lg="12">
+                        <h1 className="display-3 text-white">
+                          Controlá el estado de las publicaciones en las que
+                          estás participando
+                        </h1>
+                      </Col>
+                    </Row>
+                  </div>
+                </Container>
+              </section>
+            </div>
+
+            <Container>
+              <Row
+                className="justify-content-center"
+                style={{ marginTop: "2rem" }}
+              >
+                <Col lg="12">
+                  {isLoading ? (
+                    <Spinner />
+                  ) : (
+                    [
+                      claims.claims && claims.claims.length > 0 ? (
+                        <Card className="shadow">
+                          <CardBody>
+                            <Row className="row-grid">
+                              {itemsAuthUserIsParticipating}
+                            </Row>
+                          </CardBody>
+                        </Card>
+                      ) : (
+                        <div className="text-center mt-5">
+                          <h3>
+                            Todavía no iniciaste contacto con ninguna persona
+                          </h3>
+                        </div>
+                      ),
+                    ]
+                  )}
+                </Col>
+              </Row>
+            </Container>
+            {/* <Download /> */}
+          </main>
+        </React.Fragment>
       ) : (
         //TODO : Extrar afuera lo que esta entre <main> </main> porque tambien se usa arriba
         <>

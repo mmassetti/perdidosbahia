@@ -19,6 +19,7 @@ import {
 
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
+import ContactInfo from "./helpers/ContactInfo";
 
 const ModalThirdStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -215,11 +216,13 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                         </div>
                       </div>
 
-                      <div className="text-muted text-center mt-2 mb-3">
-                        <span className="h6 text-primary font-weight-bold ">
-                          ..datos de contacto...
-                        </span>
-                      </div>
+                      <ContactInfo
+                        firstName={info.itemCreator.firstName}
+                        lastName={info.itemCreator.lastName}
+                        phoneNumber={info.itemCreator.phoneNumber}
+                        email={info.itemCreator.email}
+                      />
+
                       <Form role="form">
                         <div className="modal-footer">
                           <Button
@@ -227,7 +230,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                             type="button"
                             onClick={(e) => handleSubmitModalForm(e)}
                           >
-                            Salir
+                            Ok
                           </Button>
                         </div>
                       </Form>

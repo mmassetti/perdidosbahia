@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Container, Row } from "reactstrap";
-
 import CustomNavbar from "./theme/Navbars/CustomNavbar.jsx";
-import CardsFooter from "../components/theme/Footers/CardsFooter.jsx";
-
 import SplashScreen from "../components/theme/IndexSections/SplashScreen.jsx";
 
 const Index = (props) => {
@@ -17,7 +13,6 @@ const Index = (props) => {
     <>
       <CustomNavbar />
       <SplashScreen />
-      <CardsFooter />
     </>
   );
 };

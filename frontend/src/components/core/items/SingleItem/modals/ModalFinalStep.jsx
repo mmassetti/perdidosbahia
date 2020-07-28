@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 
 // reactstrap components
 import { Button, Modal } from "reactstrap";
+import ContactInfo from "../modals/helpers/ContactInfo";
 
 const ModalFinaltep = ({ isShowing, hide, info }) => {
   let history = useHistory();
@@ -12,6 +13,28 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   });
+
+  const showItemCreatorInfo = () => {
+    return (
+      <ContactInfo
+        firstName={info.itemCreator.firstName}
+        lastName={info.itemCreator.lastName}
+        phoneNumber={info.itemCreator.phoneNumber}
+        email={info.itemCreator.email}
+      />
+    );
+  };
+
+  const showClaimerInfo = () => {
+    return (
+      <ContactInfo
+        firstName={info.itemClaimer.firstName}
+        lastName={info.itemClaimer.lastName}
+        phoneNumber={info.itemClaimer.phoneNumber}
+        email={info.itemClaimer.email}
+      />
+    );
+  };
 
   return isShowing
     ? ReactDOM.createPortal(
@@ -37,15 +60,20 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
                   <span aria-hidden={true}>×</span>
                 </button>
               </div>
-              <div className="modal-body">{info.itemCreator.email}</div>
+              {}
+
+              {info.authUserId == info.itemClaimer._id
+                ? showItemCreatorInfo()
+                : showClaimerInfo()}
+
               <div className="modal-footer">
                 <Button
-                  color="secondary"
+                  color="primary"
                   data-dismiss="modal"
                   type="button"
                   onClick={hide}
                 >
-                  Salir
+                  Ok
                 </Button>
               </div>
             </React.Fragment>

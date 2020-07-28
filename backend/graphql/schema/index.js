@@ -13,7 +13,9 @@ module.exports = buildSchema(`
         stateForClaimer: String!
         flagClaimer: Int!
         flagItemCreator: Int!
-        claimerQuestion: String
+        claimerQuestion: String!
+        itemCreatorAnswer: String
+        claimerAnswer: String
     }
         
     type Item {
@@ -72,8 +74,8 @@ module.exports = buildSchema(`
     type RootMutation {
         createItem(itemInput: ItemInput): Item
         createUser(userInput: UserInput): User
-        createClaim(itemId : ID!, claimerQuestion: String!): Claim!
-        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String): Claim!
+        createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!
+        editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String, newClaimerAnswer: String, newItemCreatorAnswer: String): Claim!
         cancelClaim(claimId: ID!): Item!
     }
 

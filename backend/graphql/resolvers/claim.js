@@ -37,6 +37,7 @@ module.exports = {
         itemClaimer: claimerId,
         itemCreator: creatorId,
         claimerQuestion: args.claimerQuestion,
+        claimerAnswer: args.claimerAnswer,
         //los estados y los flags se crean por defecto para ambos usuarios
       });
 
@@ -70,6 +71,12 @@ module.exports = {
       fetchedClaim.claimerQuestion = args.newClaimerQuestion
         ? args.newClaimerQuestion
         : fetchedClaim.claimerQuestion;
+      fetchedClaim.claimerAnswer = args.newClaimerAnswer
+        ? args.newClaimerAnswer
+        : fetchedClaim.claimerAnswer;
+      fetchedClaim.itemCreatorAnswer = args.newItemCreatorAnswer
+        ? args.newItemCreatorAnswer
+        : fetchedClaim.itemCreatorAnswer;
       const result = await fetchedClaim.save();
       return transformClaim(result);
     } catch (err) {
