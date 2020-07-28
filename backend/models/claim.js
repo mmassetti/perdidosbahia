@@ -52,6 +52,12 @@ const claimSchema = new Schema(
       type: String,
       required: true,
     },
+    claimerAnswer: {
+      type: String,
+    },
+    itemCreatorAnswer: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

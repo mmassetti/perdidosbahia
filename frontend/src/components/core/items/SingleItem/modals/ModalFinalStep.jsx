@@ -68,12 +68,12 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
 
               <div className="modal-footer">
                 <Button
-                  color="secondary"
+                  color="primary"
                   data-dismiss="modal"
                   type="button"
                   onClick={hide}
                 >
-                  Salir
+                  Ok
                 </Button>
               </div>
             </React.Fragment>

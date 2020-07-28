@@ -45,8 +45,8 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
 
     let requestBody = {
       query: `
-        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!) {
-          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator) {
+        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!, $newItemCreatorAnswer: String!) {
+          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator, newItemCreatorAnswer: $newItemCreatorAnswer) {
             _id
             itemClaimer {
               email
@@ -62,6 +62,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
             createdAt
             updatedAt
             claimerQuestion
+            itemCreatorAnswer
           }
         }
       `,
@@ -71,6 +72,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
         newStateForItemCreator: newStateForItemCreator,
         newFlagClaimer: newFlagClaimer,
         newFlagItemCreator: newFlagItemCreator,
+        newItemCreatorAnswer: itemCreatorAnswer,
       },
     };
 
@@ -199,7 +201,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          ...respuesta..
+                          {info.claimerAnswer}
                         </span>
                       </div>
                       <Form role="form">

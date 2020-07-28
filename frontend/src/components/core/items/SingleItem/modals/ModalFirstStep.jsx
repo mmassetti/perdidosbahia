@@ -56,8 +56,8 @@ const ModalFirstStep = ({
   const handleSubmitModalForm = (e) => {
     let requestBody = {
       query: `
-        mutation CreateClaim($id: ID!,$claimerQuestion: String!) {
-          createClaim(itemId: $id, claimerQuestion: $claimerQuestion) {
+        mutation CreateClaim($id: ID!,$claimerQuestion: String!,$claimerAnswer: String!) {
+          createClaim(itemId: $id, claimerQuestion: $claimerQuestion, claimerAnswer: $claimerAnswer) {
             _id
             itemClaimer {
               email
@@ -73,6 +73,7 @@ const ModalFirstStep = ({
             flagClaimer
             flagItemCreator
             claimerQuestion
+            claimerAnswer
             createdAt
             updatedAt
           }
@@ -81,6 +82,7 @@ const ModalFirstStep = ({
       variables: {
         id: itemId,
         claimerQuestion: claimerQuestion,
+        claimerAnswer: claimerAnswer,
       },
     };
 

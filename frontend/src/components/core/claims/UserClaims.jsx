@@ -71,6 +71,8 @@ const UserClaims = (props) => {
               flagClaimer
               flagItemCreator
               claimerQuestion
+              claimerAnswer
+              itemCreatorAnswer
             }
           }
         `,
@@ -169,6 +171,8 @@ const UserClaims = (props) => {
         flagClaimer={claim.flagClaimer}
         flagItemCreator={claim.flagItemCreator}
         claimerQuestion={claim.claimerQuestion}
+        claimerAnswer={claim.claimerAnswer}
+        itemCreatorAnswer={claim.itemCreatorAnswer}
         onDelete={deleteClaimHandler}
       ></ClaimCard>
     );

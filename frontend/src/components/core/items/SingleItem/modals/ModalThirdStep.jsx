@@ -230,7 +230,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                             type="button"
                             onClick={(e) => handleSubmitModalForm(e)}
                           >
-                            Salir
+                            Ok
                           </Button>
                         </div>
                       </Form>
