@@ -38,8 +38,7 @@ import {
 } from "reactstrap";
 
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
-import CardsFooter from "../../theme/Footers/CardsFooter";
-import Download from "../../theme/IndexSections/Download";
+
 import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";

@@ -33,78 +33,162 @@ const ClaimCard = (props) => {
     }
   };
 
+  function showNotificationMessage() {
+    return (
+      <React.Fragment>
+        <h6 className="text-primary font-weight-bold mb-2">
+          ¡Alguien se comunicó con vos!
+        </h6>
+        <Button color="primary" size="sm" outline onClick={toggle}>
+          Ver mensaje
+        </Button>
+        {showOptions()}
+
+        <div className="py-2 border-top text-center"></div>
+      </React.Fragment>
+    );
+  }
+
+  function showSuccessContactMessage() {
+    return (
+      <React.Fragment>
+        <h6 className="text-primary font-weight-light mb-2">
+          ¡Listo! Tanto vos como la otra persona confirmaron el contacto.
+        </h6>
+        <Button
+          className=""
+          style={{ marginBottom: "1rem" }}
+          color="primary"
+          size="sm"
+          outline
+          onClick={toggle}
+        >
+          Ver info contacto
+        </Button>
+        {showOptions()}
+        <div className="mt-3 border-top text-center"></div>
+      </React.Fragment>
+    );
+  }
+
   const showExtraInfo = () => {
     return (
       <React.Fragment>
-        {/*TODO: Sacar estos 3 controles a un componente aparte*/}
-
-        {/* SECOND MODAL*/}
+        {/* El creador de la publicacion (user1) recibio un mensaje de la otra persona (user2)*/}
         {props.authUserId == props.itemCreator._id &&
         props.flagItemCreator == 1 &&
-        props.flagClaimer == 0 ? (
-          <React.Fragment>
-            <h6 className="text-warning font-weight-light mb-2">
-              ¡Alguien se comunicó con vos!
-            </h6>
-            <Button
-              className=""
-              style={{ marginBottom: "1rem" }}
-              color="warning"
-              size="sm"
-              outline
-              onClick={toggle}
-            >
-              Ver
-            </Button>
-          </React.Fragment>
-        ) : (
-          ""
-        )}
+        props.flagClaimer == 0
+          ? showNotificationMessage()
+          : ""}
 
-        {/* THIRD MODAL */}
+        {/* El user2 recibio la respuesta del user1 */}
         {props.authUserId == props.itemClaimer._id &&
         props.flagItemCreator == 0 &&
-        props.flagClaimer == 1 ? (
-          <React.Fragment>
-            <h6 className="text-warning font-weight-light mb-2">
-              ¡Alguien se comunicó con vos!
-            </h6>
-            <Button
-              className=""
-              style={{ marginBottom: "1rem" }}
-              color="warning"
-              size="sm"
-              outline
-              onClick={toggle}
-            >
-              Ver
-            </Button>
-          </React.Fragment>
+        props.flagClaimer == 1
+          ? showNotificationMessage()
+          : ""}
+
+        {/* Ambos usuarios confirmaron el contacto*/}
+        {props.flagItemCreator == 1 && props.flagClaimer == 1
+          ? showSuccessContactMessage()
+          : ""}
+      </React.Fragment>
+    );
+  };
+
+  const showItemInfo = () => {
+    return (
+      <React.Fragment>
+        <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+          <span className="h6 font-weight-bold">Estado actual:</span>
+          <Badge
+            color="success"
+            pill
+            className="mr-1"
+            style={{ marginLeft: "0.2rem" }}
+          >
+            {getStateForAuthUser()}
+          </Badge>
+        </div>
+        <h6 className="text-primary font-weight-bold text-uppercase">
+          Información del objeto
+        </h6>
+        <h6 className="text-default ">
+          {" "}
+          <span className="font-weight-bold"> Categoría: </span>
+          {props.item.category != "otro"
+            ? props.item.category
+            : "Otros objetos"}
+        </h6>
+        <h6 className="text-default ">
+          <span className="font-weight-bold"> Descripción: </span>{" "}
+          {props.item.description}
+        </h6>
+        <h6 className="text-default ">
+          <span className="font-weight-bold"> Fecha:</span>{" "}
+          {moment(props.item.date).format("LL")}{" "}
+        </h6>
+      </React.Fragment>
+    );
+  };
+
+  const showEditButton = () => {
+    return (
+      <React.Fragment>
+        {props.item.creator._id == props.authUserId ? (
+          <Button
+            className="mt-4"
+            color="primary"
+            size="sm"
+            // onClick={props.onDelete.bind()}
+          >
+            Editar objeto
+          </Button>
         ) : (
           ""
         )}
+      </React.Fragment>
+    );
+  };
 
-        {/* LAST MODAL */}
+  const cancelButton = () => {
+    return (
+      <Button
+        style={{ marginBottom: "1rem" }}
+        className="mt-4"
+        color="danger"
+        size="sm"
+        onClick={props.onDelete}
+      >
+        Rechazar contacto
+      </Button>
+    );
+  };
 
-        {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
-          <React.Fragment>
-            <h6 className="text-warning font-weight-light mb-2">
-              Tanto vos como la otra persona confirmaron el contacto.
-            </h6>
-            <Button
-              className=""
-              style={{ marginBottom: "1rem" }}
-              color="warning"
-              size="sm"
-              outline
-              onClick={toggle}
-            >
-              Ver info contacto
-            </Button>
-          </React.Fragment>
-        ) : (
-          ""
-        )}
+  const showDeleteButton = () => {
+    return (
+      <Button
+        className="mt-4"
+        color="danger"
+        size="sm"
+        onClick={() => props.onDelete(props.claimId)}
+      >
+        Eliminar objeto
+      </Button>
+    );
+  };
+
+  const showOptions = () => {
+    return (
+      <React.Fragment>
+        {props.item.creator._id == props.authUserId &&
+        (props.flagItemCreator !== 1 || props.flagClaimer !== 1)
+          ? cancelButton()
+          : [
+              props.flagItemCreator == 1 && props.flagClaimer == 1
+                ? ""
+                : cancelButton(),
+            ]}
       </React.Fragment>
     );
   };
@@ -119,80 +203,12 @@ const ClaimCard = (props) => {
           <CardBody className="py-5">
             {showExtraInfo()}
 
-            <h6 className="text-primary text-uppercase">
-              {props.item.category != "otro"
-                ? props.item.category
-                : "Otros objetos"}
-            </h6>
-            <p className="description mt-3">{props.item.description}</p>
-            <Badge color="primary" pill className="mr-1">
-              {props.item.type}
-            </Badge>
+            {showItemInfo()}
 
-            <div>
-              <Badge color="primary" pill className="mr-1">
-                {moment(props.item.date).format("LL")}
-              </Badge>
-            </div>
-            <div style={{ marginTop: "1rem" }}>
-              <span className="h6 font-weight-bold">Estado actual:</span>
-              <Badge
-                color="success"
-                pill
-                className="mr-1"
-                style={{ marginLeft: "0.5rem" }}
-              >
-                {getStateForAuthUser()}
-              </Badge>
-            </div>
-            {props.item.creator._id == props.authUserId ? (
-              <Button
-                className="mt-4"
-                color="primary"
-                size="sm"
-                // onClick={props.onDelete.bind()}
-              >
-                Editar objeto
-              </Button>
-            ) : (
-              ""
-            )}
-
-            {props.item.creator._id == props.authUserId ? (
-              <React.Fragment>
-                <Button
-                  className="mt-4"
-                  color="warning"
-                  size="sm"
-                  onClick={props.onDelete}
-                >
-                  Cancelar contacto
-                </Button>
-                <Button
-                  className="mt-4"
-                  color="warning"
-                  size="sm"
-                  onClick={() => props.onDelete(props.claimId)}
-                >
-                  Eliminar objeto
-                </Button>
-              </React.Fragment>
-            ) : (
-              [
-                props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
-                  ""
-                ) : (
-                  <Button
-                    className="mt-4"
-                    color="warning"
-                    size="sm"
-                    onClick={props.onDelete}
-                  >
-                    Cancelar contacto
-                  </Button>
-                ),
-              ]
-            )}
+            {showEditButton()}
+            {props.item.creator._id == props.authUserId
+              ? showDeleteButton()
+              : ""}
           </CardBody>
         </Card>
       </Col>

@@ -17,8 +17,6 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import Download from "../../theme/IndexSections/Download";
-import CardsFooter from "../../theme/Footers/CardsFooter";
 import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import CardItem from "./cards/CardItem";
