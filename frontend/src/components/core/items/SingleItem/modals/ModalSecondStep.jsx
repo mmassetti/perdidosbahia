@@ -240,8 +240,9 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                         <h6>
                           Te toca responder su pregunta. De esta forma
                           aseguramos que ambas partes esten de acuerdo para
-                          ponerse en contacto. ¡Este es el último paso!
+                          ponerse en contacto.
                         </h6>
+                        <h6>¡Este es el último paso!</h6>
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">

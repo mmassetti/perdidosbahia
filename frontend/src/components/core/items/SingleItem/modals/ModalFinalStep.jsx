@@ -3,10 +3,10 @@ import ReactDOM from "react-dom";
 import { useHistory } from "react-router-dom";
 
 // reactstrap components
-import { Button, Modal, ListGroup, ListGroupItem } from "reactstrap";
+import { Button, Modal } from "reactstrap";
+import ContactInfo from "../modals/helpers/ContactInfo";
 
 const ModalFinaltep = ({ isShowing, hide, info }) => {
-  console.log("ModalFinaltep -> info", info);
   let history = useHistory();
 
   useEffect(() => {
@@ -16,30 +16,23 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
 
   const showItemCreatorInfo = () => {
     return (
-      <div className="modal-body">
-        <ListGroup>
-          <ListGroupItem>
-            <span className="h6 font-weight-bold">Nombre: </span>
-            {info.itemCreator.firstName}
-          </ListGroupItem>
-          <ListGroupItem>
-            {" "}
-            <span className="h6 font-weight-bold">Apellido: </span>
-            {info.itemCreator.lastName}{" "}
-          </ListGroupItem>
-          <ListGroupItem>
-            {" "}
-            <span className="h6 font-weight-bold">Número de celular: </span>
-            {info.itemCreator.phoneNumber
-              ? info.itemCreator.phoneNumber
-              : "La otra persona no brindó su número"}{" "}
-          </ListGroupItem>
-          <ListGroupItem>
-            <span className="h6 font-weight-bold">Email:</span>{" "}
-            {info.itemCreator.email}
-          </ListGroupItem>
-        </ListGroup>
-      </div>
+      <ContactInfo
+        firstName={info.itemCreator.firstName}
+        lastName={info.itemCreator.lastName}
+        phoneNumber={info.itemCreator.phoneNumber}
+        email={info.itemCreator.email}
+      />
+    );
+  };
+
+  const showClaimerInfo = () => {
+    return (
+      <ContactInfo
+        firstName={info.itemClaimer.firstName}
+        lastName={info.itemClaimer.lastName}
+        phoneNumber={info.itemClaimer.phoneNumber}
+        email={info.itemClaimer.email}
+      />
     );
   };
 
@@ -69,14 +62,9 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
               </div>
               {}
 
-              {info.authUserId == info.itemClaimer._id ? (
-                showItemCreatorInfo()
-              ) : (
-                <div className="modal-body">
-                  {info.itemClaimer.firstName}
-                  {info.itemClaimer.email}
-                </div>
-              )}
+              {info.authUserId == info.itemClaimer._id
+                ? showItemCreatorInfo()
+                : showClaimerInfo()}
 
               <div className="modal-footer">
                 <Button
