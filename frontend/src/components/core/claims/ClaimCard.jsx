@@ -152,21 +152,31 @@ const ClaimCard = (props) => {
                 size="sm"
                 // onClick={props.onDelete.bind()}
               >
-                Editar
+                Editar objeto
               </Button>
             ) : (
               ""
             )}
 
             {props.item.creator._id == props.authUserId ? (
-              <Button
-                className="mt-4"
-                color="warning"
-                size="sm"
-                onClick={() => props.onDelete(props.claimId)}
-              >
-                Eliminar
-              </Button>
+              <React.Fragment>
+                <Button
+                  className="mt-4"
+                  color="warning"
+                  size="sm"
+                  onClick={props.onDelete}
+                >
+                  Cancelar contacto
+                </Button>
+                <Button
+                  className="mt-4"
+                  color="warning"
+                  size="sm"
+                  onClick={() => props.onDelete(props.claimId)}
+                >
+                  Eliminar objeto
+                </Button>
+              </React.Fragment>
             ) : (
               [
                 props.flagItemCreator == 1 && props.flagClaimer == 1 ? (

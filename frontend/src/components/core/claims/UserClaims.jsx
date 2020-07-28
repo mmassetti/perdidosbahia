@@ -55,10 +55,16 @@ const UserClaims = (props) => {
               itemCreator {
                 _id
                 email
+                firstName
+                lastName
+                phoneNumber
               }
               itemClaimer {
                 _id
                 email
+                firstName
+                lastName
+                phoneNumber
               }
               stateForClaimer
               stateForItemCreator

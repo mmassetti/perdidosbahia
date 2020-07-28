@@ -76,9 +76,6 @@ const LostItem = (props) => {
       .typeError("Por favor selecciona la fecha en que perdiste el objeto"),
     location: yup.string().required("Por favor escribí una ubicación"),
     itemCreatorQuestion: yup.string(),
-    // category: yup
-    //   .string()
-    //   .required("Por favor selecciona la categoría del objeto"),
   });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
@@ -678,7 +675,9 @@ const LostItem = (props) => {
                               className="my-4"
                               color="primary"
                               disabled={
-                                !formState.isValid || !buttonGroupTouched
+                                !formState.isValid ||
+                                !buttonGroupTouched ||
+                                !itemCreatorQuestion
                                   ? true
                                   : false
                               }

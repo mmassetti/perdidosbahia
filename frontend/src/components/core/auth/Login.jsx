@@ -239,7 +239,10 @@ const Login = (props) => {
                         <p>
                           {" "}
                           ¿Todavía no tenés una cuenta?{" "}
-                          <Link className="label" to="/registro">
+                          <Link
+                            className="label font-weight-bold"
+                            to="/registro"
+                          >
                             Registrate
                           </Link>
                         </p>

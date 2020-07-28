@@ -3,15 +3,45 @@ import ReactDOM from "react-dom";
 import { useHistory } from "react-router-dom";
 
 // reactstrap components
-import { Button, Modal } from "reactstrap";
+import { Button, Modal, ListGroup, ListGroupItem } from "reactstrap";
 
 const ModalFinaltep = ({ isShowing, hide, info }) => {
+  console.log("ModalFinaltep -> info", info);
   let history = useHistory();
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   });
+
+  const showItemCreatorInfo = () => {
+    return (
+      <div className="modal-body">
+        <ListGroup>
+          <ListGroupItem>
+            <span className="h6 font-weight-bold">Nombre: </span>
+            {info.itemCreator.firstName}
+          </ListGroupItem>
+          <ListGroupItem>
+            {" "}
+            <span className="h6 font-weight-bold">Apellido: </span>
+            {info.itemCreator.lastName}{" "}
+          </ListGroupItem>
+          <ListGroupItem>
+            {" "}
+            <span className="h6 font-weight-bold">Número de celular: </span>
+            {info.itemCreator.phoneNumber
+              ? info.itemCreator.phoneNumber
+              : "La otra persona no brindó su número"}{" "}
+          </ListGroupItem>
+          <ListGroupItem>
+            <span className="h6 font-weight-bold">Email:</span>{" "}
+            {info.itemCreator.email}
+          </ListGroupItem>
+        </ListGroup>
+      </div>
+    );
+  };
 
   return isShowing
     ? ReactDOM.createPortal(
@@ -37,7 +67,17 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
                   <span aria-hidden={true}>×</span>
                 </button>
               </div>
-              <div className="modal-body">{info.itemCreator.email}</div>
+              {}
+
+              {info.authUserId == info.itemClaimer._id ? (
+                showItemCreatorInfo()
+              ) : (
+                <div className="modal-body">
+                  {info.itemClaimer.firstName}
+                  {info.itemClaimer.email}
+                </div>
+              )}
+
               <div className="modal-footer">
                 <Button
                   color="secondary"
