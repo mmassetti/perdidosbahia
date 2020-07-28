@@ -176,7 +176,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          ...respuesta..
+                          {info.itemCreatorAnswer}
                         </span>
                       </div>
                       <Form role="form">
