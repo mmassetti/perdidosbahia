@@ -4,9 +4,12 @@ import { useHistory } from "react-router-dom";
 
 // reactstrap components
 import { Button, Modal } from "reactstrap";
-import ContactInfo from "../modals/helpers/ContactInfo";
 
-const ModalFinalStep = ({ isShowing, hide, info }) => {
+var moment = require("moment");
+require("moment/locale/es");
+
+const ModalEditItem = ({ isShowing, hide, info }) => {
+  console.log("ModalEditItem -> info ", info);
   let history = useHistory();
 
   useEffect(() => {
@@ -14,25 +17,27 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
     document.scrollingElement.scrollTop = 0;
   });
 
-  const showItemCreatorInfo = () => {
+  const showItemInfo = () => {
     return (
-      <ContactInfo
-        firstName={info.itemCreator.firstName}
-        lastName={info.itemCreator.lastName}
-        phoneNumber={info.itemCreator.phoneNumber}
-        email={info.itemCreator.email}
-      />
-    );
-  };
-
-  const showClaimerInfo = () => {
-    return (
-      <ContactInfo
-        firstName={info.itemClaimer.firstName}
-        lastName={info.itemClaimer.lastName}
-        phoneNumber={info.itemClaimer.phoneNumber}
-        email={info.itemClaimer.email}
-      />
+      <React.Fragment>
+        <h6 className="text-default ">
+          {" "}
+          <span className="font-weight-bold"> Categoría: </span>
+          {info.item.category != "otro" ? info.item.category : "Otros objetos"}
+        </h6>
+        <h6 className="text-default ">
+          <span className="font-weight-bold"> Descripción: </span>{" "}
+          {info.item.description}
+        </h6>
+        <h6 className="text-default ">
+          <span className="font-weight-bold"> Ubicación: </span>{" "}
+          {info.item.location}
+        </h6>
+        <h6 className="text-default ">
+          <span className="font-weight-bold"> Fecha:</span>{" "}
+          {moment(info.item.date).format("LL")}{" "}
+        </h6>
+      </React.Fragment>
     );
   };
 
@@ -48,7 +53,7 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
             <React.Fragment>
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
-                  Datos de contacto
+                  Editar objeto
                 </h5>
                 <button
                   aria-label="Close"
@@ -61,11 +66,7 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
                 </button>
               </div>
               {}
-
-              {info.authUserId == info.itemClaimer._id
-                ? showItemCreatorInfo()
-                : showClaimerInfo()}
-
+              {showItemInfo()}
               <div className="modal-footer">
                 <Button
                   color="primary"
@@ -84,4 +85,4 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
     : null;
 };
 
-export default ModalFinalStep;
+export default ModalEditItem;
