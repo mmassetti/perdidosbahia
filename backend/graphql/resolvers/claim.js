@@ -32,26 +32,33 @@ module.exports = {
       const claimerId = req.userId;
       const creatorId = fetchedItem.creator;
 
-      const claim = new Claim({
-        item: fetchedItem._id,
-        itemClaimer: claimerId,
-        itemCreator: creatorId,
-        claimerQuestion: args.claimerQuestion,
-        claimerAnswer: args.claimerAnswer,
-        //los estados y los flags se crean por defecto para ambos usuarios
+      const alreadyExitsClaimForClaimer = await Claim.findOne({
+        $and: [{ itemClaimer: claimerId }, { itemCreator: creatorId }],
       });
 
-      //Se agrega el Claim a la lista de ambos usuarios
-      const claimer = await User.findOne({ _id: claimerId });
-      const creator = await User.findOne({ _id: creatorId });
+      if (!alreadyExitsClaimForClaimer) {
+        const claim = new Claim({
+          item: fetchedItem._id,
+          itemClaimer: claimerId,
+          itemCreator: creatorId,
+          claimerQuestion: args.claimerQuestion,
+          claimerAnswer: args.claimerAnswer,
+          //los estados y los flags se crean por defecto para ambos usuarios
+        });
 
-      creator.claimsInvolved.push(claim);
-      claimer.claimsInvolved.push(claim);
-      creator.save();
-      claimer.save();
+        //Se agrega el Claim a la lista de ambos usuarios
+        const claimer = await User.findOne({ _id: claimerId });
+        const creator = await User.findOne({ _id: creatorId });
 
-      const result = await claim.save();
-      return transformClaim(result);
+        creator.claimsInvolved.push(claim);
+        claimer.claimsInvolved.push(claim);
+        creator.save();
+        claimer.save();
+
+        const result = await claim.save();
+        return transformClaim(result);
+      }
+      return new Error("Already exits a Claim for this Item and these Users");
     } catch (err) {
       throw err;
     }
