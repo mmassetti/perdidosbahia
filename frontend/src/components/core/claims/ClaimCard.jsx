@@ -114,6 +114,10 @@ const ClaimCard = (props) => {
           {props.item.description}
         </h6>
         <h6 className="text-default ">
+          <span className="font-weight-bold"> Ubicación: </span>{" "}
+          {props.item.location}
+        </h6>
+        <h6 className="text-default ">
           <span className="font-weight-bold"> Fecha:</span>{" "}
           {moment(props.item.date).format("LL")}{" "}
         </h6>
