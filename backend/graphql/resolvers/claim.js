@@ -64,21 +64,30 @@ module.exports = {
     }
     try {
       const fetchedClaim = await Claim.findOne({ _id: args.claimId });
-      fetchedClaim.stateForClaimer = args.newStateForClaimer;
-      fetchedClaim.stateForItemCreator = args.newStateForItemCreator;
-      fetchedClaim.flagClaimer = args.newFlagClaimer;
-      fetchedClaim.flagItemCreator = args.newFlagItemCreator;
-      fetchedClaim.claimerQuestion = args.newClaimerQuestion
-        ? args.newClaimerQuestion
-        : fetchedClaim.claimerQuestion;
-      fetchedClaim.claimerAnswer = args.newClaimerAnswer
-        ? args.newClaimerAnswer
-        : fetchedClaim.claimerAnswer;
-      fetchedClaim.itemCreatorAnswer = args.newItemCreatorAnswer
-        ? args.newItemCreatorAnswer
-        : fetchedClaim.itemCreatorAnswer;
-      const result = await fetchedClaim.save();
-      return transformClaim(result);
+      const claimerId = fetchedClaim.itemClaimer;
+      const creatorId = fetchedClaim.itemCreator;
+
+      const isUserAuthorized =
+        req.userId == claimerId || req.userId == creatorId;
+
+      if (isUserAuthorized) {
+        fetchedClaim.stateForClaimer = args.newStateForClaimer;
+        fetchedClaim.stateForItemCreator = args.newStateForItemCreator;
+        fetchedClaim.flagClaimer = args.newFlagClaimer;
+        fetchedClaim.flagItemCreator = args.newFlagItemCreator;
+        fetchedClaim.claimerQuestion = args.newClaimerQuestion
+          ? args.newClaimerQuestion
+          : fetchedClaim.claimerQuestion;
+        fetchedClaim.claimerAnswer = args.newClaimerAnswer
+          ? args.newClaimerAnswer
+          : fetchedClaim.claimerAnswer;
+        fetchedClaim.itemCreatorAnswer = args.newItemCreatorAnswer
+          ? args.newItemCreatorAnswer
+          : fetchedClaim.itemCreatorAnswer;
+        const result = await fetchedClaim.save();
+        return transformClaim(result);
+      }
+      return new Error("Permission denied");
     } catch (err) {
       throw err;
     }
@@ -91,19 +100,28 @@ module.exports = {
     }
     try {
       const claim = await Claim.findById(args.claimId).populate("item");
-      const item = transformItem(claim.item);
-      await Claim.deleteOne({ _id: args.claimId });
+      const claimerId = claim.itemClaimer;
+      const creatorId = claim.itemCreator;
 
-      //Delete Claims from users lists
-      const claimer = await User.findOne({ _id: claim.itemClaimer });
-      const creator = await User.findOne({ _id: claim.itemCreator });
+      const isUserAuthorized =
+        req.userId == claimerId || req.userId == creatorId;
 
-      claimer.claimsInvolved.pull(claim._id);
-      creator.claimsInvolved.pull(claim._id);
-      claimer.save();
-      creator.save();
+      if (isUserAuthorized) {
+        const item = transformItem(claim.item);
+        await Claim.deleteOne({ _id: args.claimId });
 
-      return item;
+        //Delete Claims from users lists
+        const claimer = await User.findOne({ _id: claim.itemClaimer });
+        const creator = await User.findOne({ _id: claim.itemCreator });
+
+        claimer.claimsInvolved.pull(claim._id);
+        creator.claimsInvolved.pull(claim._id);
+        claimer.save();
+        creator.save();
+
+        return item;
+      }
+      return new Error("Permission denied");
     } catch (err) {
       throw err;
     }
