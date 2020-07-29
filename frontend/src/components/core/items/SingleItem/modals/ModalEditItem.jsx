@@ -67,14 +67,13 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
     return (
       <React.Fragment>
         <div className="px-sm-3 py-sm-3 text-center text-muted ">
-          <h6
-            style={{ textTransform: "capitalize" }}
-            className="text-default font-weight-bold"
-          >
+          <h6 className="text-default font-weight-bold">
             {currentFieldToEdit.itemFieldNameToShow}{" "}
             <span style={{ textTransform: "none" }}>actual: </span>{" "}
             <span className="text-warning font-weight-light">
-              {currentFieldToEdit.itemFieldContent}
+              {currentFieldToEdit.itemField == "date"
+                ? moment(currentFieldToEdit.itemFieldContent).format("LL")
+                : currentFieldToEdit.itemFieldContent}
             </span>
           </h6>
         </div>
