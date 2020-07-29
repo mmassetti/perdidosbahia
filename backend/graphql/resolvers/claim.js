@@ -32,9 +32,12 @@ module.exports = {
       const claimerId = req.userId;
       const creatorId = fetchedItem.creator;
 
-      const alreadyExitsClaimForClaimer = await Claim.findOne({
+      const sharedClaimBetweenUsers = await Claim.findOne({
         $and: [{ itemClaimer: claimerId }, { itemCreator: creatorId }],
       });
+
+      const alreadyExitsClaimForClaimer =
+        sharedClaimBetweenUsers && sharedClaimBetweenUsers.item == args.itemId;
 
       if (!alreadyExitsClaimForClaimer) {
         const claim = new Claim({
