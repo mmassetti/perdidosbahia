@@ -1,23 +1,6 @@
 const { buildSchema } = require("graphql");
 
-module.exports = buildSchema(`
-
-    type Claim {
-        _id: ID!
-        item: Item!
-        itemCreator: User!
-        itemClaimer: User!
-        createdAt: String!
-        updatedAt: String!
-        stateForItemCreator: String!
-        stateForClaimer: String!
-        flagClaimer: Int!
-        flagItemCreator: Int!
-        claimerQuestion: String!
-        itemCreatorAnswer: String
-        claimerAnswer: String
-    }
-        
+module.exports = buildSchema(`   
     type Item {
         _id: ID!
         description: String!
@@ -47,6 +30,22 @@ module.exports = buildSchema(`
         firstName: String
     }
 
+    type Claim {
+        _id: ID!
+        item: Item!
+        itemCreator: User!
+        itemClaimer: User!
+        createdAt: String!
+        updatedAt: String!
+        stateForItemCreator: String!
+        stateForClaimer: String!
+        flagClaimer: Int!
+        flagItemCreator: Int!
+        claimerQuestion: String!
+        itemCreatorAnswer: String
+        claimerAnswer: String
+    }
+
     input ItemInput {
         description: String!
         type: String!
@@ -74,6 +73,7 @@ module.exports = buildSchema(`
     type RootMutation {        
         createUser(userInput: UserInput): User
         createItem(itemInput: ItemInput): Item
+        editItem(itemId: ID!, newItemInput: ItemInput): Item
         deleteItem(itemId: ID!): ID
         createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!
         editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String, newClaimerAnswer: String, newItemCreatorAnswer: String): Claim!

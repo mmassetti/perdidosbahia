@@ -59,6 +59,31 @@ module.exports = {
       throw err;
     }
   },
+  editItem: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const fetchedItem = await Item.findOne({ _id: args.itemId });
+      const itemCreator = fetchedItem.creator;
+
+      const isUserAuthorized = req.userId == itemCreator._id;
+      if (isUserAuthorized) {
+        fetchedItem.description = args.newItemInput.description;
+        fetchedItem.type = args.newItemInput.type;
+        fetchedItem.category = args.newItemInput.category;
+        fetchedItem.location = args.newItemInput.location;
+        fetchedItem.date = new Date(args.newItemInput.date);
+        fetchedItem.itemCreatorQuestion = args.newItemInput.itemCreatorQuestion;
+
+        return await fetchedItem.save();
+      }
+      return new Error("Permission denied");
+    } catch (err) {
+      throw err;
+    }
+  },
   deleteItem: async (args, req) => {
     //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
@@ -66,19 +91,23 @@ module.exports = {
     }
     try {
       const item = await Item.findById(args.itemId);
-
       const creator = await User.findOne({ _id: item.creator });
-      creator.createdItems.pull(item._id);
-      creator.save();
-      await Item.deleteOne({ _id: item._id });
+      const isUserAuthorized = req.userId == creator._id;
 
-      //Delete Claims asocciated to Item
-      const claims = await Claim.find({ item: item._id });
-      claims.map(async (claim) => {
-        await deleteClaim(claim);
-      });
+      if (isUserAuthorized) {
+        creator.createdItems.pull(item._id);
+        creator.save();
+        await Item.deleteOne({ _id: item._id });
 
-      return args.itemId;
+        //Delete Claims asocciated to Item
+        const claims = await Claim.find({ item: item._id });
+        claims.map(async (claim) => {
+          await deleteClaim(claim);
+        });
+
+        return args.itemId;
+      }
+      return new Error("Permission denied");
     } catch (err) {
       throw err;
     }
