@@ -70,7 +70,10 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
           <h6 className="text-default font-weight-bold">
             {currentFieldToEdit.itemFieldNameToShow}{" "}
             <span style={{ textTransform: "none" }}>actual: </span>{" "}
-            <span className="text-warning font-weight-light">
+            <span
+              style={{ wordBreak: "break-all" }}
+              className="text-warning font-weight-light"
+            >
               {currentFieldToEdit.itemField == "date"
                 ? moment(currentFieldToEdit.itemFieldContent).format("LL")
                 : currentFieldToEdit.itemFieldContent}

@@ -267,9 +267,14 @@ const LostItem = (props) => {
                               style={{ borderColor: "red" }}
                               vertical
                             >
-                              <div style={{ marginBottom: "1rem" }}>
+                              <div
+                                style={{
+                                  marginBottom: "1rem",
+                                  marginTop: "1rem",
+                                }}
+                              >
                                 <span className="h6 font-weight-bold ">
-                                  Seleccioná una categoría
+                                  Seleccioná una categoría de las siguientes:
                                 </span>
                               </div>
                               <Button

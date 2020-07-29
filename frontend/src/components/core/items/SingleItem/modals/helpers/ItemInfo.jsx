@@ -24,7 +24,7 @@ export default function ItemInfo(props) {
   return (
     <div className="modal-body" style={{ paddingTop: "0" }}>
       <ListGroup>
-        <ListGroupItem>
+        <ListGroupItem style={{ wordBreak: "break-all" }}>
           <span className="h6 font-weight-bold">Categoría: </span>
           {props.item.category != "otro"
             ? props.item.category
@@ -32,24 +32,24 @@ export default function ItemInfo(props) {
 
           {editButton("category", "categoría", props.item.category)}
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem style={{ wordBreak: "break-all" }}>
           {" "}
           <span className="h6 font-weight-bold">Descripción: </span>
           {props.item.description}
           {editButton("description", "descripción", props.item.description)}
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem style={{ wordBreak: "break-all" }}>
           {" "}
           <span className="h6 font-weight-bold">Ubicación: </span>
           {props.item.location}
           {editButton("location", "ubicación", props.item.location)}
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem style={{ wordBreak: "break-all" }}>
           <span className="h6 font-weight-bold">Fecha:</span>{" "}
           {moment(props.item.date).format("LL")}{" "}
           {editButton("date", "fecha", props.item.date)}
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem style={{ wordBreak: "break-all" }}>
           <span className="h6 font-weight-bold">
             Pregunta que tienen que responderte:
           </span>{" "}
