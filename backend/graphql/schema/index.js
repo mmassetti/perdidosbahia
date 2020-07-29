@@ -71,9 +71,10 @@ module.exports = buildSchema(`
         login(email: String!, password: String  !): AuthData!
     }
 
-    type RootMutation {
-        createItem(itemInput: ItemInput): Item
+    type RootMutation {        
         createUser(userInput: UserInput): User
+        createItem(itemInput: ItemInput): Item
+        deleteItem(itemId: ID!): ID
         createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!
         editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String, newClaimerAnswer: String, newItemCreatorAnswer: String): Claim!
         cancelClaim(claimId: ID!): Item!
