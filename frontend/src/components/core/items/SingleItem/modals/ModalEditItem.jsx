@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 
 // reactstrap components
 import { Button, Modal } from "reactstrap";
+import ItemInfo from "./helpers/ItemInfo";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -20,23 +21,7 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
   const showItemInfo = () => {
     return (
       <React.Fragment>
-        <h6 className="text-default ">
-          {" "}
-          <span className="font-weight-bold"> Categoría: </span>
-          {info.item.category != "otro" ? info.item.category : "Otros objetos"}
-        </h6>
-        <h6 className="text-default ">
-          <span className="font-weight-bold"> Descripción: </span>{" "}
-          {info.item.description}
-        </h6>
-        <h6 className="text-default ">
-          <span className="font-weight-bold"> Ubicación: </span>{" "}
-          {info.item.location}
-        </h6>
-        <h6 className="text-default ">
-          <span className="font-weight-bold"> Fecha:</span>{" "}
-          {moment(info.item.date).format("LL")}{" "}
-        </h6>
+        <ItemInfo item={info.item} />
       </React.Fragment>
     );
   };
@@ -55,6 +40,7 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
                 <h5 className="modal-title" id="exampleModalLabel">
                   Editar objeto
                 </h5>
+
                 <button
                   aria-label="Close"
                   className="close"
@@ -65,7 +51,12 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
                   <span aria-hidden={true}>×</span>
                 </button>
               </div>
-              {}
+              <div className="px-sm-3 py-sm-3 text-center text-muted">
+                <h6>
+                  Hace click en el ícono del lápiz para editar el campo que
+                  quieras
+                </h6>
+              </div>
               {showItemInfo()}
               <div className="modal-footer">
                 <Button
