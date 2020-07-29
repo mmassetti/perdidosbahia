@@ -13,32 +13,17 @@ export default function ItemInfo(props) {
           {props.item.category != "otro"
             ? props.item.category
             : "Otros objetos"}
-          {/* <Button
-            size="sm"
-            color="primary"
-            onClick={() => {
-              alert("EDITAR");
-            }}
-          >
-            Editar
-          </Button> */}
+
           <Button
             className=" btn-neutral btn-icon-only btn-round pull-right"
             color="github"
-            // style={{ color: "#1da1d2" }}
-            id="tooltip126536702"
             size="sm"
-            target="_blank"
+            onClick={() => {
+              props.onEditClick("category", "categoría", props.item.category);
+            }}
           >
             <i className="fa fa-pencil" />
           </Button>
-          {/* 
-          <span class="pull-right">
-            <span onclick="alert('Action2 -> Play'); event.stopPropagation();">
-              <i className="fa fa-pencil-square-o" />
-              <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-            </span>
-          </span> */}
         </ListGroupItem>
         <ListGroupItem>
           {" "}
