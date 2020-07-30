@@ -75,10 +75,10 @@ const transformNotification = (notification) => {
   return {
     ...notification._doc,
     _id: notification.id,
-    itemInvolved: notification._doc.item
-      ? singleItem.bind(this, notification._doc.item)
+    itemInvolved: notification._doc.itemInvolved
+      ? singleItem.bind(this, notification._doc.itemInvolved)
       : null,
-    userToNotify: user.bind(this, notification.creator),
+    userToNotify: user.bind(this, notification.userToNotify),
   };
 };
 
