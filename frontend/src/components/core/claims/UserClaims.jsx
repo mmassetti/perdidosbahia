@@ -40,6 +40,7 @@ const UserClaims = (props) => {
             claims {
               _id  
               item {
+                _id
                 description
                 category
                 description

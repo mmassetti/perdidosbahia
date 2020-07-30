@@ -4,8 +4,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 export default function ItemInfo(props) {
-  console.log("ItemInfo -> props", props);
-
   const editButton = (itemField, itemFieldNameToShow, itemFieldContent) => {
     return (
       <Button

@@ -6,13 +6,13 @@ import useModal from "../../../Helpers/useModal";
 // reactstrap components
 import { Button, Modal } from "reactstrap";
 import ItemInfo from "./helpers/ItemInfo";
-import OptionsForSelectedField from "./helpers/ItemEdition/OptionsForSelectedField";
+import OptionsForSelectedField from "./helpers/ItemEdit/OptionsForSelectedField";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const ModalEditItem = ({ isShowing, hide, info }) => {
-  console.log("ModalEditItem -> info ", info);
+  console.log("ModalEditItem ->  info", info);
   let history = useHistory();
   const [isEditModeActive, setIsEditModeActive] = useState(false);
   const { isShowingEditSection, toggleIsShowingEditSection } = useModal();
@@ -45,7 +45,7 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
       <React.Fragment>
         <div className="px-sm-3 py-sm-3 text-center text-muted ">
           <h6 className="text-warning font-weight-light">
-            Hace click en el ícono del lápiz para editar el campo que quieras
+            Presioná el ícono del lápiz para editar el campo que quieras
           </h6>
         </div>
         <ItemInfo item={info.item} onEditClick={editClickHandler} />
@@ -84,18 +84,8 @@ const ModalEditItem = ({ isShowing, hide, info }) => {
         <OptionsForSelectedField
           selectedField={currentFieldToEdit.itemField}
           selectedFieldContent={currentFieldToEdit.itemFieldContent}
+          info={info}
         />
-
-        <div className="modal-footer">
-          <Button
-            color="primary"
-            data-dismiss="modal"
-            type="button"
-            onClick={hide}
-          >
-            Ok
-          </Button>
-        </div>
       </React.Fragment>
     );
   };
