@@ -51,6 +51,7 @@ module.exports = buildSchema(`
         _id: ID!
         description: String!
         itemInvolved: Item
+        userToNotify: User!
     }
 
     input ItemInput {
@@ -74,6 +75,7 @@ module.exports = buildSchema(`
         items: [Item!]!
         claims: [Claim!]!
         getClaim(claimId: ID!): Claim!
+        userNotifications: [Notification!]!
         login(email: String!, password: String  !): AuthData!
     }
 
@@ -85,7 +87,7 @@ module.exports = buildSchema(`
         deleteItem(itemId: ID!): ID
         createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!
         editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String, newClaimerAnswer: String, newItemCreatorAnswer: String): Claim!
-        cancelClaim(claimId: ID!): Item!
+        cancelClaim(claimId: ID!, notificationDescription: String!): Item!
         deleteNotification(notificationId: ID!): ID
     }
 

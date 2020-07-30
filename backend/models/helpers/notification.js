@@ -11,6 +11,11 @@ const notificationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Item",
   },
+  userToNotify: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Notification", notificationSchema);

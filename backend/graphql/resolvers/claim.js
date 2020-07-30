@@ -130,8 +130,9 @@ module.exports = {
         const creator = await User.findOne({ _id: claim.itemCreator });
 
         const notification = new Notification({
-          description: "test description",
+          description: args.notificationDescription,
           itemInvolved: claim.item,
+          userToNotify: claimer == req.userId ? creator : claimer,
         });
 
         notification.save();

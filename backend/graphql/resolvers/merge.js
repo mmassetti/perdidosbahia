@@ -71,5 +71,17 @@ const transformClaim = (claim) => {
   };
 };
 
+const transformNotification = (notification) => {
+  return {
+    ...notification._doc,
+    _id: notification.id,
+    itemInvolved: notification._doc.item
+      ? singleItem.bind(this, notification._doc.item)
+      : null,
+    userToNotify: user.bind(this, notification.creator),
+  };
+};
+
 exports.transformItem = transformItem;
 exports.transformClaim = transformClaim;
+exports.transformNotification = transformNotification;
