@@ -1,6 +1,7 @@
 const Item = require("../../models/item");
 const Claim = require("../../models/claim");
 const User = require("../../models/user");
+const Notification = require("../../models/helpers/notification");
 const { transformClaim, transformItem } = require("./merge");
 
 module.exports = {
@@ -31,6 +32,10 @@ module.exports = {
 
       const claimerId = req.userId;
       const creatorId = fetchedItem.creator;
+
+      if (claimerId == creatorId) {
+        return new Error("Cannot create a Claim for an Item that you created");
+      }
 
       const sharedClaimBetweenUsers = await Claim.findOne({
         $and: [{ itemClaimer: claimerId }, { itemCreator: creatorId }],
@@ -75,6 +80,7 @@ module.exports = {
     try {
       const fetchedClaim = await Claim.findOne({ _id: args.claimId });
       const claimerId = fetchedClaim.itemClaimer;
+
       const creatorId = fetchedClaim.itemCreator;
 
       const isUserAuthorized =
@@ -118,16 +124,31 @@ module.exports = {
 
       if (isUserAuthorized) {
         const item = transformItem(claim.item);
-        await Claim.deleteOne({ _id: args.claimId });
 
-        //Delete Claims from users lists
+        //Notify other user
         const claimer = await User.findOne({ _id: claim.itemClaimer });
         const creator = await User.findOne({ _id: claim.itemCreator });
 
+        const notification = new Notification({
+          description: "test description",
+          claimInvolved: claim,
+        });
+
+        notification.save();
+
+        if (req.userId == claimerId) {
+          claimer.notifications.push(notification);
+        } else {
+          claimer.notifications.push(notification);
+        }
+
+        //Delete Claims from users lists
         claimer.claimsInvolved.pull(claim._id);
         creator.claimsInvolved.pull(claim._id);
         claimer.save();
         creator.save();
+
+        await Claim.deleteOne({ _id: args.claimId });
 
         return item;
       }

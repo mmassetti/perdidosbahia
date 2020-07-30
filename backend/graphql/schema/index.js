@@ -21,6 +21,7 @@ module.exports = buildSchema(`
         phoneNumber: String
         createdItems: [Item!]
         claimsInvolved: [Claim!]
+        notifications: [Notification!]
     }
 
     type AuthData {
@@ -44,6 +45,12 @@ module.exports = buildSchema(`
         claimerQuestion: String!
         itemCreatorAnswer: String
         claimerAnswer: String
+    }
+
+    type Notification {
+        _id: ID!
+        description: String!
+        claimInvolved: Claim!
     }
 
     input ItemInput {

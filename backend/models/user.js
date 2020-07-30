@@ -34,6 +34,12 @@ const userSchema = new Schema({
       ref: "Claim",
     },
   ],
+  notifications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Notification",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);
