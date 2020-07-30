@@ -50,7 +50,7 @@ module.exports = buildSchema(`
     type Notification {
         _id: ID!
         description: String!
-        itemInvolved: Item!
+        itemInvolved: Item
     }
 
     input ItemInput {

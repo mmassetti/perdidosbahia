@@ -10,7 +10,6 @@ const notificationSchema = new Schema({
   itemInvolved: {
     type: Schema.Types.ObjectId,
     ref: "Item",
-    required: true,
   },
 });
 
