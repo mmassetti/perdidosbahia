@@ -100,6 +100,24 @@ const CustomNavbar = (props) => {
                           <div className="dropdown-menu-inner">
                             <Media
                               className="d-flex align-items-center"
+                              to="/objetos-publicados"
+                              tag={Link}
+                            >
+                              <div className="icon icon-shape bg-gradient-warning rounded-circle text-white">
+                                <i className="ni ni-ui-04" />
+                              </div>
+                              <Media body className="ml-3">
+                                <h5 className="heading text-warning mb-md-1">
+                                  Objetos publicados
+                                </h5>
+                                <p className="description d-none d-md-inline-block mb-0">
+                                  Quiero ver la lista de objetos perdidos y
+                                  encontrados publicados
+                                </p>
+                              </Media>
+                            </Media>
+                            <Media
+                              className="d-flex align-items-center"
                               to="/objeto-perdido"
                               tag={Link}
                             >
@@ -129,24 +147,6 @@ const CustomNavbar = (props) => {
                                 </h6>
                                 <p className="description d-none d-md-inline-block mb-0">
                                   Encontré algo y quiero publicarlo
-                                </p>
-                              </Media>
-                            </Media>
-                            <Media
-                              className="d-flex align-items-center"
-                              to="/objetos-publicados"
-                              tag={Link}
-                            >
-                              <div className="icon icon-shape bg-gradient-warning rounded-circle text-white">
-                                <i className="ni ni-ui-04" />
-                              </div>
-                              <Media body className="ml-3">
-                                <h5 className="heading text-warning mb-md-1">
-                                  Objetos publicados
-                                </h5>
-                                <p className="description d-none d-md-inline-block mb-0">
-                                  Quiero ver la lista de objetos perdidos y
-                                  encontrados publicados
                                 </p>
                               </Media>
                             </Media>
