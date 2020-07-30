@@ -73,6 +73,7 @@ module.exports = buildSchema(`
     type RootMutation {        
         createUser(userInput: UserInput): User
         createItem(itemInput: ItemInput): Item
+        getItem(itemId: ID!): Item
         editItem(itemId: ID!, newItemInput: ItemInput): Item
         deleteItem(itemId: ID!): ID
         createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!

@@ -3,6 +3,7 @@ const User = require("../../models/user");
 const Claim = require("../../models/claim");
 
 const { transformItem } = require("./merge");
+const { updateAssociatedItem } = require("./claim");
 
 async function deleteClaim(args) {
   try {
@@ -26,6 +27,25 @@ module.exports = {
         return transformItem(item);
       });
     } catch (error) {}
+  },
+  getItem: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const fetchedItem = await Item.findOne({ _id: args.itemId });
+      const creatorId = fetchedItem.creator;
+
+      const isUserAuthorized = req.userId == creatorId;
+
+      if (isUserAuthorized) {
+        return transformItem(fetchedItem);
+      }
+      return new Error("Permission denied");
+    } catch (err) {
+      throw err;
+    }
   },
   createItem: async (args, req) => {
     if (!req.isAuth) {
@@ -76,6 +96,12 @@ module.exports = {
         fetchedItem.location = args.newItemInput.location;
         fetchedItem.date = new Date(args.newItemInput.date);
         fetchedItem.itemCreatorQuestion = args.newItemInput.itemCreatorQuestion;
+
+        //Update Claims asocciated to Item
+        const claims = await Claim.find({ item: fetchedItem._id });
+        claims.map(async (claim) => {
+          await updateAssociatedItem(claim, fetchedItem._id);
+        });
 
         return await fetchedItem.save();
       }
