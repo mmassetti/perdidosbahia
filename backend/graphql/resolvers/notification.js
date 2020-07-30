@@ -5,6 +5,7 @@ const Notification = require("../../models/helpers/notification");
 module.exports = {
   deleteNotification: async (args, req) => {
     //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
