@@ -4,17 +4,6 @@ const User = require("../../models/user");
 const { transformClaim, transformItem } = require("./merge");
 
 module.exports = {
-  updateAssociatedItem: async (args) => {
-    try {
-      const claim = await Claim.findOne({ _id: args._id });
-      claim.item = args.item;
-      claim.save();
-
-      return args.itemId;
-    } catch (err) {
-      throw err;
-    }
-  },
   claims: async (args, req) => {
     //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {

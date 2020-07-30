@@ -93,17 +93,20 @@ module.exports = {
         fetchedItem.description = args.newItemInput.description;
         fetchedItem.type = args.newItemInput.type;
         fetchedItem.category = args.newItemInput.category;
+
         fetchedItem.location = args.newItemInput.location;
         fetchedItem.date = new Date(args.newItemInput.date);
         fetchedItem.itemCreatorQuestion = args.newItemInput.itemCreatorQuestion;
+        const result = await fetchedItem.save();
+        const modifiedItem = transformItem(result);
 
         //Update Claims asocciated to Item
         const claims = await Claim.find({ item: fetchedItem._id });
         claims.map(async (claim) => {
-          await updateAssociatedItem(claim, fetchedItem._id);
+          claim.item = fetchedItem._id;
+          await claim.save();
         });
-
-        return await fetchedItem.save();
+        return modifiedItem;
       }
       return new Error("Permission denied");
     } catch (err) {
