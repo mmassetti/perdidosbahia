@@ -14,7 +14,7 @@ module.exports = {
       user.save();
 
       await Notification.deleteOne({ _id: args.notificationId });
-      return notificationId;
+      return args.notificationId;
     } catch (err) {
       throw err;
     }

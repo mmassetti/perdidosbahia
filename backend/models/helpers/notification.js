@@ -7,9 +7,9 @@ const notificationSchema = new Schema({
     type: String,
     required: true,
   },
-  claimInvolved: {
+  itemInvolved: {
     type: Schema.Types.ObjectId,
-    ref: "Claim",
+    ref: "Item",
     required: true,
   },
 });

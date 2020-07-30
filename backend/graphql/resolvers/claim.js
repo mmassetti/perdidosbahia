@@ -131,7 +131,7 @@ module.exports = {
 
         const notification = new Notification({
           description: "test description",
-          claimInvolved: claim,
+          itemInvolved: claim.item,
         });
 
         notification.save();
