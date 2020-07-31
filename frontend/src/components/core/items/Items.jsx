@@ -122,8 +122,8 @@ const Items = () => {
                 <Row>
                   <Col lg="12">
                     <h1 className="display-3 text-white">
-                      Acá se encuentran todos los objetos perdidos y encontrados
-                      que fueron publicados
+                      Mirá todos los objetos perdidos y encontrados que fueron
+                      publicados
                     </h1>
                   </Col>
                 </Row>
