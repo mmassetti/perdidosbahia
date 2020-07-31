@@ -1,5 +1,12 @@
-import React from "react";
-import { Badge, Card, Button, CardBody, Col } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import {
+  Badge,
+  Card,
+  Button,
+  CardBody,
+  Col,
+  UncontrolledTooltip,
+} from "reactstrap";
 import { useHistory } from "react-router-dom";
 
 var moment = require("moment");
@@ -7,6 +14,7 @@ require("moment/locale/es");
 
 const CardItem = (props) => {
   let history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
 
   function goToSingleItem() {
     history.push({
@@ -14,6 +22,24 @@ const CardItem = (props) => {
       state: { props: props },
     });
   }
+
+  const deleteItemButton = () => {
+    return (
+      <React.Fragment>
+        <Button
+          className="mt-4 btn-icon-only btn-round pull-right"
+          color="danger"
+          id="tooltipDeleteItem"
+          onClick={() => props.onDelete(props.id)}
+        >
+          <i className=" fa fa-trash" />
+        </Button>
+        <UncontrolledTooltip ardelay={0} target="tooltipDeleteItem">
+          Eliminar publicación
+        </UncontrolledTooltip>
+      </React.Fragment>
+    );
+  };
 
   return (
     <Col lg="4">
@@ -42,12 +68,16 @@ const CardItem = (props) => {
             </Badge>
           </div>
           <Button
-            className="mt-4"
+            className="mt-4 btn-round"
             color="primary"
             onClick={() => goToSingleItem()}
           >
             Ver
           </Button>
+
+          {props.token && props.authUserId == props.creatorId
+            ? deleteItemButton()
+            : ""}
         </CardBody>
       </Card>
     </Col>
