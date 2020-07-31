@@ -140,7 +140,7 @@ module.exports = {
         if (req.userId == claimerId) {
           claimer.notifications.push(notification);
         } else {
-          claimer.notifications.push(notification);
+          creator.notifications.push(notification);
         }
 
         //Delete Claims from users lists
