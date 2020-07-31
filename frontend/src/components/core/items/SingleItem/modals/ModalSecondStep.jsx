@@ -268,6 +268,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                           <Button
                             color="primary"
                             type="button"
+                            disabled={itemCreatorAnswer ? false : true}
                             onClick={(e) => toggleNavs(e, 3)}
                           >
                             Continuar
