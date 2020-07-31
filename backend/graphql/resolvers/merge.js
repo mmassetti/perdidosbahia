@@ -73,6 +73,7 @@ const transformItem = (item) => {
     _id: item.id,
     date: dateToString(item._doc.date),
     creator: user.bind(this, item.creator),
+    createdAt: dateToString(item._doc.createdAt),
   };
 };
 

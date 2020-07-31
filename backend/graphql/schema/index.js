@@ -10,6 +10,7 @@ module.exports = buildSchema(`
         location: String
         itemCreatorQuestion: String!
         creator: User!
+        createdAt: String!
     }
 
     type User {
