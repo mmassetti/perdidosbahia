@@ -132,7 +132,7 @@ module.exports = {
         const notification = new Notification({
           description: args.notificationDescription,
           itemInvolved: claim.item,
-          userToNotify: claimer == req.userId ? creator : claimer,
+          userToNotify: claim.item.creator == req.userId ? claimer : creator,
         });
 
         notification.save();
