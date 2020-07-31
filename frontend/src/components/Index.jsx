@@ -37,10 +37,14 @@ const Index = (props) => {
       .then((resData) => {
         const claims = resData.data.claims;
 
-        if (claims.length == 0) {
+        if (claims && claims.length > 0) {
           history.push({
             pathname: "/mis-publicaciones",
             // state: { props: neededProps },
+          });
+        } else {
+          history.push({
+            pathname: "/objetos-publicados",
           });
         }
         setIsLoading(false);
