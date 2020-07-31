@@ -89,7 +89,13 @@ const App = (props) => {
         <APIErrorProvider>
           <main className="main-content">
             <Switch>
-              <Route path="/" exact render={(props) => <Index {...props} />} />
+              <Route
+                path="/"
+                exact
+                render={(props) => (
+                  <Index {...props} token={token} userId={userId} />
+                )}
+              />
               <Route
                 path="/objeto-perdido"
                 exact
