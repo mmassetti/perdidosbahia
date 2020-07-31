@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Redirect } from "react";
 import {
   Badge,
   Card,
@@ -17,9 +17,11 @@ const CardItem = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   function goToSingleItem() {
+    let { onDelete, ...neededProps } = props;
+
     history.push({
       pathname: "/detalle",
-      state: { props: props },
+      state: { props: neededProps },
     });
   }
 
