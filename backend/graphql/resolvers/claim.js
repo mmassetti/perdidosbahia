@@ -137,7 +137,7 @@ module.exports = {
 
         notification.save();
 
-        if (req.userId == claimerId) {
+        if (req.userId == claim.item.creator) {
           claimer.notifications.push(notification);
         } else {
           creator.notifications.push(notification);
