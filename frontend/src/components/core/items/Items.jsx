@@ -52,6 +52,7 @@ const Items = () => {
                 _id
                 email
               }
+              createdAt
             }
           }
         `,
@@ -138,6 +139,7 @@ const Items = () => {
           item.itemCreatorQuestion ? item.itemCreatorQuestion : null
         }
         onDelete={deleteItemHandler}
+        createdAt={item.createdAt}
       ></CardItem>
     );
   });

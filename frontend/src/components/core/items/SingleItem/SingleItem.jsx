@@ -31,6 +31,7 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = (props) => {
+  console.log("SingleItem -> props", props);
   const { isShowing, toggle } = useModal();
   const context = useContext(AuthContext);
   let history = useHistory();
@@ -130,7 +131,15 @@ const SingleItem = (props) => {
                         className="order-lg-3 text-lg-right align-self-lg-center"
                         lg="4"
                       >
-                        <div className="card-profile-actions py-4 mt-lg-0"></div>
+                        {" "}
+                        <div className="card-profile-actions py-4 mt-lg-0 float-right">
+                          <span className="h6 font-weight-bold">
+                            Publicado el{" "}
+                            {moment(
+                              props.location.state.props.createdAt
+                            ).format("L")}
+                          </span>
+                        </div>
                       </Col>
                       <Col className="order-lg-1" lg="4">
                         <div className="card-profile-stats d-flex justify-content-center">
@@ -147,7 +156,11 @@ const SingleItem = (props) => {
                                 "L"
                               )}
                             </span>
-                            <span className="description">Fecha</span>
+                            <span className="description">
+                              {props.location.state.props.type == "perdido"
+                                ? "Fecha en la que se perdió "
+                                : "Fecha en la que se encontró "}
+                            </span>
                           </div>
                         </div>
                       </Col>
@@ -180,7 +193,12 @@ const SingleItem = (props) => {
                     <CardHeader className="bg-white pb-5">
                       <div className="btn-wrapper text-center">
                         {loggedUserIsItemCreator() ? (
-                          <Button color="primary" size="sm" onClick={toggle}>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={toggle}
+                            style={{ marginBottom: "0.5rem" }}
+                          >
                             <span className="btn-inner--text">
                               Editar publicación
                             </span>
