@@ -1,6 +1,7 @@
 const User = require("../../models/user");
 
 const Notification = require("../../models/helpers/notification");
+const ItemInfo = require("../../models/helpers/itemInfo");
 const { transformNotification } = require("./merge");
 
 module.exports = {
@@ -29,7 +30,13 @@ module.exports = {
     }
     try {
       const user = await User.findOne({ _id: req.userId });
-      user.notifications.pull(args.notificationId);
+
+      const notification = await Notification.findOne({
+        _id: args.notificationId,
+      });
+      await ItemInfo.deleteOne({ _id: notification.itemInfo });
+
+      await user.notifications.pull(args.notificationId);
       user.save();
 
       await Notification.deleteOne({ _id: args.notificationId });
