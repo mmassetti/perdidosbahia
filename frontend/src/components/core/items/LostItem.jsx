@@ -637,6 +637,9 @@ const LostItem = (props) => {
                                           <Button
                                             color="primary"
                                             type="button"
+                                            disabled={
+                                              itemCreatorQuestion ? false : true
+                                            }
                                             onClick={toggleTrueFalse}
                                           >
                                             Guardar pregunta
