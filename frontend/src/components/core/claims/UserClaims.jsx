@@ -173,7 +173,7 @@ const UserClaims = (props) => {
       variables: {
         id: claimId,
         notificationDescription:
-          "Lo sentimos, el otro usuario eliminó la publicación o rechazó el contacto para este objeto :",
+          "Lo sentimos, el otro usuario eliminó la publicación o rechazó el contacto para este objeto:",
       },
     };
 

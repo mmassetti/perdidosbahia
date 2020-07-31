@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import useModal from "../Helpers/useModal";
@@ -15,6 +15,9 @@ const ClaimCard = (props) => {
   let history = useHistory();
   const { isShowing, toggle } = useModal();
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showCancelClaimOption, setCancelClaimOption] = useState(false);
+
+  useEffect(() => {}, [setCancelClaimOption]);
 
   const getStateForAuthUser = () => {
     if (props.authUserId == props.itemCreator._id) {
@@ -24,18 +27,32 @@ const ClaimCard = (props) => {
     }
   };
 
+  const enableCancelClaimOption = () => {
+    toggle();
+    setCancelClaimOption(true);
+  };
+
   function showNotificationMessage() {
     return (
       <React.Fragment>
         <h6 className="text-primary font-weight-bold mb-2">
           ¡Alguien se comunicó con vos!
         </h6>
-        <Button color="primary" size="sm" outline onClick={toggle}>
+        <Button
+          color="primary"
+          size="sm"
+          onClick={() => {
+            enableCancelClaimOption();
+          }}
+        >
           Ver mensaje
         </Button>
         {showOptions()}
 
-        <div className="py-2 border-top text-center"></div>
+        <div
+          style={{ marginTop: "1rem" }}
+          className="py-2 border-top text-center"
+        ></div>
       </React.Fragment>
     );
   }
@@ -146,6 +163,7 @@ const ClaimCard = (props) => {
             color="primary"
             size="sm"
             onClick={() => openEditModal()}
+            outline
           >
             Editar objeto
           </Button>
@@ -177,6 +195,7 @@ const ClaimCard = (props) => {
         className="mt-4"
         color="danger"
         size="sm"
+        outline
         // onClick={() => props.onDelete(props.claimId)}
       >
         Eliminar objeto
@@ -187,14 +206,10 @@ const ClaimCard = (props) => {
   const showOptions = () => {
     return (
       <React.Fragment>
-        {props.item.creator._id == props.authUserId &&
-        (props.flagItemCreator !== 1 || props.flagClaimer !== 1)
+        {(props.flagItemCreator !== 1 || props.flagClaimer !== 1) &&
+        showCancelClaimOption
           ? cancelButton()
-          : [
-              props.flagItemCreator == 1 && props.flagClaimer == 1
-                ? ""
-                : cancelButton(),
-            ]}
+          : ""}
       </React.Fragment>
     );
   };
