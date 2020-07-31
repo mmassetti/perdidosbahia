@@ -3,6 +3,21 @@ const User = require("../../models/user");
 const Claim = require("../../models/claim");
 
 const { transformItem } = require("./merge");
+const { updateAssociatedItem } = require("./claim");
+
+async function deleteClaim(args) {
+  try {
+    await Claim.deleteOne({ _id: args._id });
+    const claimer = await User.findOne({ _id: args.itemClaimer });
+    const creator = await User.findOne({ _id: args.itemCreator });
+    claimer.claimsInvolved.pull(args._id);
+    creator.claimsInvolved.pull(args._id);
+    claimer.save();
+    creator.save();
+  } catch (err) {
+    throw err;
+  }
+}
 
 module.exports = {
   items: async () => {
@@ -12,6 +27,25 @@ module.exports = {
         return transformItem(item);
       });
     } catch (error) {}
+  },
+  getItem: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const fetchedItem = await Item.findOne({ _id: args.itemId });
+      const creatorId = fetchedItem.creator;
+
+      const isUserAuthorized = req.userId == creatorId;
+
+      if (isUserAuthorized) {
+        return transformItem(fetchedItem);
+      }
+      return new Error("Permission denied");
+    } catch (err) {
+      throw err;
+    }
   },
   createItem: async (args, req) => {
     if (!req.isAuth) {
@@ -42,6 +76,68 @@ module.exports = {
       return createdItem;
     } catch (err) {
       console.log(err);
+      throw err;
+    }
+  },
+  editItem: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const fetchedItem = await Item.findOne({ _id: args.itemId });
+      const itemCreator = fetchedItem.creator;
+
+      const isUserAuthorized = req.userId == itemCreator._id;
+      if (isUserAuthorized) {
+        fetchedItem.description = args.newItemInput.description;
+        fetchedItem.type = args.newItemInput.type;
+        fetchedItem.category = args.newItemInput.category;
+
+        fetchedItem.location = args.newItemInput.location;
+        fetchedItem.date = new Date(args.newItemInput.date);
+        fetchedItem.itemCreatorQuestion = args.newItemInput.itemCreatorQuestion;
+        const result = await fetchedItem.save();
+        const modifiedItem = transformItem(result);
+
+        //Update Claims asocciated to Item
+        const claims = await Claim.find({ item: fetchedItem._id });
+        claims.map(async (claim) => {
+          claim.item = fetchedItem._id;
+          await claim.save();
+        });
+        return modifiedItem;
+      }
+      return new Error("Permission denied");
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteItem: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const item = await Item.findById(args.itemId);
+      const creator = await User.findOne({ _id: item.creator });
+      const isUserAuthorized = req.userId == creator._id;
+
+      if (isUserAuthorized) {
+        creator.createdItems.pull(item._id);
+        creator.save();
+        await Item.deleteOne({ _id: item._id });
+
+        //Delete Claims asocciated to Item
+        const claims = await Claim.find({ item: item._id });
+        claims.map(async (claim) => {
+          await deleteClaim(claim);
+        });
+
+        return args.itemId;
+      }
+      return new Error("Permission denied");
+    } catch (err) {
       throw err;
     }
   },

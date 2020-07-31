@@ -38,8 +38,7 @@ import {
 } from "reactstrap";
 
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
-import CardsFooter from "../../theme/Footers/CardsFooter";
-import Download from "../../theme/IndexSections/Download";
+
 import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
@@ -268,9 +267,14 @@ const LostItem = (props) => {
                               style={{ borderColor: "red" }}
                               vertical
                             >
-                              <div style={{ marginBottom: "1rem" }}>
+                              <div
+                                style={{
+                                  marginBottom: "1rem",
+                                  marginTop: "1rem",
+                                }}
+                              >
                                 <span className="h6 font-weight-bold ">
-                                  Seleccioná una categoría
+                                  Seleccioná una categoría de las siguientes:
                                 </span>
                               </div>
                               <Button

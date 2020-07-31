@@ -139,7 +139,7 @@ const Login = (props) => {
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card className="bg-secondary shadow border-0 text-center">
-                  <CardHeader className="bg-white pb-3">
+                  <CardHeader className="bg-white pb-3 font-weight-bold text-default">
                     Iniciar sesión
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">

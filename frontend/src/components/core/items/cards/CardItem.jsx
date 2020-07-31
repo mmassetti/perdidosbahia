@@ -38,9 +38,6 @@ const CardItem = (props) => {
               {props.type}
             </Badge>
             <Badge color="primary" pill className="mr-1">
-              {props.category}
-            </Badge>
-            <Badge color="primary" pill className="mr-1">
               {moment(props.date).format("LL")}
             </Badge>
           </div>

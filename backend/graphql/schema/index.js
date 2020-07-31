@@ -1,23 +1,6 @@
 const { buildSchema } = require("graphql");
 
-module.exports = buildSchema(`
-
-    type Claim {
-        _id: ID!
-        item: Item!
-        itemCreator: User!
-        itemClaimer: User!
-        createdAt: String!
-        updatedAt: String!
-        stateForItemCreator: String!
-        stateForClaimer: String!
-        flagClaimer: Int!
-        flagItemCreator: Int!
-        claimerQuestion: String!
-        itemCreatorAnswer: String
-        claimerAnswer: String
-    }
-        
+module.exports = buildSchema(`   
     type Item {
         _id: ID!
         description: String!
@@ -38,6 +21,7 @@ module.exports = buildSchema(`
         phoneNumber: String
         createdItems: [Item!]
         claimsInvolved: [Claim!]
+        notifications: [Notification!]
     }
 
     type AuthData {
@@ -45,6 +29,29 @@ module.exports = buildSchema(`
         token: String!
         tokenExpiration: Int!
         firstName: String
+    }
+
+    type Claim {
+        _id: ID!
+        item: Item!
+        itemCreator: User!
+        itemClaimer: User!
+        createdAt: String!
+        updatedAt: String!
+        stateForItemCreator: String!
+        stateForClaimer: String!
+        flagClaimer: Int!
+        flagItemCreator: Int!
+        claimerQuestion: String!
+        itemCreatorAnswer: String
+        claimerAnswer: String
+    }
+
+    type Notification {
+        _id: ID!
+        description: String!
+        itemInvolved: Item
+        userToNotify: User!
     }
 
     input ItemInput {
@@ -68,15 +75,20 @@ module.exports = buildSchema(`
         items: [Item!]!
         claims: [Claim!]!
         getClaim(claimId: ID!): Claim!
+        userNotifications: [Notification!]!
         login(email: String!, password: String  !): AuthData!
     }
 
-    type RootMutation {
-        createItem(itemInput: ItemInput): Item
+    type RootMutation {        
         createUser(userInput: UserInput): User
+        createItem(itemInput: ItemInput): Item
+        getItem(itemId: ID!): Item
+        editItem(itemId: ID!, newItemInput: ItemInput): Item
+        deleteItem(itemId: ID!): ID
         createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!
         editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String, newClaimerAnswer: String, newItemCreatorAnswer: String): Claim!
-        cancelClaim(claimId: ID!): Item!
+        cancelClaim(claimId: ID!, notificationDescription: String!): Item!
+        deleteNotification(notificationId: ID!): ID
     }
 
     schema {

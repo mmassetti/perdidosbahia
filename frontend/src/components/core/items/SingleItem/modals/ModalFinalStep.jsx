@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
 import ContactInfo from "../modals/helpers/ContactInfo";
 
-const ModalFinaltep = ({ isShowing, hide, info }) => {
+const ModalFinalStep = ({ isShowing, hide, info }) => {
   let history = useHistory();
 
   useEffect(() => {
@@ -84,4 +84,4 @@ const ModalFinaltep = ({ isShowing, hide, info }) => {
     : null;
 };
 
-export default ModalFinaltep;
+export default ModalFinalStep;
