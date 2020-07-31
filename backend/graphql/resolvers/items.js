@@ -133,10 +133,11 @@ module.exports = {
           category: item.category,
         });
 
-        itemInfo.save();
-
         //Delete Claims associated to Item and notify claimers
         const claims = await Claim.find({ item: item._id });
+        if (claims.length > 0) {
+          itemInfo.save();
+        }
         claims.map(async (claim) => {
           const userClaimer = await User.findOne({ _id: claim.itemClaimer });
 

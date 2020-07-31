@@ -52,6 +52,13 @@ module.exports = buildSchema(`
         description: String!
         itemInvolved: Item
         userToNotify: User!
+        itemInfo: ItemInfo
+    }
+
+    type ItemInfo {
+        _id: ID!
+        description: String
+        category: String
     }
 
     input ItemInput {

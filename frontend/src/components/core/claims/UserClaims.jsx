@@ -117,13 +117,18 @@ const UserClaims = (props) => {
       query: `
         query {
           userNotifications{
-              _id,
+            _id,
             description,
             itemInvolved {
                 _id,
-                description
+                description,
                 category
             },
+            itemInfo {
+              _id,
+              description,
+              category
+            }
             userToNotify {
                 _id,
                 email
@@ -173,7 +178,7 @@ const UserClaims = (props) => {
       variables: {
         id: claimId,
         notificationDescription:
-          "Lo sentimos, el otro usuario eliminó la publicación o rechazó el contacto para este objeto:",
+          "Lo sentimos, el otro usuario rechazó el contacto para este objeto:",
       },
     };
 
@@ -246,7 +251,28 @@ const UserClaims = (props) => {
     });
   }
 
-  const notificationsCancelation = () => {
+  const notificationItemCategory = (notification) => {
+    if (
+      notification.itemInvolved &&
+      notification.itemInvolved.category != "otro"
+    ) {
+      return notification.itemInvolved.category;
+    } else if (notification.itemInvolved) {
+      return "Otros objetos";
+    } else if (notification.itemInfo && notification.itemInfo.category) {
+      return notification.itemInfo.category;
+    } else return "Error al mostrar la categoria del objeto";
+  };
+
+  const notificationItemDescription = (notification) => {
+    if (notification.itemInvolved && notification.itemInvolved.description) {
+      return notification.itemInvolved.description;
+    } else if (notification.itemInfo && notification.itemInfo.description) {
+      return notification.itemInfo.description;
+    } else return "Error al mostrar la descripción del objeto";
+  };
+
+  const showNotifications = () => {
     return notifications.notifications.map((notification, index) => {
       return (
         <Card
@@ -261,13 +287,11 @@ const UserClaims = (props) => {
 
             <h6 className="text-default ">
               <span className="font-weight-bold"> Categoría: </span>
-              {notification.itemInvolved.category != "otro"
-                ? notification.itemInvolved.category
-                : "Otros objetos"}
+              {notificationItemCategory(notification)}
             </h6>
             <h6 className="text-default ">
               <span className="font-weight-bold"> Descripción: </span>{" "}
-              {notification.itemInvolved.description}
+              {notificationItemDescription(notification)}
             </h6>
           </CardBody>
         </Card>
@@ -326,7 +350,7 @@ const UserClaims = (props) => {
       return (
         <React.Fragment>
           <Col className="text-center mt-5" lg="12">
-            {notificationsCancelation()}
+            {showNotifications()}
             <Button
               className="mt-4"
               color="primary"
