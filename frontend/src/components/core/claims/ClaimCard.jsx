@@ -164,6 +164,7 @@ const ClaimCard = (props) => {
         color="danger"
         size="sm"
         onClick={() => props.onDelete(props.claimId)}
+        outline
       >
         Rechazar contacto
       </Button>

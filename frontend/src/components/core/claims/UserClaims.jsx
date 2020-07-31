@@ -24,13 +24,17 @@ import ClaimCard from "../../core/claims/ClaimCard";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 
-import { Card, Container, Row, Col, CardBody } from "reactstrap";
+import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
+var moment = require("moment");
+require("moment/locale/es");
 
 const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [claims, setClaims] = useState({ claims: [] });
+  const [notifications, setNotifications] = useState({ notifications: [] });
   const context = useContext(AuthContext);
   const { isShowing, toggle } = useModal();
+  const [cleanedNotifications, setCleanedNotifications] = useState(false);
 
   const fetchClaims = () => {
     setIsLoading(true);
@@ -96,6 +100,56 @@ const UserClaims = (props) => {
       .then((resData) => {
         const claims = resData.data.claims;
         setClaims({ claims: claims });
+        if (claims.length == 0) {
+          getNotifications();
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
+  };
+
+  const getNotifications = () => {
+    setIsLoading(true);
+    const requestBody = {
+      query: `
+        query {
+          userNotifications{
+              _id,
+            description,
+            itemInvolved {
+                _id,
+                description
+                category
+            },
+            userToNotify {
+                _id,
+                email
+            }
+          }
+        }
+      `,
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        const userNotifications = resData.data.userNotifications;
+        setNotifications({ notifications: userNotifications });
         setIsLoading(false);
       })
       .catch((err) => {
@@ -108,14 +162,18 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = {
       query: `
-         mutation CancelClaim($id: ID!) {
-            cancelClaim(claimId: $id) {
-              _id
+         mutation CancelClaim($id: ID!, $notificationDescription: String!) {
+            cancelClaim(claimId: $id, notificationDescription: $notificationDescription) {
+              _id,
+              description
+              category
             }
           }
         `,
       variables: {
         id: claimId,
+        notificationDescription:
+          "Lo sentimos, el otro usuario eliminó la publicación o rechazó el contacto para este objeto :",
       },
     };
 
@@ -148,6 +206,75 @@ const UserClaims = (props) => {
       });
   };
 
+  function deleteNotifications() {
+    setIsLoading(true);
+
+    notifications.notifications.map((notification, index) => {
+      const requestBody = {
+        query: `
+           mutation DeleteNotification($notificationId: ID!) {
+              deleteNotification(notificationId: $notificationId)
+            }
+          `,
+        variables: {
+          notificationId: notification._id,
+        },
+      };
+
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          setCleanedNotifications(true);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
+        });
+    });
+  }
+
+  const notificationsCancelation = () => {
+    return notifications.notifications.map((notification, index) => {
+      return (
+        <Card
+          key={index}
+          className="card-lift--hover shadow border-0"
+          style={{ marginBottom: "2rem" }}
+        >
+          <CardBody className="py-5">
+            <h6 className="text-warning font-weight-light mb-2">
+              {notification.description}
+            </h6>
+
+            <h6 className="text-default ">
+              <span className="font-weight-bold"> Categoría: </span>
+              {notification.itemInvolved.category != "otro"
+                ? notification.itemInvolved.category
+                : "Otros objetos"}
+            </h6>
+            <h6 className="text-default ">
+              <span className="font-weight-bold"> Descripción: </span>{" "}
+              {notification.itemInvolved.description}
+            </h6>
+          </CardBody>
+        </Card>
+      );
+    });
+  };
+
   useEffect(() => {
     if (context.token) {
       fetchClaims();
@@ -155,7 +282,8 @@ const UserClaims = (props) => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     toggle();
-  }, [context]);
+    setCleanedNotifications(false);
+  }, [context, setCleanedNotifications]);
 
   const itemsAuthUserIsParticipating = claims.claims.map((claim) => {
     return (
@@ -178,6 +306,45 @@ const UserClaims = (props) => {
       ></ClaimCard>
     );
   });
+
+  const showContent = () => {
+    if (isLoading) {
+      return <Spinner />;
+    } else if (claims.claims && claims.claims.length > 0) {
+      return (
+        <Card className="shadow">
+          <CardBody>
+            <Row className="row-grid">{itemsAuthUserIsParticipating}</Row>
+          </CardBody>
+        </Card>
+      );
+    } else if (
+      notifications.notifications &&
+      notifications.notifications.length > 0 &&
+      !cleanedNotifications
+    ) {
+      return (
+        <React.Fragment>
+          <Col className="text-center mt-5" lg="12">
+            {notificationsCancelation()}
+            <Button
+              className="mt-4"
+              color="primary"
+              onClick={() => deleteNotifications()}
+            >
+              Volver a mis publicaciones
+            </Button>
+          </Col>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <div className="text-center mt-5">
+          <h3>Todavía no iniciaste contacto con ninguna persona</h3>
+        </div>
+      );
+    }
+  };
 
   return (
     <>
@@ -218,31 +385,9 @@ const UserClaims = (props) => {
             <Container>
               <Row
                 className="justify-content-center"
-                style={{ marginTop: "2rem" }}
+                style={{ marginTop: "2rem", marginBottom: "2rem" }}
               >
-                <Col lg="12">
-                  {isLoading ? (
-                    <Spinner />
-                  ) : (
-                    [
-                      claims.claims && claims.claims.length > 0 ? (
-                        <Card className="shadow">
-                          <CardBody>
-                            <Row className="row-grid">
-                              {itemsAuthUserIsParticipating}
-                            </Row>
-                          </CardBody>
-                        </Card>
-                      ) : (
-                        <div className="text-center mt-5">
-                          <h3>
-                            Todavía no iniciaste contacto con ninguna persona
-                          </h3>
-                        </div>
-                      ),
-                    ]
-                  )}
-                </Col>
+                <Col lg="12">{showContent()}</Col>
               </Row>
             </Container>
             {/* <Download /> */}
