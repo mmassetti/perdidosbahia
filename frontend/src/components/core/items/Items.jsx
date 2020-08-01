@@ -138,11 +138,25 @@ const Items = () => {
         itemCreatorQuestion={
           item.itemCreatorQuestion ? item.itemCreatorQuestion : null
         }
-        onDelete={deleteItemHandler}
+        onDelete={() => deleteItemHandler}
         createdAt={item.createdAt}
       ></CardItem>
     );
   });
+
+  const showContent = () => {
+    if (isLoading) {
+      return <Spinner />;
+    } else if (items && items.items.length > 0) {
+      return <Row className="row-grid">{itemsCards}</Row>;
+    } else {
+      return (
+        <div className="text-center mt-5">
+          <h3>Todavía no se publicó ningún objeto</h3>
+        </div>
+      );
+    }
+  };
 
   return (
     <>
@@ -178,13 +192,7 @@ const Items = () => {
 
         <Container>
           <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
-            <Col lg="12">
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <Row className="row-grid">{itemsCards}</Row>
-              )}
-            </Col>
+            <Col lg="12">{showContent()}</Col>
           </Row>
         </Container>
       </main>

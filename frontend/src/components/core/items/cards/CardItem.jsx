@@ -68,9 +68,10 @@ const CardItem = (props) => {
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    if (props.token) {
-      fetchClaims();
-    }
+    //TODO: Revisar donde se esta haciendo el use Effect porque se esta haciendo 2 veces..
+    // if (props.token) {
+    //   fetchClaims();
+    // }
   }, []);
 
   function goToSingleItem() {

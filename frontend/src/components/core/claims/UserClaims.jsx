@@ -360,6 +360,48 @@ const UserClaims = (props) => {
     setCleanedNotifications(false);
   }, [context, setCleanedNotifications]);
 
+  const deleteItemHandler = (itemId) => {
+    setIsLoading(true);
+    const requestBody = {
+      query: `
+         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
+            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
+          }
+        `,
+      variables: {
+        itemId: itemId,
+        notificationDescription:
+          "Lo sentimos, el otro usuario eliminó la publicación:",
+      },
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        const updatedValues = userItemsWithoutClaim.items.filter(
+          (item) => item._id !== itemId
+        );
+        setUserItemsWithoutClaim({ items: updatedValues });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
   const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
     (item, key) => {
       return (
@@ -406,7 +448,7 @@ const UserClaims = (props) => {
                   color="danger"
                   size="sm"
                   outline
-                  onClick={() => props.onDelete(props.id)}
+                  onClick={() => deleteItemHandler(item._id)}
                 >
                   Eliminar objeto
                 </Button>
