@@ -401,6 +401,15 @@ const UserClaims = (props) => {
                   <span className="font-weight-bold"> Fecha:</span>{" "}
                   {moment(item.date).format("LL")}{" "}
                 </h6>
+                <Button
+                  className="mt-4"
+                  color="danger"
+                  size="sm"
+                  outline
+                  onClick={() => props.onDelete(props.id)}
+                >
+                  Eliminar objeto
+                </Button>
               </React.Fragment>
             </CardBody>
           </Card>
@@ -441,8 +450,9 @@ const UserClaims = (props) => {
       return (
         <Card className="shadow">
           <CardBody>
-            <Row className="row-grid">{itemsAuthUserIsParticipating}</Row>
-            <Row className="row-grid">{itemsAuthUserWithoutClaims}</Row>
+            <Row className="row-grid">
+              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
+            </Row>
           </CardBody>
         </Card>
       );
