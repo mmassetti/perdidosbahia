@@ -44,6 +44,7 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
+import { useHistory } from "react-router-dom";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -56,6 +57,7 @@ const LostItem = (props) => {
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
   const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
+  let history = useHistory();
 
   const defaultValues = {
     description: "",
@@ -163,8 +165,9 @@ const LostItem = (props) => {
         return res.json();
       })
       .then((resData) => {
-        /* //TODO: Reedireccionar */
-        console.log("TCL: resData ", resData);
+        history.push({
+          pathname: "/mis-publicaciones",
+        });
       })
       .catch((err) => {
         console.log(err);
