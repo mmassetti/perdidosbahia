@@ -40,6 +40,11 @@ const userSchema = new Schema({
       ref: "Notification",
     },
   ],
+  hasPendingNotificiations: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

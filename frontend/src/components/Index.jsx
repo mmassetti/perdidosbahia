@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import CustomNavbar from "./theme/Navbars/CustomNavbar.jsx";
 import SplashScreen from "../components/theme/IndexSections/SplashScreen.jsx";
 import { useHistory } from "react-router-dom";
+import Spinner from "./theme/Spinner/Spinner";
 
 const Index = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+
   let history = useHistory();
 
   const fetchClaims = () => {
@@ -37,10 +39,13 @@ const Index = (props) => {
       .then((resData) => {
         const claims = resData.data.claims;
 
-        if (claims && claims.length > 0) {
+        if (
+          (claims && claims.length > 0) ||
+          props.hasPendingNotifications == "true"
+        ) {
           history.push({
             pathname: "/mis-publicaciones",
-            // state: { props: neededProps },
+            // state: { claims: claims },
           });
         } else {
           history.push({
@@ -61,12 +66,12 @@ const Index = (props) => {
     if (props.token) {
       fetchClaims();
     }
-  }, []);
+  });
 
   return (
     <>
       <CustomNavbar />
-      <SplashScreen />
+      {isLoading ? <Spinner /> : <SplashScreen />}
     </>
   );
 };

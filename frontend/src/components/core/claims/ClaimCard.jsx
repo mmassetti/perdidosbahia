@@ -11,7 +11,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const ClaimCard = (props) => {
-  console.log("ClaimCard -> props", props);
   let history = useHistory();
   const { isShowing, toggle } = useModal();
   const [showEditModal, setShowEditModal] = useState(false);

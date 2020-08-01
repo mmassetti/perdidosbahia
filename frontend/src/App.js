@@ -23,6 +23,7 @@ const App = (props) => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [firstName, setFirstName] = useState(null);
+  const [hasPendingNotifications, setHasPendingNotifications] = useState(null);
 
   useEffect(() => {
     const userToken = localStorage.getItem("token");
@@ -39,16 +40,24 @@ const App = (props) => {
           userToken,
           localStorage.getItem("userId"),
           dateDifference,
-          localStorage.getItem("firstName")
+          localStorage.getItem("firstName"),
+          localStorage.getItem("hasPendingNotifications")
         );
       }
     }
   });
 
-  const login = (token, userId, tokenExpiration, firstName) => {
+  const login = (
+    token,
+    userId,
+    tokenExpiration,
+    firstName,
+    hasPendingNotifications
+  ) => {
     setToken(token);
     setUserId(userId);
     setFirstName(firstName);
+    setHasPendingNotifications(hasPendingNotifications);
     localStorage.setItem("token", token);
     const expirationDate = new Date(
       new Date().getTime() + tokenExpiration * 3600000
@@ -58,6 +67,7 @@ const App = (props) => {
     }
     localStorage.setItem("userId", userId);
     localStorage.setItem("firstName", firstName);
+    localStorage.setItem("hasPendingNotifications", hasPendingNotifications);
     return <Redirect to="/" />;
   };
 
@@ -65,10 +75,12 @@ const App = (props) => {
     setToken(null);
     setUserId(null);
     setFirstName(null);
+    setHasPendingNotifications(null);
     localStorage.removeItem("token");
     localStorage.removeItem("expirationDate");
     localStorage.removeItem("userId");
     localStorage.removeItem("firstName");
+    localStorage.removeItem("hasPendingNotifications");
     //TODO: Achive this behavior:
     // if (!localStorage.getItem("token")) {
     //   return <MustLoginModal isShowing="true" />;
@@ -84,6 +96,7 @@ const App = (props) => {
           login: login,
           logout: logout,
           firstName: firstName,
+          hasPendingNotifications: hasPendingNotifications,
         }}
       >
         <APIErrorProvider>
@@ -93,7 +106,12 @@ const App = (props) => {
                 path="/"
                 exact
                 render={(props) => (
-                  <Index {...props} token={token} userId={userId} />
+                  <Index
+                    {...props}
+                    token={token}
+                    userId={userId}
+                    hasPendingNotifications={hasPendingNotifications}
+                  />
                 )}
               />
               <Route

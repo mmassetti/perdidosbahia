@@ -22,7 +22,7 @@ module.exports = buildSchema(`
         phoneNumber: String
         createdItems: [Item!]
         claimsInvolved: [Claim!]
-        notifications: [Notification!]
+        hasPendingNotifications: Boolean!
     }
 
     type AuthData {
@@ -30,6 +30,7 @@ module.exports = buildSchema(`
         token: String!
         tokenExpiration: Int!
         firstName: String
+        hasPendingNotifications: Boolean!
     }
 
     type Claim {

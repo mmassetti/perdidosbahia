@@ -79,6 +79,7 @@ const Login = (props) => {
             token
             tokenExpiration
             firstName
+            hasPendingNotifications
           }
         }
       `,
@@ -106,7 +107,8 @@ const Login = (props) => {
             resData.data.login.token,
             resData.data.login.userId,
             resData.data.login.tokenExpiration,
-            resData.data.login.firstName
+            resData.data.login.firstName,
+            resData.data.login.hasPendingNotifications
           );
         }
       })
