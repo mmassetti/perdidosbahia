@@ -412,7 +412,6 @@ const LostItem = (props) => {
                               </Button>
                             </ButtonGroup>
                           </FormGroup>
-
                           {/* //* Date */}
                           <FormGroup
                             className={
@@ -454,7 +453,6 @@ const LostItem = (props) => {
                               </small>
                             )}
                           </FormGroup>
-
                           {/* //* Location */}
                           <FormGroup
                             className={
@@ -496,7 +494,6 @@ const LostItem = (props) => {
                               </small>
                             )}
                           </FormGroup>
-
                           {/* //* Description */}
                           <FormGroup
                             className={
@@ -539,12 +536,19 @@ const LostItem = (props) => {
                             )}
                           </FormGroup>
 
-                          <div style={{ marginBottom: "1rem" }}>
-                            <span className="h6 font-weight-bold ">
-                              Necesitamos que agregues una pregunta.
-                            </span>
-                          </div>
-
+                          {itemCreatorQuestion ? (
+                            <div style={{ marginBottom: "1rem" }}>
+                              <span className="h6 ">
+                                <b>Tu pregunta:</b> {itemCreatorQuestion}
+                              </span>
+                            </div>
+                          ) : (
+                            <div style={{ marginBottom: "1rem" }}>
+                              <span className="h6 font-weight-bold ">
+                                Necesitamos que agregues una pregunta.
+                              </span>
+                            </div>
+                          )}
                           {/* Modal questions */}
                           <Row>
                             <Col md="4">
@@ -553,9 +557,11 @@ const LostItem = (props) => {
                                 type="button"
                                 size="sm"
                                 onClick={toggleTrueFalse}
+                                style={{ marginBottom: "1rem" }}
                               >
                                 Agregar pregunta
                               </Button>
+
                               <Modal
                                 className="modal-dialog-centered"
                                 size="sm"
@@ -674,12 +680,12 @@ const LostItem = (props) => {
                                 type="button"
                                 size="sm"
                                 onClick={removeItemCreatorQuestion}
+                                style={{ marginBottom: "1rem" }}
                               >
                                 Eliminar pregunta
                               </Button>
                             </Col>
                           </Row>
-
                           <div className="text-center">
                             <Button
                               className="my-4"
