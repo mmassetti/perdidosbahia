@@ -10,6 +10,7 @@ module.exports = buildSchema(`
         location: String
         itemCreatorQuestion: String!
         creator: User!
+        createdAt: String!
     }
 
     type User {
@@ -21,7 +22,7 @@ module.exports = buildSchema(`
         phoneNumber: String
         createdItems: [Item!]
         claimsInvolved: [Claim!]
-        notifications: [Notification!]
+        hasPendingNotifications: Boolean!
     }
 
     type AuthData {
@@ -29,6 +30,7 @@ module.exports = buildSchema(`
         token: String!
         tokenExpiration: Int!
         firstName: String
+        hasPendingNotifications: Boolean!
     }
 
     type Claim {
@@ -52,6 +54,13 @@ module.exports = buildSchema(`
         description: String!
         itemInvolved: Item
         userToNotify: User!
+        itemInfo: ItemInfo
+    }
+
+    type ItemInfo {
+        _id: ID!
+        description: String
+        category: String
     }
 
     input ItemInput {
@@ -84,7 +93,7 @@ module.exports = buildSchema(`
         createItem(itemInput: ItemInput): Item
         getItem(itemId: ID!): Item
         editItem(itemId: ID!, newItemInput: ItemInput): Item
-        deleteItem(itemId: ID!): ID
+        deleteItem(itemId: ID!, notificationDescription: String!): ID
         createClaim(itemId : ID!, claimerQuestion: String!, claimerAnswer: String!): Claim!
         editClaim(claimId: ID!, newStateForClaimer: String!, newStateForItemCreator: String!,newFlagClaimer: Int!, newFlagItemCreator: Int!, newClaimerQuestion: String, newClaimerAnswer: String, newItemCreatorAnswer: String): Claim!
         cancelClaim(claimId: ID!, notificationDescription: String!): Item!

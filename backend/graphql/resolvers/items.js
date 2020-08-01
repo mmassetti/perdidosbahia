@@ -3,7 +3,8 @@ const User = require("../../models/user");
 const Claim = require("../../models/claim");
 
 const { transformItem } = require("./merge");
-const { updateAssociatedItem } = require("./claim");
+const Notification = require("../../models/helpers/notification");
+const ItemInfo = require("../../models/helpers/itemInfo");
 
 async function deleteClaim(args) {
   try {
@@ -126,13 +127,35 @@ module.exports = {
       if (isUserAuthorized) {
         creator.createdItems.pull(item._id);
         creator.save();
-        await Item.deleteOne({ _id: item._id });
 
-        //Delete Claims asocciated to Item
+        const itemInfo = new ItemInfo({
+          description: item.description,
+          category: item.category,
+        });
+
+        //Delete Claims associated to Item and notify claimers
         const claims = await Claim.find({ item: item._id });
+        if (claims.length > 0) {
+          itemInfo.save();
+        }
         claims.map(async (claim) => {
+          const userClaimer = await User.findOne({ _id: claim.itemClaimer });
+
+          const notification = new Notification({
+            description: args.notificationDescription,
+            itemInfo: itemInfo,
+            userToNotify: userClaimer,
+          });
+
+          await notification.save();
+
+          userClaimer.notifications.push(notification);
+          await userClaimer.save();
           await deleteClaim(claim);
         });
+
+        //Delete Item
+        await Item.deleteOne({ _id: item._id });
 
         return args.itemId;
       }

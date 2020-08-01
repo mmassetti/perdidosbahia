@@ -1,10 +1,15 @@
 const DataLoader = require("dataloader");
 const Item = require("../../models/item");
 const User = require("../../models/user");
+const ItemInfo = require("../../models/helpers/itemInfo");
 const { dateToString } = require("../../helpers/date");
 
 const itemLoader = new DataLoader((itemIds) => {
   return items(itemIds);
+});
+
+const itemInfoLoader = new DataLoader((itemInfosIds) => {
+  return ItemInfo.find({ _id: { $in: itemInfosIds } });
 });
 
 const userLoader = new DataLoader((userIds) => {
@@ -36,6 +41,18 @@ const singleItem = async (itemId) => {
   }
 };
 
+const itemInfo = async (itemInfoId) => {
+  try {
+    const itemInfo = await itemInfoLoader.load(itemInfoId.toString());
+    return {
+      ...itemInfo._doc,
+      _id: itemInfo.id,
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
 const user = async (userId) => {
   try {
     const user = await userLoader.load(userId.toString());
@@ -44,6 +61,7 @@ const user = async (userId) => {
       _id: user.id,
       createdItems: () => itemLoader.loadMany(this, user._doc.createdItems),
       claimsInvolved: () => itemLoader.loadMany(this, user._doc.claimsInvolved),
+      hasPendingNotifications: user.hasPendingNotifications,
     };
   } catch (err) {
     throw err;
@@ -56,6 +74,7 @@ const transformItem = (item) => {
     _id: item.id,
     date: dateToString(item._doc.date),
     creator: user.bind(this, item.creator),
+    createdAt: dateToString(item._doc.createdAt),
   };
 };
 
@@ -77,6 +96,9 @@ const transformNotification = (notification) => {
     _id: notification.id,
     itemInvolved: notification._doc.itemInvolved
       ? singleItem.bind(this, notification._doc.itemInvolved)
+      : null,
+    itemInfo: notification._doc.itemInfo
+      ? itemInfo.bind(this, notification._doc.itemInfo)
       : null,
     userToNotify: user.bind(this, notification.userToNotify),
   };

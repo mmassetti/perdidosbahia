@@ -29,24 +29,11 @@ const Items = () => {
   const [isLoading, setIsLoading] = useState(false);
   const context = useContext(AuthContext);
 
-  const itemsCards = items.items.map((item) => {
-    return (
-      <CardItem
-        key={item._id}
-        id={item._id}
-        description={item.description}
-        type={item.type}
-        category={item.category}
-        date={item.date}
-        location={item.location}
-        creatorId={item.creator._id}
-        authUserId={context.userId}
-        itemCreatorQuestion={
-          item.itemCreatorQuestion ? item.itemCreatorQuestion : null
-        }
-      ></CardItem>
-    );
-  });
+  useEffect(() => {
+    fetchItems();
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, [setItems]);
 
   const fetchItems = () => {
     setIsLoading(true);
@@ -65,6 +52,7 @@ const Items = () => {
                 _id
                 email
               }
+              createdAt
             }
           }
         `,
@@ -94,11 +82,67 @@ const Items = () => {
       });
   };
 
-  useEffect(() => {
-    fetchItems();
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, []);
+  const deleteItemHandler = (itemId) => {
+    setIsLoading(true);
+    const requestBody = {
+      query: `
+         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
+            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
+          }
+        `,
+      variables: {
+        itemId: itemId,
+        notificationDescription:
+          "Lo sentimos, el otro usuario eliminó la publicación:",
+      },
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        const updatedValues = items.items.filter((item) => item._id !== itemId);
+        setItems({ items: updatedValues });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const itemsCards = items.items.map((item) => {
+    return (
+      <CardItem
+        key={item._id}
+        id={item._id}
+        description={item.description}
+        type={item.type}
+        category={item.category}
+        date={item.date}
+        location={item.location}
+        creatorId={item.creator._id}
+        authUserId={context.userId}
+        token={context.token}
+        itemCreatorQuestion={
+          item.itemCreatorQuestion ? item.itemCreatorQuestion : null
+        }
+        onDelete={deleteItemHandler}
+        createdAt={item.createdAt}
+      ></CardItem>
+    );
+  });
 
   return (
     <>
@@ -122,8 +166,8 @@ const Items = () => {
                 <Row>
                   <Col lg="12">
                     <h1 className="display-3 text-white">
-                      Acá se encuentran todos los objetos perdidos y encontrados
-                      que fueron publicados
+                      Mirá todos los objetos perdidos y encontrados que fueron
+                      publicados
                     </h1>
                   </Col>
                 </Row>

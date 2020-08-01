@@ -4,6 +4,13 @@ export default React.createContext({
   token: null,
   userId: null,
   firstName: null,
-  login: (token, userId, tokenExpiration, firstName) => {},
+  hasPendingNotifications: null,
+  login: (
+    token,
+    userId,
+    tokenExpiration,
+    firstName,
+    hasPendingNotifications
+  ) => {},
   logout: () => {},
 });

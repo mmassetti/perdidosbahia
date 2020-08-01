@@ -31,6 +31,7 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = (props) => {
+  console.log("SingleItem -> props", props);
   const { isShowing, toggle } = useModal();
   const context = useContext(AuthContext);
   let history = useHistory();
@@ -58,7 +59,12 @@ const SingleItem = (props) => {
     let itemType = props.location.state.props.type;
     if (itemType == "perdido") {
       return (
-        <Button color="primary" size="sm" onClick={toggle}>
+        <Button
+          color="primary"
+          size="sm"
+          onClick={toggle}
+          style={{ marginBottom: "0.5rem" }}
+        >
           <span className="btn-inner--text">
             ¡Creo que encontré este objeto!
           </span>
@@ -125,16 +131,14 @@ const SingleItem = (props) => {
                         className="order-lg-3 text-lg-right align-self-lg-center"
                         lg="4"
                       >
-                        <div className="card-profile-actions py-4 mt-lg-0">
-                          <Button
-                            className="float-right"
-                            color="default"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                            size="sm"
-                          >
-                            Necesito ayuda
-                          </Button>
+                        {" "}
+                        <div className="card-profile-actions py-4 mt-lg-0 float-right">
+                          <span className="h6 font-weight-bold">
+                            Publicado el{" "}
+                            {moment(
+                              props.location.state.props.createdAt
+                            ).format("L")}
+                          </span>
                         </div>
                       </Col>
                       <Col className="order-lg-1" lg="4">
@@ -152,44 +156,35 @@ const SingleItem = (props) => {
                                 "L"
                               )}
                             </span>
-                            <span className="description">Fecha</span>
+                            <span className="description">
+                              {props.location.state.props.type == "perdido"
+                                ? "Fecha en la que se perdió "
+                                : "Fecha en la que se encontró "}
+                            </span>
                           </div>
-                          {/* <div>
-                        <span className="heading">
-                          {props.location.state.props.category}
-                        </span>
-                        <span className="description">Categoría</span>
-                      </div> */}
                         </div>
                       </Col>
                     </Row>
                     <div className="text-center mt-5">
                       <h3>Objeto {props.location.state.props.type}</h3>
 
-                      {/* <div className="h6">
-                    <i className="ni location_pin mr-2" />
-                    {moment(props.location.state.props.date).format("LL")}
-                  </div> */}
-                      {/* <div className="h6 mt-4">
-                    <i className="ni business_briefcase-24 mr-2" />
-                    <span className="text-warning">Categoría</span> :{" "}
-                    {props.location.state.props.category}
-                  </div> */}
                       <div>
                         <i className="ni education_hat mr-2" />
-                        <span className="text-primary font-weight-bold">
+                        <span className="text-default font-weight-bold">
                           Ubicación
                         </span>{" "}
                         : {props.location.state.props.location}
                       </div>
                     </div>
-                    <div className="mt-5 py-5 border-top text-center">
+                    <div className="mt-3 py-3 border-top text-center">
                       <Row className="justify-content-center">
                         <Col lg="4">
+                          <div className="text-muted text-center mt-2 mb-3">
+                            <span className="h6 font-weight-bold">
+                              Descripción del objeto
+                            </span>
+                          </div>
                           <p>{props.location.state.props.description}</p>
-                          {/* <a href="#pablo" onClick={e => e.preventDefault()}>
-                        Show more
-                      </a> */}
                         </Col>
                       </Row>
                     </div>
@@ -198,7 +193,12 @@ const SingleItem = (props) => {
                     <CardHeader className="bg-white pb-5">
                       <div className="btn-wrapper text-center">
                         {loggedUserIsItemCreator() ? (
-                          <Button color="primary" size="sm" onClick={toggle}>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={toggle}
+                            style={{ marginBottom: "0.5rem" }}
+                          >
                             <span className="btn-inner--text">
                               Editar publicación
                             </span>
@@ -226,6 +226,7 @@ const SingleItem = (props) => {
                           color="default"
                           onClick={cancelAnswer}
                           size="sm"
+                          style={{ marginBottom: "0.5rem" }}
                         >
                           <span className="btn-inner--text">
                             Volver a objetos publicados

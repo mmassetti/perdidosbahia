@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../../models//user");
+const Notification = require("../../models/helpers/notification");
 
 module.exports = {
   createUser: async (args) => {
@@ -46,11 +47,17 @@ module.exports = {
         expiresIn: "1h",
       }
     );
+
+    const notifications = await Notification.find({
+      _id: { $in: user.notifications },
+    });
+
     return {
       userId: user.id,
       firstName: user.firstName,
       token: token,
       tokenExpiration: 1,
+      hasPendingNotifications: notifications.length > 0 ? true : false,
     };
   },
 };

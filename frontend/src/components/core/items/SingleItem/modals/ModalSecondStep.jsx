@@ -23,7 +23,6 @@ import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 
 const ModalSecondStep = ({ isShowing, hide, info }) => {
-  console.log("ModalSecondStep -> info ", info);
   const [tabs, setTabs] = useState({ tab: 1 });
   const [itemCreatorAnswer, setItemCreatorAnswer] = useState("");
   let history = useHistory();
@@ -268,6 +267,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                           <Button
                             color="primary"
                             type="button"
+                            disabled={itemCreatorAnswer ? false : true}
                             onClick={(e) => toggleNavs(e, 3)}
                           >
                             Continuar

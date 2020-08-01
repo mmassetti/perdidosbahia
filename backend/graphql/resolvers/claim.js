@@ -132,15 +132,15 @@ module.exports = {
         const notification = new Notification({
           description: args.notificationDescription,
           itemInvolved: claim.item,
-          userToNotify: claimer == req.userId ? creator : claimer,
+          userToNotify: claim.item.creator == req.userId ? claimer : creator,
         });
 
         notification.save();
 
-        if (req.userId == claimerId) {
+        if (req.userId == claim.item.creator) {
           claimer.notifications.push(notification);
         } else {
-          claimer.notifications.push(notification);
+          creator.notifications.push(notification);
         }
 
         //Delete Claims from users lists

@@ -222,6 +222,7 @@ const ModalFirstStep = ({
                           <Button
                             color="primary"
                             type="button"
+                            disabled={claimerAnswer ? false : true}
                             onClick={(e) => toggleNavs(e, 2)}
                           >
                             Continuar
@@ -270,6 +271,7 @@ const ModalFirstStep = ({
                           <Button
                             color="primary"
                             type="button"
+                            disabled={claimerQuestion ? false : true}
                             onClick={(e) => toggleNavs(e, 3)}
                           >
                             Continuar
