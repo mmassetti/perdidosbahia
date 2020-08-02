@@ -60,7 +60,8 @@ const ClaimCard = (props) => {
     return (
       <React.Fragment>
         <h6 className="text-primary font-weight-light mb-2">
-          ¡Listo! Tanto vos como la otra persona confirmaron el contacto.
+          <span className="font-weight-bold">¡Listo! </span> Tanto vos como la
+          otra persona confirmaron el contacto.
         </h6>
         <Button
           className=""
@@ -108,12 +109,7 @@ const ClaimCard = (props) => {
       <React.Fragment>
         <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
           <span className="h6 font-weight-bold">Estado actual:</span>
-          <Badge
-            color="success"
-            pill
-            className="mr-1"
-            style={{ marginLeft: "0.2rem" }}
-          >
+          <Badge color="success" pill className="mr-1">
             {getStateForAuthUser()}
           </Badge>
         </div>

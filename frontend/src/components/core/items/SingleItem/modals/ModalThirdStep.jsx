@@ -31,8 +31,8 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
   };
 
   const handleSubmitModalForm = (e) => {
-    const newStateForClaimer = "EnContacto";
-    const newStateForItemCreator = "EnContacto";
+    const newStateForClaimer = "Ya estás en contacto con la otra persona";
+    const newStateForItemCreator = "Ya estás en contacto con la otra persona";
     const newFlagClaimer = 1;
     const newFlagItemCreator = 1;
 
@@ -182,7 +182,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       <Form role="form">
                         <div className="modal-footer">
                           <div className="text-muted text-center mt-2 mb-3">
-                            <span className="h6 text-danger font-weight-bold">
+                            <span className="h6 text-default font-weight-bold">
                               ¿Estás de acuerdo con la respuesta?
                             </span>
                           </div>

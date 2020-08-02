@@ -209,7 +209,7 @@ const LostItem = (props) => {
           </section>
         </div>
         {context.token ? (
-          <>
+          <React.Fragment>
             <section className="section section-sm bg-gradient-default">
               <Container className="pt-lg pb-300">
                 <Row className="text-center justify-content-center">
@@ -709,16 +709,15 @@ const LostItem = (props) => {
                 </Row>
               </Container>
             </section>
-          </>
+          </React.Fragment>
         ) : (
-          <>
-            <h2>
-              {" "}
-              Para poder publicar un objeto primero es necesario Registrarse o
-              Iniciar sesion
-            </h2>
+          <React.Fragment>
+            <div className="text-center mt-5">
+              <h3>Todavía no se publicó ningún objeto</h3>
+            </div>
+
             <MustLoginModal isShowing={isShowing} hide={toggle} />
-          </>
+          </React.Fragment>
         )}
       </main>
     </>
