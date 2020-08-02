@@ -38,7 +38,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
 
   const handleSubmitModalForm = (e) => {
     const newStateForClaimer = "Es tu turno de responder";
-    const newStateForItemCreator = "Es turno del otro usuario para responder";
+    const newStateForItemCreator = "Esperando respuesta del otro usuario";
     const newFlagClaimer = 1;
     const newFlagItemCreator = 0;
 

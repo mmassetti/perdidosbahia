@@ -109,7 +109,12 @@ const ClaimCard = (props) => {
       <React.Fragment>
         <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
           <span className="h6 font-weight-bold">Estado actual:</span>
-          <Badge color="success" pill className="mr-1">
+          <Badge
+            color="success"
+            pill
+            className="mr-1"
+            style={{ marginLeft: "0rem" }}
+          >
             {getStateForAuthUser()}
           </Badge>
         </div>
@@ -191,9 +196,9 @@ const ClaimCard = (props) => {
         color="danger"
         size="sm"
         outline
-        // onClick={() => props.onDelete(props.claimId)}
+        onClick={() => props.onDeleteItem(props.item._id)}
       >
-        Eliminar objeto
+        Eliminar objeto si soy yo
       </Button>
     );
   };

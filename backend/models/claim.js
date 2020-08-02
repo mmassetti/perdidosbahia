@@ -20,17 +20,17 @@ const claimSchema = new Schema(
       type: String,
       required: true,
       enum: [
-        "Es turno del otro usuario para responder",
+        "Esperando respuesta del otro usuario",
         "Es tu turno de responder",
         "Ya estás en contacto con la otra persona",
       ],
-      default: "Es turno del otro usuario para responder",
+      default: "Esperando respuesta del otro usuario",
     },
     stateForItemCreator: {
       type: String,
       required: true,
       enum: [
-        "Es turno del otro usuario para responder",
+        "Esperando respuesta del otro usuario",
         "Es tu turno de responder",
         "Ya estás en contacto con la otra persona",
       ],

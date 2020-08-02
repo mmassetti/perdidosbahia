@@ -24,6 +24,7 @@ import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { Container, Row, Col } from "reactstrap";
+import confirm from "reactstrap-confirm";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -83,8 +84,16 @@ const Items = () => {
       });
   };
 
-  const deleteItemHandler = (itemId) => {
-    setIsLoading(true);
+  const deleteItemHandler = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
     const requestBody = {
       query: `
          mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
@@ -98,29 +107,34 @@ const Items = () => {
       },
     };
 
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
       })
-      .then((resData) => {
-        const updatedValues = items.items.filter((item) => item._id !== itemId);
-        setItems({ items: updatedValues });
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = items.items.filter(
+            (item) => item._id !== itemId
+          );
+          setItems({ items: updatedValues });
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
   };
 
   const itemsCards = items.items.map((item) => {
@@ -139,7 +153,7 @@ const Items = () => {
         itemCreatorQuestion={
           item.itemCreatorQuestion ? item.itemCreatorQuestion : null
         }
-        onDelete={() => deleteItemHandler}
+        onDelete={deleteItemHandler}
         createdAt={item.createdAt}
       ></CardItem>
     );

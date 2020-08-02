@@ -30,38 +30,40 @@ const SimpleFooter = (props) => {
       case "objetos-publicados":
         if (token) {
           return (
-            <span class="font-weight-bold">¿Estás buscando otra cosa?</span>
+            <span className="font-weight-bold">¿Estás buscando otra cosa?</span>
           );
         } else {
           return (
-            <span class="font-weight-bold">
+            <span className="font-weight-bold">
               ¿Todavía no creaste una cuenta?"
             </span>
           );
         }
       case "mis-publicaciones":
         return (
-          <span class="font-weight-bold">
+          <span className="font-weight-bold">
             ¿Querés ver todos los objetos publicados?
           </span>
         );
       case "objeto-perdido":
-        return <span class="font-weight-bold">¿Estás buscando otra cosa?</span>;
+        return (
+          <span className="font-weight-bold">¿Estás buscando otra cosa?</span>
+        );
       case "detalle":
         if (token) {
           return (
-            <span class="font-weight-bold">¿Estás buscando otra cosa?</span>
+            <span className="font-weight-bold">¿Estás buscando otra cosa?</span>
           );
         } else {
           return (
-            <span class="font-weight-bold">
+            <span className="font-weight-bold">
               ¿Todavía no creaste una cuenta?
             </span>
           );
         }
       default:
         return (
-          <span class="font-weight-bold">
+          <span className="font-weight-bold">
             Objetos perdidos y encontrados en Bahía y la zona
           </span>
         );
@@ -73,7 +75,7 @@ const SimpleFooter = (props) => {
       case "objetos-publicados":
         if (token) {
           return (
-            <h4 class=" mb-0 font-weight-light">
+            <h4 className=" mb-0 font-weight-light">
               Publicá algún objeto que hayas{" "}
               <Link to="/objeto-perdido" className="font-weight-light">
                 perdido
@@ -90,7 +92,7 @@ const SimpleFooter = (props) => {
           );
         } else {
           return (
-            <h4 class=" mb-0 font-weight-light">
+            <h4 className=" mb-0 font-weight-light">
               Hacelo{" "}
               <Link to="/registro" className="font-weight-light">
                 acá
@@ -100,7 +102,7 @@ const SimpleFooter = (props) => {
         }
       case "mis-publicaciones":
         return (
-          <h4 class=" mb-0 font-weight-light">
+          <h4 className=" mb-0 font-weight-light">
             {" "}
             Miralos{" "}
             <Link to="/objetos-publicados" className="font-weight-light">
@@ -110,7 +112,7 @@ const SimpleFooter = (props) => {
         );
       case "objeto-perdido":
         return (
-          <h4 class=" mb-0 font-weight-light">
+          <h4 className=" mb-0 font-weight-light">
             {" "}
             Podes ver todos los{" "}
             <Link to="/objetos-publicados" className="font-weight-light">
@@ -125,7 +127,7 @@ const SimpleFooter = (props) => {
       case "detalle":
         if (token) {
           return (
-            <h4 class=" mb-0 font-weight-light">
+            <h4 className=" mb-0 font-weight-light">
               {" "}
               Podes ver todos los{" "}
               <Link to="/objetos-publicados" className="font-weight-light">
@@ -139,7 +141,7 @@ const SimpleFooter = (props) => {
           );
         } else {
           return (
-            <h4 class=" mb-0 font-weight-light">
+            <h4 className=" mb-0 font-weight-light">
               Hacelo{" "}
               <Link to="/registro" className="font-weight-light">
                 acá
@@ -150,7 +152,7 @@ const SimpleFooter = (props) => {
 
       default:
         return (
-          <h4 class=" mb-0 font-weight-light">
+          <h4 className=" mb-0 font-weight-light">
             <Link to="/registro" className="font-weight-light">
               Registrate
             </Link>{" "}

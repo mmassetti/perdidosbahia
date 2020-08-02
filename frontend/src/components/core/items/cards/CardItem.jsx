@@ -8,6 +8,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
+import confirm from "reactstrap-confirm";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -156,6 +157,41 @@ const CardItem = (props) => {
         </Card>
       </Col>
     );
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Custom confirm message",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
+    if (result) {
+      props.onDelete(itemId);
+      await confirm({
+        title: null,
+        message: "Tu objeto fue eliminado correctamente",
+        confirmText: "OK",
+        confirmColor: "primary",
+        cancelText: null,
+      });
+    }
+  };
+
+  const handleAlert = async () => {
+    let result = await confirm({
+      title: null,
+      message: "I can use this component to display alerts!",
+      confirmText: "Understood!",
+      confirmColor: "primary",
+      cancelText: null,
+    });
+
+    alert(`Confirm result: ${result}`);
   };
 
   const deleteItemButton = () => {

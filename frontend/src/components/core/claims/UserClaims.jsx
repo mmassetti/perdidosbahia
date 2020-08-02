@@ -27,6 +27,8 @@ import { Link } from "react-router-dom";
 
 import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
 import SimpleFooter from "components/theme/Footers/SimpleFooter";
+import confirm from "reactstrap-confirm";
+
 var moment = require("moment");
 require("moment/locale/es");
 
@@ -351,19 +353,16 @@ const UserClaims = (props) => {
     });
   };
 
-  useEffect(() => {
-    if (context.token) {
-      fetchUserItemsWithoutClaim();
-      fetchClaims();
-    }
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    toggle();
-    setCleanedNotifications(false);
-  }, [context, setCleanedNotifications]);
+  const deleteItemHandler = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
 
-  const deleteItemHandler = (itemId) => {
-    setIsLoading(true);
     const requestBody = {
       query: `
          mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
@@ -377,32 +376,47 @@ const UserClaims = (props) => {
       },
     };
 
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
       })
-      .then((resData) => {
-        const updatedValues = userItemsWithoutClaim.items.filter(
-          (item) => item._id !== itemId
-        );
-        setUserItemsWithoutClaim({ items: updatedValues });
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = userItemsWithoutClaim.items.filter(
+            (item) => item._id !== itemId
+          );
+          setUserItemsWithoutClaim({ items: updatedValues });
+          setCleanedNotifications(true);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
   };
+
+  useEffect(() => {
+    if (context.token) {
+      fetchUserItemsWithoutClaim();
+      fetchClaims();
+    }
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    toggle();
+    setCleanedNotifications(false);
+  }, [context, setCleanedNotifications]);
 
   const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
     (item, key) => {
@@ -452,7 +466,7 @@ const UserClaims = (props) => {
                   outline
                   onClick={() => deleteItemHandler(item._id)}
                 >
-                  Eliminar objeto
+                  Eliminar publicación
                 </Button>
               </React.Fragment>
             </CardBody>
@@ -480,6 +494,7 @@ const UserClaims = (props) => {
         claimerAnswer={claim.claimerAnswer}
         itemCreatorAnswer={claim.itemCreatorAnswer}
         onDelete={deleteClaimHandler}
+        onDeleteItem={deleteItemHandler}
       ></ClaimCard>
     );
   });
