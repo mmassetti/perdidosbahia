@@ -424,7 +424,10 @@ const Register = (props) => {
                         <p>
                           {" "}
                           Ya tenes una cuenta?{" "}
-                          <Link className="label" to="/inicio-sesion">
+                          <Link
+                            className="label font-weight-bold"
+                            to="/inicio-sesion"
+                          >
                             Iniciar sesión
                           </Link>
                         </p>

@@ -257,7 +257,6 @@ const Login = (props) => {
           </Container>
         </section>
       </main>
-      <SimpleFooter page={"inicio-sesion"} />
     </React.Fragment>
   );
 };

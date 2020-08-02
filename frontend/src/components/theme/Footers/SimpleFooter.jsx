@@ -29,22 +29,42 @@ const SimpleFooter = (props) => {
     switch (props.page) {
       case "objetos-publicados":
         if (token) {
-          return "¿Ya iniciaste contacto con alguién?";
+          return (
+            <span class="font-weight-bold">¿Estás buscando otra cosa?</span>
+          );
         } else {
-          return " ¿Todavía no creaste una cuenta?";
+          return (
+            <span class="font-weight-bold">
+              ¿Todavía no creaste una cuenta?"
+            </span>
+          );
         }
       case "mis-publicaciones":
-        return "¿Querés ver todos los objetos publicados?";
+        return (
+          <span class="font-weight-bold">
+            ¿Querés ver todos los objetos publicados?
+          </span>
+        );
       case "objeto-perdido":
-        return "¿Estás buscando otra cosa?";
+        return <span class="font-weight-bold">¿Estás buscando otra cosa?</span>;
       case "detalle":
         if (token) {
-          return "¿Estás buscando otra cosa?";
+          return (
+            <span class="font-weight-bold">¿Estás buscando otra cosa?</span>
+          );
         } else {
-          return "¿Todavía no creaste una cuenta?";
+          return (
+            <span class="font-weight-bold">
+              ¿Todavía no creaste una cuenta?
+            </span>
+          );
         }
       default:
-        return "Objetos perdidos y encontrados en Bahía y la zona";
+        return (
+          <span class="font-weight-bold">
+            Objetos perdidos y encontrados en Bahía y la zona
+          </span>
+        );
     }
   };
 
@@ -54,10 +74,17 @@ const SimpleFooter = (props) => {
         if (token) {
           return (
             <h4 class=" mb-0 font-weight-light">
-              {" "}
-              Seguí el estado de tus publicaciones{" "}
-              <Link to="/mis-publicaciones" className="font-weight-bold">
-                acá
+              Publicá algún objeto que hayas{" "}
+              <Link to="/objeto-perdido" className="font-weight-light">
+                perdido
+              </Link>{" "}
+              o{" "}
+              <Link to="/objeto-encontrado" className="font-weight-light">
+                encontrado
+              </Link>{" "}
+              o bien seguí el estado de tus{" "}
+              <Link to="/mis-publicaciones" className="font-weight-light">
+                publicaciones
               </Link>{" "}
             </h4>
           );
@@ -65,7 +92,7 @@ const SimpleFooter = (props) => {
           return (
             <h4 class=" mb-0 font-weight-light">
               Hacelo{" "}
-              <Link to="/registro" className="font-weight-bold">
+              <Link to="/registro" className="font-weight-light">
                 acá
               </Link>{" "}
             </h4>
@@ -76,7 +103,7 @@ const SimpleFooter = (props) => {
           <h4 class=" mb-0 font-weight-light">
             {" "}
             Miralos{" "}
-            <Link to="/objetos-publicados" className="font-weight-bold">
+            <Link to="/objetos-publicados" className="font-weight-light">
               acá
             </Link>{" "}
           </h4>
@@ -86,11 +113,11 @@ const SimpleFooter = (props) => {
           <h4 class=" mb-0 font-weight-light">
             {" "}
             Podes ver todos los{" "}
-            <Link to="/objetos-publicados" className="font-weight-bold">
+            <Link to="/objetos-publicados" className="font-weight-light">
               objetos publicados
             </Link>{" "}
             o ver el estado de{" "}
-            <Link to="/mis-publicaciones" className="font-weight-bold">
+            <Link to="/mis-publicaciones" className="font-weight-light">
               tus publicaciones
             </Link>{" "}
           </h4>
@@ -101,11 +128,11 @@ const SimpleFooter = (props) => {
             <h4 class=" mb-0 font-weight-light">
               {" "}
               Podes ver todos los{" "}
-              <Link to="/objetos-publicados" className="font-weight-bold">
+              <Link to="/objetos-publicados" className="font-weight-light">
                 objetos publicados
               </Link>{" "}
               o ver el estado de{" "}
-              <Link to="/mis-publicaciones" className="font-weight-bold">
+              <Link to="/mis-publicaciones" className="font-weight-light">
                 tus publicaciones
               </Link>{" "}
             </h4>
@@ -114,7 +141,7 @@ const SimpleFooter = (props) => {
           return (
             <h4 class=" mb-0 font-weight-light">
               Hacelo{" "}
-              <Link to="/registro" className="font-weight-bold">
+              <Link to="/registro" className="font-weight-light">
                 acá
               </Link>{" "}
             </h4>
@@ -124,11 +151,11 @@ const SimpleFooter = (props) => {
       default:
         return (
           <h4 class=" mb-0 font-weight-light">
-            <Link to="/registro" className="font-weight-bold">
+            <Link to="/registro" className="font-weight-light">
               Registrate
             </Link>{" "}
             o{" "}
-            <Link to="/inicio-sesion" className="font-weight-bold">
+            <Link to="/inicio-sesion" className="font-weight-light">
               inicia sesión
             </Link>{" "}
             para comenzar
@@ -137,16 +164,9 @@ const SimpleFooter = (props) => {
     }
   };
 
-  const padding = () => {
-    if (props.page == "inicio-sesion") {
-      return "3.5rem";
-    }
-    return "2rem";
-  };
-
   return (
     <React.Fragment>
-      <footer className="footer" style={{ padding: padding() }}>
+      <footer className="footer">
         <Container>
           <Row className=" row-grid align-items-center ">
             <Col lg="12">
