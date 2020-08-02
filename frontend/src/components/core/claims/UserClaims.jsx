@@ -23,8 +23,10 @@ import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import ClaimCard from "../../core/claims/ClaimCard";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
+import { Link } from "react-router-dom";
 
 import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
+import SimpleFooter from "components/theme/Footers/SimpleFooter";
 var moment = require("moment");
 require("moment/locale/es");
 
@@ -527,7 +529,7 @@ const UserClaims = (props) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <CustomNavbar />
 
       {context.token ? (
@@ -575,7 +577,7 @@ const UserClaims = (props) => {
         </React.Fragment>
       ) : (
         //TODO : Extrar afuera lo que esta entre <main> </main> porque tambien se usa arriba
-        <>
+        <React.Fragment>
           <main>
             <div className="position-relative">
               {/* shape Hero */}
@@ -600,15 +602,19 @@ const UserClaims = (props) => {
           </main>
           <div className="text-center mt-5">
             <h3>
-              Para poder ver tus publicaciones primero tenés que iniciar sesión.
+              Para poder ver tus publicaciones primero tenés que{" "}
+              <Link to="/inicio-sesion" className="font-weight-bold">
+                iniciar sesión.
+              </Link>{" "}
             </h3>
           </div>
           <h1 className="display-3 text-center"></h1>
 
           <MustLoginModal isShowing={isShowing} hide={toggle} />
-        </>
+        </React.Fragment>
       )}
-    </>
+      {context.token ? <SimpleFooter page={"mis-publicaciones"} /> : ""}
+    </React.Fragment>
   );
 };
 

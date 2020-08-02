@@ -45,6 +45,7 @@ import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 import { useHistory } from "react-router-dom";
+import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -720,6 +721,7 @@ const LostItem = (props) => {
           </React.Fragment>
         )}
       </main>
+      {context.token ? <SimpleFooter page={"objeto-perdido"} /> : ""}
     </>
   );
 };

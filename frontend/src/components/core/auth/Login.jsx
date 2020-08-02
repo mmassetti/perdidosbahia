@@ -123,7 +123,7 @@ const Login = (props) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <CustomNavbar />
       <main>
         <section className="section section-shaped section-lg">
@@ -257,7 +257,8 @@ const Login = (props) => {
           </Container>
         </section>
       </main>
-    </>
+      <SimpleFooter page={"inicio-sesion"} />
+    </React.Fragment>
   );
 };
 

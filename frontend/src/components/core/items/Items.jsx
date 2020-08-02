@@ -21,6 +21,7 @@ import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import CardItem from "./cards/CardItem";
 import AuthContext from "../../../common/providers/AuthProvider/auth-context";
+import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { Container, Row, Col } from "reactstrap";
 
@@ -191,11 +192,15 @@ const Items = () => {
         </div>
 
         <Container>
-          <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
+          <Row
+            className="justify-content-center"
+            style={{ marginTop: "2rem", marginBottom: "2rem" }}
+          >
             <Col lg="12">{showContent()}</Col>
           </Row>
         </Container>
       </main>
+      <SimpleFooter page={"objetos-publicados"} />
     </>
   );
 };

@@ -240,7 +240,7 @@ const SingleItem = (props) => {
             </section>
           </main>
 
-          <SimpleFooter />
+          <SimpleFooter page={"detalle"} />
         </React.Fragment>
       ) : (
         <p className="text-muted text-center mb-3">llevar a 404</p>
