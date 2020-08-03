@@ -5,7 +5,6 @@ import useModal from "../Helpers/useModal";
 import ModalSecondStep from "../items/SingleItem/modals/ModalSecondStep";
 import ModalThirdStep from "../items/SingleItem/modals/ModalThirdStep";
 import ModalFinalStep from "../items/SingleItem/modals/ModalFinalStep";
-import ModalEditItem from "../items/SingleItem/modals/ModalEditItem";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -13,7 +12,6 @@ require("moment/locale/es");
 const ClaimCard = (props) => {
   let history = useHistory();
   const { isShowing, toggle } = useModal();
-  const [showEditModal, setShowEditModal] = useState(false);
   const [showCancelClaimOption, setCancelClaimOption] = useState(false);
 
   useEffect(() => {}, [setCancelClaimOption]);
@@ -144,16 +142,6 @@ const ClaimCard = (props) => {
     );
   };
 
-  const openEditModal = () => {
-    toggle();
-    setShowEditModal(true);
-  };
-
-  const closeEditModal = () => {
-    toggle();
-    setShowEditModal(false);
-  };
-
   const cancelButton = () => {
     return (
       <Button
@@ -215,35 +203,20 @@ const ClaimCard = (props) => {
 
       {/*Show proper modal acording flags*/}
 
-      {props.flagItemCreator == 1 &&
-      props.flagClaimer == 0 &&
-      !showEditModal ? (
+      {props.flagItemCreator == 1 && props.flagClaimer == 0 ? (
         <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""
       )}
       {/* THIRD MODAL */}
-      {props.flagItemCreator == 0 &&
-      props.flagClaimer == 1 &&
-      !showEditModal ? (
+      {props.flagItemCreator == 0 && props.flagClaimer == 1 ? (
         <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""
       )}
       {/*FINAL MODAL */}
-      {props.flagItemCreator == 1 &&
-      props.flagClaimer == 1 &&
-      !showEditModal ? (
+      {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
         <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
-      ) : (
-        ""
-      )}
-      {showEditModal ? (
-        <ModalEditItem
-          isShowing={isShowing}
-          hide={() => closeEditModal()}
-          info={props}
-        />
       ) : (
         ""
       )}
