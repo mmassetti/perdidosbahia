@@ -71,7 +71,12 @@ const SingleItem = (props) => {
       );
     } else if (itemType == "encontrado") {
       return (
-        <Button color="primary" size="sm" onClick={toggle}>
+        <Button
+          color="primary"
+          size="sm"
+          onClick={toggle}
+          style={{ marginBottom: "0.5rem" }}
+        >
           <span className="btn-inner--text">¡Este objeto es mío!</span>
         </Button>
       );
