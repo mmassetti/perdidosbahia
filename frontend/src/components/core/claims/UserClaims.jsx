@@ -219,8 +219,72 @@ const UserClaims = (props) => {
       });
   };
 
-  const deleteClaimHandler = (claimId) => {
-    setIsLoading(true);
+  const deleteItemHandler = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
+    const requestBody = {
+      query: `
+         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
+            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
+          }
+        `,
+      variables: {
+        itemId: itemId,
+        notificationDescription:
+          "Lo sentimos, el otro usuario eliminó la publicación:",
+      },
+    };
+
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = userItemsWithoutClaim.items.filter(
+            (item) => item._id !== itemId
+          );
+          setUserItemsWithoutClaim({ items: updatedValues });
+          setIsLoading(false);
+          history.push({
+            pathname: "/objetos-publicados",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
+  };
+
+  const deleteClaimHandler = async (claimId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de rechazar el contacto",
+      confirmText: "Rechazar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
     const requestBody = {
       query: `
          mutation CancelClaim($id: ID!, $notificationDescription: String!) {
@@ -238,33 +302,36 @@ const UserClaims = (props) => {
       },
     };
 
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
       })
-      .then((resData) => {
-        const updatedValues = claims.claims.filter(
-          (claim) => claim._id !== claimId
-        );
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = claims.claims.filter(
+            (claim) => claim._id !== claimId
+          );
 
-        setClaims({ claims: updatedValues });
+          setClaims({ claims: updatedValues });
 
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        console.log(err);
-      });
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
+        });
+    }
   };
 
   function deleteNotifications() {
@@ -337,7 +404,7 @@ const UserClaims = (props) => {
           style={{ marginBottom: "2rem" }}
         >
           <CardBody className="py-5">
-            <h6 className="text-warning font-weight-light mb-2">
+            <h6 className="text-warning font-weight-bold mb-2">
               {notification.description}
             </h6>
 
@@ -353,62 +420,6 @@ const UserClaims = (props) => {
         </Card>
       );
     });
-  };
-
-  const deleteItemHandler = async (itemId) => {
-    let result = await confirm({
-      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
-      message: "Estás a punto de eliminar tu publicación",
-      confirmText: "Eliminar",
-      cancelText: "Cancelar",
-      confirmColor: "danger",
-      cancelColor: "default",
-    });
-
-    const requestBody = {
-      query: `
-         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
-            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
-          }
-        `,
-      variables: {
-        itemId: itemId,
-        notificationDescription:
-          "Lo sentimos, el otro usuario eliminó la publicación:",
-      },
-    };
-
-    if (result) {
-      setIsLoading(true);
-      fetch("http://localhost:8000/graphql", {
-        method: "POST",
-        body: JSON.stringify(requestBody),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + context.token,
-        },
-      })
-        .then((res) => {
-          if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
-          }
-          return res.json();
-        })
-        .then((resData) => {
-          const updatedValues = userItemsWithoutClaim.items.filter(
-            (item) => item._id !== itemId
-          );
-          setUserItemsWithoutClaim({ items: updatedValues });
-          setIsLoading(false);
-          history.push({
-            pathname: "/objetos-publicados",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsLoading(false);
-        });
-    }
   };
 
   useEffect(() => {

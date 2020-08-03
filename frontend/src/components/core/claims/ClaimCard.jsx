@@ -198,7 +198,7 @@ const ClaimCard = (props) => {
         outline
         onClick={() => props.onDeleteItem(props.item._id)}
       >
-        Eliminar objeto si soy yo
+        Eliminar objeto
       </Button>
     );
   };
