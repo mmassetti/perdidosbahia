@@ -154,26 +154,6 @@ const ClaimCard = (props) => {
     setShowEditModal(false);
   };
 
-  const showEditButton = () => {
-    return (
-      <React.Fragment>
-        {props.item.creator._id == props.authUserId ? (
-          <Button
-            className="mt-4"
-            color="primary"
-            size="sm"
-            onClick={() => openEditModal()}
-            outline
-          >
-            Editar objeto
-          </Button>
-        ) : (
-          ""
-        )}
-      </React.Fragment>
-    );
-  };
-
   const cancelButton = () => {
     return (
       <Button
@@ -198,7 +178,7 @@ const ClaimCard = (props) => {
         outline
         onClick={() => props.onDeleteItem(props.item._id)}
       >
-        Eliminar objeto
+        Eliminar publicación
       </Button>
     );
   };
@@ -226,7 +206,6 @@ const ClaimCard = (props) => {
 
             {showItemInfo()}
 
-            {showEditButton()}
             {props.item.creator._id == props.authUserId
               ? showDeleteButton()
               : ""}
