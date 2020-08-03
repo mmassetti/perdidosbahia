@@ -182,7 +182,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       <Form role="form">
                         <div className="modal-footer">
                           <div className="text-muted text-center mt-2 mb-3">
-                            <span className="h6 text-default font-weight-bold">
+                            <span className="h6 text-warning font-weight-bold">
                               ¿Estás de acuerdo con la respuesta?
                             </span>
                           </div>

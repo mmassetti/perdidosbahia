@@ -211,7 +211,7 @@ const Items = () => {
         <Container>
           <Row
             className="justify-content-center"
-            style={{ marginTop: "2rem", marginBottom: "2rem" }}
+            style={{ marginTop: "2rem", marginBottom: "21rem" }}
           >
             <Col lg="12">{showContent()}</Col>
           </Row>

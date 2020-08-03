@@ -206,7 +206,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       <Form role="form">
                         <div className="modal-footer">
                           <div className="text-muted text-center mt-2 mb-3">
-                            <span className="h6 text-default font-weight-bold">
+                            <span className="h6 text-warning font-weight-bold">
                               ¿Estás de acuerdo con la respuesta?
                             </span>
                           </div>
@@ -288,11 +288,15 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 font-weight-bold">Último paso</span>
                       </div>
-                      <p className="description">
-                        Enviaremos esta información al otro usuario y te
-                        notificaremos cuando haya novedades. Si todo va bien
-                        podrás obtener el contacto de la otra persona.
-                      </p>
+                      <div className="text-center text-muted mb-4">
+                        <h6>
+                          Enviaremos esta información al otro usuario y te
+                          notificaremos cuando haya novedades. Si todo va bien
+                          podrás obtener el contacto de la otra persona.
+                        </h6>
+                        <h6>¡Este es el último paso!</h6>
+                      </div>
+
                       <Form role="form">
                         <div className="modal-footer">
                           <Button
