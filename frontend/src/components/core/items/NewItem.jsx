@@ -50,7 +50,8 @@ import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
 var moment = require("moment");
 require("moment/locale/es");
 
-const LostItem = (props) => {
+const NewItem = (props) => {
+  console.log("NewItem -> props", props);
   const context = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [category, setCategory] = useState({ categoryName: "" });
@@ -175,6 +176,12 @@ const LostItem = (props) => {
       });
   };
 
+  const getPlaceholder = () => {
+    if (props.type == "perdido") {
+      return "perdiste";
+    } else return "encontraste";
+  };
+
   return (
     <>
       <CustomNavbar />
@@ -216,7 +223,7 @@ const LostItem = (props) => {
                 <Row className="text-center justify-content-center">
                   <Col lg="10">
                     <h2 className="display-3 text-white">
-                      Formulario de objeto perdido
+                      Formulario de objeto {props.type}
                     </h2>
                   </Col>
                 </Row>
@@ -247,18 +254,9 @@ const LostItem = (props) => {
                           <b>IMPORTANTE</b>: En la descripción del objeto{" "}
                           <b>NO</b> brindes todos los detalles de tu objeto. Más
                           abajo deberás agregar una pregunta que tendrá que
-                          contestar quien encuentre un objeto similar al tuyo.
-                          De esta forma buscamos evitar fraudes
+                          contestar quien reclame un objeto similar al tuyo. De
+                          esta forma buscamos evitar fraudes
                         </h6>
-
-                        {/* <h6 className="h6 text-primary  ">
-                          ¿Necesitás ayuda?{" "}
-                          <a href="#" className="mr-1 font-weight-bold">
-                            Acá
-                          </a>
-                          hay un ejemplo de como completar el formulario
-                        </h6>
-                        <br></br> */}
 
                         <Form
                           noValidate
@@ -438,7 +436,9 @@ const LostItem = (props) => {
                                     ref={register()}
                                     inputProps={{
                                       placeholder:
-                                        "Fecha en la que perdiste el objeto",
+                                        "Fecha en la que " +
+                                        getPlaceholder() +
+                                        " el objeto",
                                     }}
                                     timeFormat={false}
                                     locale="es"
@@ -471,7 +471,11 @@ const LostItem = (props) => {
                                 <Input
                                   ref={register()}
                                   autoComplete="off"
-                                  placeholder="Escribí la ubicación en donde perdiste tu objeto (calle y altura,lugar,zona,etc) "
+                                  placeholder={
+                                    "Escribí la ubicación en donde " +
+                                    getPlaceholder() +
+                                    " tu objeto (calle y altura,lugar,zona,etc)"
+                                  }
                                   className={
                                     !formState.touched.location &&
                                     (formState.submitCount === 0 ||
@@ -537,6 +541,7 @@ const LostItem = (props) => {
                             )}
                           </FormGroup>
 
+                          {/* //* Item question */}
                           {itemCreatorQuestion ? (
                             <div style={{ marginBottom: "1rem" }}>
                               <span className="h6 ">
@@ -634,11 +639,20 @@ const LostItem = (props) => {
                                           )}
                                         </FormGroup>
                                         <h6>
-                                          <span>
-                                            Si alguien dice haber encontrado tu
-                                            objeto te mostraremos su respuesta a
-                                            esta pregunta
-                                          </span>
+                                          {props.type == "perdido" ? (
+                                            <span>
+                                              Si alguien reclama haber
+                                              encontrado tu objeto te
+                                              mostraremos su respuesta a esta
+                                              pregunta
+                                            </span>
+                                          ) : (
+                                            <span>
+                                              Si alguien reclama haber perdido
+                                              tu objeto te mostraremos su
+                                              respuesta a esta pregunta
+                                            </span>
+                                          )}
 
                                           <br />
                                         </h6>
@@ -726,4 +740,4 @@ const LostItem = (props) => {
   );
 };
 
-export default LostItem;
+export default NewItem;
