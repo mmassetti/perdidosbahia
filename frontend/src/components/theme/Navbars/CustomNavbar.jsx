@@ -177,7 +177,7 @@ const CustomNavbar = (props) => {
                     {/* Iniciar sesion */}
                     <Nav className="align-items-lg-center ml-lg-auto" navbar>
                       {!context.token && (
-                        <NavItem className="d-none d-lg-block ml-lg-4">
+                        <NavItem>
                           <Button
                             className="btn-neutral btn-icon"
                             color="default"
@@ -199,22 +199,27 @@ const CustomNavbar = (props) => {
                       {/* Cerrar sesion */}
                       {context.token && (
                         <React.Fragment>
-                          <i
-                            style={{ fontSize: "22px" }}
-                            className="fa fa-user-circle text-white "
-                            aria-hidden="true"
-                          ></i>
-                          <span
-                            style={{ paddingLeft: "0.5rem" }}
-                            className="text-white "
-                          >
-                            {context.firstName}
-                          </span>
-                          <NavItem className="d-none d-lg-block ml-lg-4">
+                          <NavItem>
+                            <Button
+                              className="btn-neutral btn-icon"
+                              color="default"
+                              style={{ marginBottom: "0.5rem" }}
+                            >
+                              <i
+                                style={{ fontSize: "18px" }}
+                                className="fa fa-user-circle text-primary "
+                                aria-hidden="true"
+                              ></i>
+                              <span>{context.firstName}</span>
+                            </Button>
+                          </NavItem>
+
+                          <NavItem to="/" tag={Link}>
                             <Button
                               className="btn-neutral btn-icon"
                               color="default"
                               onClick={context.logout}
+                              style={{ marginBottom: "0.5rem" }}
                             >
                               <span className="btn-inner--icon">
                                 <i
