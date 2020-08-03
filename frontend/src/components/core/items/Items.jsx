@@ -170,7 +170,7 @@ const Items = () => {
     } else {
       return (
         <div className="text-center mt-5">
-          <h3>Todavía no se publicó ningún objeto</h3>
+          <h3>Todavía no se publicó ningún objeto en esta categoría</h3>
         </div>
       );
     }
