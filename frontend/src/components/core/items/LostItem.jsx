@@ -45,6 +45,7 @@ import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 import { useHistory } from "react-router-dom";
+import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -209,7 +210,7 @@ const LostItem = (props) => {
           </section>
         </div>
         {context.token ? (
-          <>
+          <React.Fragment>
             <section className="section section-sm bg-gradient-default">
               <Container className="pt-lg pb-300">
                 <Row className="text-center justify-content-center">
@@ -709,18 +710,18 @@ const LostItem = (props) => {
                 </Row>
               </Container>
             </section>
-          </>
+          </React.Fragment>
         ) : (
-          <>
-            <h2>
-              {" "}
-              Para poder publicar un objeto primero es necesario Registrarse o
-              Iniciar sesion
-            </h2>
+          <React.Fragment>
+            <div className="text-center mt-5">
+              <h3>Todavía no se publicó ningún objeto</h3>
+            </div>
+
             <MustLoginModal isShowing={isShowing} hide={toggle} />
-          </>
+          </React.Fragment>
         )}
       </main>
+      {context.token ? <SimpleFooter page={"objeto-perdido"} /> : ""}
     </>
   );
 };

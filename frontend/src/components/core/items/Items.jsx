@@ -21,8 +21,10 @@ import Spinner from "../../theme/Spinner/Spinner";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar";
 import CardItem from "./cards/CardItem";
 import AuthContext from "../../../common/providers/AuthProvider/auth-context";
+import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { Container, Row, Col } from "reactstrap";
+import confirm from "reactstrap-confirm";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -82,8 +84,16 @@ const Items = () => {
       });
   };
 
-  const deleteItemHandler = (itemId) => {
-    setIsLoading(true);
+  const deleteItemHandler = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
     const requestBody = {
       query: `
          mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
@@ -97,29 +107,34 @@ const Items = () => {
       },
     };
 
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
       })
-      .then((resData) => {
-        const updatedValues = items.items.filter((item) => item._id !== itemId);
-        setItems({ items: updatedValues });
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = items.items.filter(
+            (item) => item._id !== itemId
+          );
+          setItems({ items: updatedValues });
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
   };
 
   const itemsCards = items.items.map((item) => {
@@ -143,6 +158,20 @@ const Items = () => {
       ></CardItem>
     );
   });
+
+  const showContent = () => {
+    if (isLoading) {
+      return <Spinner />;
+    } else if (items && items.items.length > 0) {
+      return <Row className="row-grid">{itemsCards}</Row>;
+    } else {
+      return (
+        <div className="text-center mt-5">
+          <h3>Todavía no se publicó ningún objeto</h3>
+        </div>
+      );
+    }
+  };
 
   return (
     <>
@@ -177,17 +206,15 @@ const Items = () => {
         </div>
 
         <Container>
-          <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
-            <Col lg="12">
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <Row className="row-grid">{itemsCards}</Row>
-              )}
-            </Col>
+          <Row
+            className="justify-content-center"
+            style={{ marginTop: "2rem", marginBottom: "2rem" }}
+          >
+            <Col lg="12">{showContent()}</Col>
           </Row>
         </Container>
       </main>
+      <SimpleFooter page={"objetos-publicados"} />
     </>
   );
 };

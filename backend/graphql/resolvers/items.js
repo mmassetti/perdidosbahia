@@ -27,8 +27,43 @@ module.exports = {
       return items.map((item) => {
         return transformItem(item);
       });
-    } catch (error) {}
+    } catch (error) {
+      throw err;
+    }
   },
+  userItemsWithoutClaim: async (args, req) => {
+    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const user = await User.findOne({ _id: req.userId });
+
+      const userClaims = await Claim.find({
+        $or: [{ itemCreator: req.userId }, { itemClaimer: req.userId }],
+      });
+
+      let itemsWithClaims = [];
+
+      for (const claim of userClaims) {
+        if (claim.itemCreator == req.userId) {
+          const itemToAdd = await Item.findOne({ _id: claim.item });
+          itemsWithClaims.push(itemToAdd._id);
+        }
+      }
+
+      const userItemsWithoutClaim = await Item.find({
+        $and: [{ creator: req.userId }, { _id: { $nin: itemsWithClaims } }],
+      });
+
+      return userItemsWithoutClaim.map((item) => {
+        return transformItem(item);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+
   getItem: async (args, req) => {
     //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {

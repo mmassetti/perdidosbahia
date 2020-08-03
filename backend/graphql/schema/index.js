@@ -82,6 +82,7 @@ module.exports = buildSchema(`
 
     type RootQuery {
         items: [Item!]!
+        userItemsWithoutClaim: [Item!]!
         claims: [Claim!]!
         getClaim(claimId: ID!): Claim!
         userNotifications: [Notification!]!

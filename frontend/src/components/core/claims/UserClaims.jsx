@@ -23,18 +23,74 @@ import AuthContext from "../../../common/providers/AuthProvider/auth-context";
 import ClaimCard from "../../core/claims/ClaimCard";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
+import { Link } from "react-router-dom";
 
 import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
+import SimpleFooter from "components/theme/Footers/SimpleFooter";
+import confirm from "reactstrap-confirm";
+import { useHistory } from "react-router-dom";
+
 var moment = require("moment");
 require("moment/locale/es");
 
 const UserClaims = (props) => {
+  let history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
+  const [userItemsWithoutClaim, setUserItemsWithoutClaim] = useState({
+    items: [],
+  });
   const [claims, setClaims] = useState({ claims: [] });
   const [notifications, setNotifications] = useState({ notifications: [] });
   const context = useContext(AuthContext);
   const { isShowing, toggle } = useModal();
   const [cleanedNotifications, setCleanedNotifications] = useState(false);
+
+  const fetchUserItemsWithoutClaim = () => {
+    setIsLoading(true);
+    const requestBody = {
+      query: `
+          query {
+            userItemsWithoutClaim {
+              _id,
+              type,
+              description,
+              date,
+              category,
+              creator {
+                  _id,
+                  email
+              },
+              itemCreatorQuestion
+              createdAt
+          }    
+        }
+        `,
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + context.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        const items = resData.data.userItemsWithoutClaim;
+        setUserItemsWithoutClaim({ items: items });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
+  };
 
   const fetchClaims = () => {
     setIsLoading(true);
@@ -299,8 +355,65 @@ const UserClaims = (props) => {
     });
   };
 
+  const deleteItemHandler = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
+    const requestBody = {
+      query: `
+         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
+            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
+          }
+        `,
+      variables: {
+        itemId: itemId,
+        notificationDescription:
+          "Lo sentimos, el otro usuario eliminó la publicación:",
+      },
+    };
+
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = userItemsWithoutClaim.items.filter(
+            (item) => item._id !== itemId
+          );
+          setUserItemsWithoutClaim({ items: updatedValues });
+          setIsLoading(false);
+          history.push({
+            pathname: "/objetos-publicados",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
+  };
+
   useEffect(() => {
     if (context.token) {
+      fetchUserItemsWithoutClaim();
       fetchClaims();
     }
     document.documentElement.scrollTop = 0;
@@ -308,6 +421,64 @@ const UserClaims = (props) => {
     toggle();
     setCleanedNotifications(false);
   }, [context, setCleanedNotifications]);
+
+  const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
+    (item, key) => {
+      return (
+        <Col key={key} lg="4">
+          <Card
+            className="card-lift--hover shadow border-0"
+            style={{ marginBottom: "1rem" }}
+          >
+            <CardBody className="py-5">
+              <React.Fragment>
+                <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                  <span className="h6 font-weight-bold">Estado actual:</span>
+                  <Badge
+                    color="success"
+                    pill
+                    className="mr-1"
+                    style={{ marginLeft: "0.2rem" }}
+                  >
+                    Sin Respuestas
+                  </Badge>
+                </div>
+                <h6 className="text-primary font-weight-bold text-uppercase">
+                  Información del objeto
+                </h6>
+                <h6 className="text-default ">
+                  {" "}
+                  <span className="font-weight-bold"> Categoría: </span>
+                  {item.category != "otro" ? item.category : "Otros objetos"}
+                </h6>
+                <h6 className="text-default ">
+                  <span className="font-weight-bold"> Descripción: </span>{" "}
+                  {item.description}
+                </h6>
+                <h6 className="text-default ">
+                  <span className="font-weight-bold"> Ubicación: </span>{" "}
+                  {item.location}
+                </h6>
+                <h6 className="text-default ">
+                  <span className="font-weight-bold"> Fecha:</span>{" "}
+                  {moment(item.date).format("LL")}{" "}
+                </h6>
+                <Button
+                  className="mt-4"
+                  color="danger"
+                  size="sm"
+                  outline
+                  onClick={() => deleteItemHandler(item._id)}
+                >
+                  Eliminar publicación
+                </Button>
+              </React.Fragment>
+            </CardBody>
+          </Card>
+        </Col>
+      );
+    }
+  );
 
   const itemsAuthUserIsParticipating = claims.claims.map((claim) => {
     return (
@@ -327,6 +498,7 @@ const UserClaims = (props) => {
         claimerAnswer={claim.claimerAnswer}
         itemCreatorAnswer={claim.itemCreatorAnswer}
         onDelete={deleteClaimHandler}
+        onDeleteItem={deleteItemHandler}
       ></ClaimCard>
     );
   });
@@ -334,11 +506,16 @@ const UserClaims = (props) => {
   const showContent = () => {
     if (isLoading) {
       return <Spinner />;
-    } else if (claims.claims && claims.claims.length > 0) {
+    } else if (
+      userItemsWithoutClaim.items.length > 0 ||
+      (claims.claims && claims.claims.length > 0)
+    ) {
       return (
         <Card className="shadow">
           <CardBody>
-            <Row className="row-grid">{itemsAuthUserIsParticipating}</Row>
+            <Row className="row-grid">
+              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
+            </Row>
           </CardBody>
         </Card>
       );
@@ -371,7 +548,7 @@ const UserClaims = (props) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <CustomNavbar />
 
       {context.token ? (
@@ -419,7 +596,7 @@ const UserClaims = (props) => {
         </React.Fragment>
       ) : (
         //TODO : Extrar afuera lo que esta entre <main> </main> porque tambien se usa arriba
-        <>
+        <React.Fragment>
           <main>
             <div className="position-relative">
               {/* shape Hero */}
@@ -444,15 +621,19 @@ const UserClaims = (props) => {
           </main>
           <div className="text-center mt-5">
             <h3>
-              Para poder ver tus publicaciones primero tenés que iniciar sesión.
+              Para poder ver tus publicaciones primero tenés que{" "}
+              <Link to="/inicio-sesion" className="font-weight-bold">
+                iniciar sesión.
+              </Link>{" "}
             </h3>
           </div>
           <h1 className="display-3 text-center"></h1>
 
           <MustLoginModal isShowing={isShowing} hide={toggle} />
-        </>
+        </React.Fragment>
       )}
-    </>
+      {context.token ? <SimpleFooter page={"mis-publicaciones"} /> : ""}
+    </React.Fragment>
   );
 };
 
