@@ -51,7 +51,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const NewItem = (props) => {
-  console.log("NewItem -> props", props);
   const context = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [category, setCategory] = useState({ categoryName: "" });
@@ -178,7 +177,7 @@ const NewItem = (props) => {
   };
 
   const getPlaceholder = () => {
-    if (props.type == "perdido") {
+    if (props.type === "perdido") {
       return "perdiste";
     } else return "encontraste";
   };
@@ -646,7 +645,7 @@ const NewItem = (props) => {
                                           )}
                                         </FormGroup>
                                         <h6>
-                                          {props.type == "perdido" ? (
+                                          {props.type === "perdido" ? (
                                             <span>
                                               Si alguien reclama haber
                                               encontrado tu objeto te

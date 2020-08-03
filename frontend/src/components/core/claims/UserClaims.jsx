@@ -157,7 +157,7 @@ const UserClaims = (props) => {
       .then((resData) => {
         const claims = resData.data.claims;
         setClaims({ claims: claims });
-        if (claims.length == 0) {
+        if (claims.length === 0) {
           getNotifications();
         }
         setIsLoading(false);
@@ -338,7 +338,7 @@ const UserClaims = (props) => {
   function deleteNotifications() {
     setIsLoading(true);
 
-    notifications.notifications.map((notification, index) => {
+    notifications.notifications.forEach((notification, index) => {
       const requestBody = {
         query: `
            mutation DeleteNotification($notificationId: ID!) {
@@ -378,7 +378,7 @@ const UserClaims = (props) => {
   const notificationItemCategory = (notification) => {
     if (
       notification.itemInvolved &&
-      notification.itemInvolved.category != "otro"
+      notification.itemInvolved.category !== "otro"
     ) {
       return notification.itemInvolved.category;
     } else if (notification.itemInvolved) {
@@ -436,7 +436,6 @@ const UserClaims = (props) => {
 
   const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
     (item, key) => {
-      console.log("UserClaims -> item", item);
       return (
         <Col key={key} lg="4">
           <Card
@@ -462,7 +461,7 @@ const UserClaims = (props) => {
                 <h6 className="text-default ">
                   {" "}
                   <span className="font-weight-bold"> Categoría: </span>
-                  {item.category != "otro" ? item.category : "Otros objetos"}
+                  {item.category !== "otro" ? item.category : "Otros objetos"}
                 </h6>
                 <h6 className="text-default ">
                   <span className="font-weight-bold"> Descripción: </span>{" "}

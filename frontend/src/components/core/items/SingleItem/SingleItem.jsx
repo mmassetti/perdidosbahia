@@ -56,7 +56,7 @@ const SingleItem = (props) => {
 
   const getActionForTypeOfItem = () => {
     let itemType = props.location.state.props.type;
-    if (itemType == "perdido") {
+    if (itemType === "perdido") {
       return (
         <Button
           color="primary"
@@ -69,7 +69,7 @@ const SingleItem = (props) => {
           </span>
         </Button>
       );
-    } else if (itemType == "encontrado") {
+    } else if (itemType === "encontrado") {
       return (
         <Button
           color="primary"
@@ -176,7 +176,7 @@ const SingleItem = (props) => {
                               )}
                             </span>
                             <span className="description">
-                              {props.location.state.props.type == "perdido"
+                              {props.location.state.props.type === "perdido"
                                 ? "Fecha en la que se perdió "
                                 : "Fecha en la que se encontró "}
                             </span>

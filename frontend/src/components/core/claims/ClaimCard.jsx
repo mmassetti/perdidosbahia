@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
-import { useHistory } from "react-router-dom";
 import useModal from "../Helpers/useModal";
 import ModalSecondStep from "../items/SingleItem/modals/ModalSecondStep";
 import ModalThirdStep from "../items/SingleItem/modals/ModalThirdStep";
@@ -10,16 +9,15 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const ClaimCard = (props) => {
-  let history = useHistory();
   const { isShowing, toggle } = useModal();
   const [showCancelClaimOption, setCancelClaimOption] = useState(false);
 
   useEffect(() => {}, [setCancelClaimOption]);
 
   const getStateForAuthUser = () => {
-    if (props.authUserId == props.itemCreator._id) {
+    if (props.authUserId === props.itemCreator._id) {
       return props.stateForItemCreator;
-    } else if (props.authUserId == props.itemClaimer._id) {
+    } else if (props.authUserId === props.itemClaimer._id) {
       return props.stateForClaimer;
     }
   };
@@ -81,21 +79,21 @@ const ClaimCard = (props) => {
     return (
       <React.Fragment>
         {/* El creador de la publicacion (user1) recibio un mensaje de la otra persona (user2)*/}
-        {props.authUserId == props.itemCreator._id &&
+        {props.authUserId === props.itemCreator._id &&
         props.flagItemCreator == 1 &&
-        props.flagClaimer == 0
+        props.flagClaimer === 0
           ? showNotificationMessage()
           : ""}
 
         {/* El user2 recibio la respuesta del user1 */}
-        {props.authUserId == props.itemClaimer._id &&
+        {props.authUserId === props.itemClaimer._id &&
         props.flagItemCreator == 0 &&
-        props.flagClaimer == 1
+        props.flagClaimer === 1
           ? showNotificationMessage()
           : ""}
 
         {/* Ambos usuarios confirmaron el contacto*/}
-        {props.flagItemCreator == 1 && props.flagClaimer == 1
+        {props.flagItemCreator === 1 && props.flagClaimer === 1
           ? showSuccessContactMessage()
           : ""}
       </React.Fragment>

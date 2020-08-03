@@ -17,7 +17,6 @@ import ErrorPage from "components/core/Helpers/ErrorPage/ErrorPage";
 
 import APIErrorProvider from "common/providers/APIErrorProvider";
 import APIErrorNotification from "components/APIErrorNotification";
-import MustLoginModal from "components/core/Helpers/MustLoginModal";
 
 const App = (props) => {
   const [token, setToken] = useState(null);

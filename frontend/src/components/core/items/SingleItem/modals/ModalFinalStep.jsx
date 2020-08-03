@@ -1,14 +1,9 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useHistory } from "react-router-dom";
-
-// reactstrap components
 import { Button, Modal } from "reactstrap";
 import ContactInfo from "../modals/helpers/ContactInfo";
 
 const ModalFinalStep = ({ isShowing, hide, info }) => {
-  let history = useHistory();
-
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -62,7 +57,7 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
               </div>
               {}
 
-              {info.authUserId == info.itemClaimer._id
+              {info.authUserId === info.itemClaimer._id
                 ? showItemCreatorInfo()
                 : showClaimerInfo()}
 
