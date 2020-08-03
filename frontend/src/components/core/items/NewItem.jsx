@@ -187,7 +187,10 @@ const NewItem = (props) => {
       <CustomNavbar />
       <main>
         <div className="position-relative">
-          <section className="section section-sm, section-shaped">
+          <section
+            className="section section-sm, section-shaped"
+            style={{ paddingBottom: "0rem" }}
+          >
             <div className="shape shape-style-1 shape-default">
               <span />
               <span />
@@ -199,7 +202,7 @@ const NewItem = (props) => {
               <span />
               <span />
             </div>
-            <Container className="py-lg-md d-flex">
+            <Container className="py-sm-sm d-flex">
               <div className="col px-0">
                 <Row>
                   <Col lg="12">
@@ -218,8 +221,11 @@ const NewItem = (props) => {
         </div>
         {context.token ? (
           <React.Fragment>
-            <section className="section section-sm bg-gradient-default">
-              <Container className="pt-lg pb-300">
+            <section
+              className="section section-sm bg-gradient-default"
+              style={{ paddingBottom: "0rem" }}
+            >
+              <Container className="pt-sm pb-300">
                 <Row className="text-center justify-content-center">
                   <Col lg="10">
                     <h2 className="display-3 text-white">
@@ -244,7 +250,7 @@ const NewItem = (props) => {
                 </svg>
               </div>
             </section>
-            <section className="section section-lg pt-lg-0 section-contact-us">
+            <section className="section section-sm pt-lg-0 section-contact-us">
               <Container>
                 <Row className="justify-content-center mt--300">
                   <Col lg="8">

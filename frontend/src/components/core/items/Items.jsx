@@ -178,7 +178,10 @@ const Items = () => {
       <CustomNavbar />
       <main>
         <div className="position-relative">
-          <section className="section section-sm, section-shaped">
+          <section
+            className="section section-sm, section-shaped"
+            style={{ paddingBottom: "0rem" }}
+          >
             <div className="shape shape-style-1 shape-default">
               <span />
               <span />
@@ -190,7 +193,7 @@ const Items = () => {
               <span />
               <span />
             </div>
-            <Container className="py-lg-md d-flex">
+            <Container className="py-sm-sm d-flex">
               <div className="col px-0">
                 <Row>
                   <Col lg="12">

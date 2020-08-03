@@ -566,7 +566,10 @@ const UserClaims = (props) => {
         <React.Fragment>
           <main>
             <div className="position-relative">
-              <section className="section section-sm, section-shaped">
+              <section
+                className="section section-sm, section-shaped"
+                style={{ paddingBottom: "0rem" }}
+              >
                 <div className="shape shape-style-1 shape-default">
                   <span />
                   <span />
@@ -579,7 +582,7 @@ const UserClaims = (props) => {
                   <span />
                 </div>
 
-                <Container className="py-lg-md d-flex">
+                <Container className="py-sm-sm d-flex">
                   <div className="col px-0">
                     <Row>
                       <Col lg="12">
@@ -610,7 +613,10 @@ const UserClaims = (props) => {
           <main>
             <div className="position-relative">
               {/* shape Hero */}
-              <section className="section section-sm, section-shaped">
+              <section
+                className="section section-sm, section-shaped"
+                style={{ paddingBottom: "0rem" }}
+              >
                 <div className="shape shape-style-1 shape-default">
                   <span />
                   <span />
@@ -623,7 +629,7 @@ const UserClaims = (props) => {
                   <span />
                 </div>
 
-                <Container className="py-lg-md d-flex">
+                <Container className="py-sm-sm d-flex">
                   <div className="col px-0"></div>
                 </Container>
               </section>
