@@ -122,12 +122,12 @@ const NewItem = (props) => {
 
     let requestBody = {
       query: `
-          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String!) {
+          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String!, $type: String!) {
             createItem(
-              itemInput: 
-                {description: $description, 
-                type: "perdido", 
-                category: $category, 
+              itemInput:
+                {description: $description,
+                type: $type,
+                category: $category,
                 location: $location,
                 date: $date,
                 itemCreatorQuestion: $itemCreatorQuestion }) {
@@ -147,6 +147,7 @@ const NewItem = (props) => {
         location: data.location,
         date: transformedDate,
         itemCreatorQuestion: itemCreatorQuestion,
+        type: props.type,
       },
     };
 
