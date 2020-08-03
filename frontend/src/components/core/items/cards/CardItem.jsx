@@ -182,18 +182,6 @@ const CardItem = (props) => {
     }
   };
 
-  const handleAlert = async () => {
-    let result = await confirm({
-      title: null,
-      message: "I can use this component to display alerts!",
-      confirmText: "Understood!",
-      confirmColor: "primary",
-      cancelText: null,
-    });
-
-    alert(`Confirm result: ${result}`);
-  };
-
   const deleteItemButton = () => {
     return (
       <React.Fragment>

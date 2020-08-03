@@ -602,7 +602,6 @@ const UserClaims = (props) => {
                 <Col lg="12">{showContent()}</Col>
               </Row>
             </Container>
-            {/* <Download /> */}
           </main>
         </React.Fragment>
       ) : (
