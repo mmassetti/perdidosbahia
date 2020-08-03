@@ -56,6 +56,7 @@ const UserClaims = (props) => {
               description,
               date,
               category,
+              location,
               creator {
                   _id,
                   email
@@ -435,6 +436,7 @@ const UserClaims = (props) => {
 
   const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
     (item, key) => {
+      console.log("UserClaims -> item", item);
       return (
         <Col key={key} lg="4">
           <Card
