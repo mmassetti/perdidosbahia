@@ -25,9 +25,11 @@ import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { Container, Row, Col } from "reactstrap";
 import confirm from "reactstrap-confirm";
+import CategoryFilter from "./filters/CategoryFilter";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
+  const [allItems, setAllItems] = useState({ items: [] });
   const [isLoading, setIsLoading] = useState(false);
   const context = useContext(AuthContext);
 
@@ -76,6 +78,7 @@ const Items = () => {
       .then((resData) => {
         const items = resData.data.items;
         setItems({ items: items });
+        setAllItems({ items: items });
         setIsLoading(false);
       })
       .catch((err) => {
@@ -173,6 +176,10 @@ const Items = () => {
     }
   };
 
+  const filterItemsHandler = (filteredItems) => {
+    setItems({ items: filteredItems });
+  };
+
   return (
     <>
       <CustomNavbar />
@@ -213,7 +220,13 @@ const Items = () => {
             className="justify-content-center"
             style={{ marginTop: "2rem", marginBottom: "21rem" }}
           >
-            <Col lg="12">{showContent()}</Col>
+            <Col lg="12">
+              <CategoryFilter
+                onFilter={filterItemsHandler}
+                allItems={allItems.items}
+              />
+              {showContent()}
+            </Col>
           </Row>
         </Container>
       </main>
