@@ -26,6 +26,7 @@ import SimpleFooter from "../../theme/Footers/SimpleFooter";
 import { Container, Row, Col } from "reactstrap";
 import confirm from "reactstrap-confirm";
 import CategoryFilter from "./filters/CategoryFilter";
+import ItemTypeFilter from "./filters/ItemTypeFilter";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -215,19 +216,25 @@ const Items = () => {
           </section>
         </div>
 
-        <Container>
+        <Container style={{ marginTop: "2rem", marginBottom: "21rem" }}>
           <Row
-            className="justify-content-center"
-            style={{ marginTop: "2rem", marginBottom: "21rem" }}
+            style={{ marginBottom: "1rem" }}
+            className="justify-content-md-center"
           >
-            <Col lg="12">
+            <Col xs="auto">
+              {" "}
               <CategoryFilter
                 onFilter={filterItemsHandler}
                 allItems={allItems.items}
               />
-              {showContent()}
+            </Col>
+            <Col xs="auto">
+              {" "}
+              <ItemTypeFilter />
             </Col>
           </Row>
+
+          {showContent()}
         </Container>
       </main>
       <SimpleFooter page={"objetos-publicados"} />

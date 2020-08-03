@@ -4,8 +4,6 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-  Container,
-  Dropdown,
 } from "reactstrap";
 
 const CategoryFilter = (props) => {
@@ -52,7 +50,7 @@ const CategoryFilter = (props) => {
   };
 
   return (
-    <Container style={{ marginBottom: "2rem" }}>
+    <React.Fragment>
       <UncontrolledDropdown isOpen={dropdownOpen} toggle={toggle}>
         <DropdownToggle
           caret
@@ -116,7 +114,7 @@ const CategoryFilter = (props) => {
       </UncontrolledDropdown>
 
       {showMessage()}
-    </Container>
+    </React.Fragment>
   );
 };
 
