@@ -22,7 +22,7 @@ const claimSchema = new Schema(
       enum: [
         "Esperando respuesta del otro usuario",
         "Es tu turno de responder",
-        "Ya estás en contacto con la otra persona",
+        "Contacto confirmado",
       ],
       default: "Esperando respuesta del otro usuario",
     },
@@ -32,7 +32,7 @@ const claimSchema = new Schema(
       enum: [
         "Esperando respuesta del otro usuario",
         "Es tu turno de responder",
-        "Ya estás en contacto con la otra persona",
+        "Contacto confirmado",
       ],
       default: "Es tu turno de responder",
     },

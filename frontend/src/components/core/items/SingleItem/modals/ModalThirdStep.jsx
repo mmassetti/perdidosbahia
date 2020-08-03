@@ -31,8 +31,8 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
   };
 
   const handleSubmitModalForm = (e) => {
-    const newStateForClaimer = "Ya estás en contacto con la otra persona";
-    const newStateForItemCreator = "Ya estás en contacto con la otra persona";
+    const newStateForClaimer = "Contacto confirmado";
+    const newStateForItemCreator = "Contacto confirmado";
     const newFlagClaimer = 1;
     const newFlagItemCreator = 1;
 

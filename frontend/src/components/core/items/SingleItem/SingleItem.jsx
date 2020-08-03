@@ -31,7 +31,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = (props) => {
-  console.log("SingleItem -> props", props);
   const { isShowing, toggle } = useModal();
   const context = useContext(AuthContext);
   let history = useHistory();
