@@ -47,6 +47,7 @@ import useModal from "../Helpers/useModal";
 import { useHistory } from "react-router-dom";
 import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
+import fetchUrlRemote from "../../../common/fetchUrlRemote";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -155,7 +156,7 @@ const NewItem = (props) => {
 
     const token = context.token;
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

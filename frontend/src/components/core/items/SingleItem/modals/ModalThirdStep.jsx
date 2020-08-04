@@ -20,6 +20,7 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import ContactInfo from "./helpers/ContactInfo";
+import fetchUrlRemote from "../../../../../common/fetchUrlRemote";
 
 const ModalThirdStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -67,7 +68,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
       },
     };
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

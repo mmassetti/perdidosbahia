@@ -87,7 +87,7 @@ const Login = (props) => {
         password: data.password,
       },
     };
-    fetch("http://localhost:3000/graphql", {
+    fetch("https://perdidos-bahia.herokuapp.com/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

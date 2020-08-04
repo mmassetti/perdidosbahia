@@ -18,7 +18,7 @@
     "argon-design-system-react",
     "design-system-react"
   ],
-  "homepage": "http://localhost:3000/",
+  "homepage": "https://perdidos-bahia.herokuapp.com/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

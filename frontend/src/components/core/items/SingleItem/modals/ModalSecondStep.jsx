@@ -21,6 +21,7 @@ import {
 
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
+import fetchUrlRemote from "../../../../../common/fetchUrlRemote";
 
 const ModalSecondStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -77,7 +78,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
 
     setItemCreatorAnswer("");
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

@@ -28,6 +28,7 @@ import confirm from "reactstrap-confirm";
 import CategoryFilter from "./filters/CategoryFilter";
 import ItemTypeFilter from "./filters/ItemTypeFilter";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
+import fetchUrlRemote from "../../../common/fetchUrlRemote";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -68,7 +69,7 @@ const Items = () => {
         `,
     };
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -118,7 +119,7 @@ const Items = () => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:3000/graphql", {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {

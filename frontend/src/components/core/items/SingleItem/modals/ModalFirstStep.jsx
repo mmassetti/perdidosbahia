@@ -21,6 +21,7 @@ import {
 
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
+import fetchUrlRemote from "../../../../../common/fetchUrlRemote";
 
 const ModalFirstStep = ({
   isShowing,
@@ -89,7 +90,7 @@ const ModalFirstStep = ({
     setClaimerQuestion("");
     setClaimerAnswer("");
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

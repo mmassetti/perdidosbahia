@@ -124,7 +124,7 @@ const Register = (props) => {
       },
     };
 
-    fetch("http://localhost:3000/graphql", {
+    fetch("https://perdidos-bahia.herokuapp.com/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

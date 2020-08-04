@@ -31,6 +31,8 @@ import confirm from "reactstrap-confirm";
 import { useHistory } from "react-router-dom";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
+import fetchUrlRemote from "../../../common/fetchUrlRemote";
+
 var moment = require("moment");
 require("moment/locale/es");
 
@@ -72,7 +74,7 @@ const UserClaims = (props) => {
         `,
     };
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -144,7 +146,7 @@ const UserClaims = (props) => {
         `,
     };
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -197,7 +199,7 @@ const UserClaims = (props) => {
       `,
     };
 
-    fetch("http://localhost:3000/graphql", {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -247,7 +249,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:3000/graphql", {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -306,7 +308,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:3000/graphql", {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -354,7 +356,7 @@ const UserClaims = (props) => {
         },
       };
 
-      fetch("http://localhost:3000/graphql", {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
