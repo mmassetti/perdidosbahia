@@ -13,10 +13,10 @@ require("dotenv").config();
 express.json();
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "build")));
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// app.use(express.static(path.join(__dirname, "build")));
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 app.use(isAuth);
 
@@ -28,6 +28,10 @@ app.use(
     graphiql: true,
   })
 );
+
+if (process.ENV.NODE_ENV == "production") {
+  app.use(express.static("../frontend/build"));
+}
 
 moongose
   .connect(
