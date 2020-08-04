@@ -91,7 +91,6 @@ const CustomNavbar = (props) => {
                       {/* Menu principal */}
                       <UncontrolledDropdown nav>
                         <DropdownToggle nav>
-                          <i className="ni ni-ui-04 d-lg-none mr-1" />
                           <span className="nav-link-inner--text">
                             Menu principal
                           </span>
@@ -104,7 +103,7 @@ const CustomNavbar = (props) => {
                               tag={Link}
                             >
                               <div className="icon icon-shape bg-gradient-warning rounded-circle text-white">
-                                <i className="ni ni-ui-04" />
+                                <i className="ni ni-bullet-list-67" />
                               </div>
                               <Media body className="ml-3">
                                 <h5 className="heading text-warning mb-md-1">
@@ -122,7 +121,7 @@ const CustomNavbar = (props) => {
                               tag={Link}
                             >
                               <div className="icon icon-shape bg-gradient-primary rounded-circle text-white">
-                                <i className="ni ni-spaceship" />
+                                <i className="ni ni-notification-70" />
                               </div>
                               <Media body className="ml-3">
                                 <h6 className="heading text-primary mb-md-1">
@@ -139,7 +138,7 @@ const CustomNavbar = (props) => {
                               tag={Link}
                             >
                               <div className="icon icon-shape bg-gradient-success rounded-circle text-white">
-                                <i className="ni ni-palette" />
+                                <i className="ni ni-like-2" />
                               </div>
                               <Media body className="ml-3">
                                 <h6 className="heading text-primary mb-md-1">
@@ -164,7 +163,6 @@ const CustomNavbar = (props) => {
                       {/* Ayuda */}
                       <UncontrolledDropdown nav>
                         <DropdownToggle nav>
-                          <i className="ni ni-collection d-lg-none mr-1" />
                           <span className="nav-link-inner--text">Ayuda</span>
                         </DropdownToggle>
                         <DropdownMenu>
