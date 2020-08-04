@@ -135,17 +135,7 @@ const SingleItem = (props) => {
                 <Card className="card-profile shadow mt--300">
                   <div className="px-4">
                     <Row className="justify-content-center">
-                      <Col className="order-lg-2" lg="3">
-                        <div className="card-profile-image">
-                          <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                            <img
-                              alt="..."
-                              className="rounded-circle"
-                              src={require("assets/img/theme/team-4-800x800.jpg")}
-                            />
-                          </a>
-                        </div>
-                      </Col>
+                      <Col className="order-lg-2" lg="3"></Col>
                       <Col
                         className="order-lg-3 text-lg-right align-self-lg-center"
                         lg="4"
