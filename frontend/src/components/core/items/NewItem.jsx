@@ -293,6 +293,7 @@ const NewItem = (props) => {
                                 </span>
                               </div>
                               <Button
+                                active={!buttonGroupTouched}
                                 onClick={() => radio("documentacion")}
                                 className={
                                   category.categoryName === "documentacion"
