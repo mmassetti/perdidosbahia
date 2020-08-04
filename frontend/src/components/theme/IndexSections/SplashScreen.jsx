@@ -68,7 +68,7 @@ const SplashScreen = (props) => {
                   <img
                     alt="..."
                     className="img-fluid"
-                    src={require("assets/img/brand/prueba.png")}
+                    src={require("assets/img/logo.png")}
                     style={{ width: "400px" }}
                   />
                   <p

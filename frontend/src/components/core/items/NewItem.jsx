@@ -18,7 +18,7 @@
 import React, { useState, useContext, useEffect } from "react";
 
 import ReactDatetime from "react-datetime";
-
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -755,7 +755,17 @@ const NewItem = (props) => {
         ) : (
           <React.Fragment>
             <div className="text-center mt-5">
-              <h3>Todavía no se publicó ningún objeto</h3>
+              <h3>
+                {" "}
+                <Link to="/registro" className="font-weight-bold">
+                  Registrate
+                </Link>{" "}
+                o{" "}
+                <Link to="/inicio-sesion" className="font-weight-bold">
+                  inicia sesión
+                </Link>{" "}
+                para poder publicar
+              </h3>
             </div>
 
             <MustLoginModal isShowing={isShowing} hide={toggle} />
