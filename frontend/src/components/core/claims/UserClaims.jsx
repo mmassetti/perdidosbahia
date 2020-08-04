@@ -29,6 +29,7 @@ import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
 import SimpleFooter from "components/theme/Footers/SimpleFooter";
 import confirm from "reactstrap-confirm";
 import { useHistory } from "react-router-dom";
+import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -44,6 +45,8 @@ const UserClaims = (props) => {
   const context = useContext(AuthContext);
   const { isShowing, toggle } = useModal();
   const [cleanedNotifications, setCleanedNotifications] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   const fetchUserItemsWithoutClaim = () => {
     setIsLoading(true);
@@ -253,7 +256,7 @@ const UserClaims = (props) => {
       })
         .then((res) => {
           if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
+            setShowErrorAlert(true);
           }
           return res.json();
         })
@@ -263,13 +266,12 @@ const UserClaims = (props) => {
           );
           setUserItemsWithoutClaim({ items: updatedValues });
           setIsLoading(false);
-          history.push({
-            pathname: "/objetos-publicados",
-          });
+          setShowSuccessAlert(true);
         })
         .catch((err) => {
           console.log(err);
           setIsLoading(false);
+          setShowErrorAlert(true);
         });
     }
   };
@@ -313,7 +315,7 @@ const UserClaims = (props) => {
       })
         .then((res) => {
           if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
+            setShowErrorAlert(true);
           }
           return res.json();
         })
@@ -323,11 +325,13 @@ const UserClaims = (props) => {
           );
 
           setClaims({ claims: updatedValues });
-
+          setShowSuccessAlert(true);
           setIsLoading(false);
         })
         .catch((err) => {
           setIsLoading(false);
+          setShowErrorAlert(true);
+
           console.log(err);
         });
     }
@@ -430,7 +434,12 @@ const UserClaims = (props) => {
     document.scrollingElement.scrollTop = 0;
     toggle();
     setCleanedNotifications(false);
-  }, [context, setCleanedNotifications]);
+  }, [
+    context,
+    setCleanedNotifications,
+    setShowSuccessAlert,
+    setShowErrorAlert,
+  ]);
 
   const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
     (item, key) => {
@@ -557,6 +566,10 @@ const UserClaims = (props) => {
     }
   };
 
+  const showAlertMessage = (type, msg, redirectTo) => {
+    return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
+  };
+
   return (
     <React.Fragment>
       <CustomNavbar />
@@ -601,7 +614,16 @@ const UserClaims = (props) => {
                 className="justify-content-center"
                 style={{ marginTop: "2rem", marginBottom: "21rem" }}
               >
-                <Col lg="12">{showContent()}</Col>
+                <Col lg="12">{showContent()} </Col>
+                <Col lg="6" style={{ marginTop: "2rem" }}>
+                  {" "}
+                  {showSuccessAlert
+                    ? showAlertMessage("success", "¡Publicación eliminada!")
+                    : ""}
+                  {showErrorAlert
+                    ? showAlertMessage("danger", "Lo sentimos, hubo un error")
+                    : ""}
+                </Col>
               </Row>
             </Container>
           </main>
