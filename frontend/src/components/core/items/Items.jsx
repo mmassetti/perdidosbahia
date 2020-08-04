@@ -242,7 +242,7 @@ const Items = () => {
 
         <Container style={{ marginTop: "2rem", marginBottom: "21rem" }}>
           <Row
-            style={{ marginBottom: "1rem" }}
+            style={{ marginBottom: "5rem" }}
             className="justify-content-md-center"
           >
             <Col xs="auto">

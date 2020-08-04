@@ -29,6 +29,25 @@ const CardItem = (props) => {
     });
   }
 
+  const getIcon = (category) => {
+    switch (category) {
+      case "documentacion":
+        return "fa fa-id-card";
+      case "llaves":
+        return "ni ni-key-25";
+      case "lentes":
+        return "ni ni-glasses-2";
+      case "patente":
+        return "fa fa-motorcycle";
+      case "ropa":
+        return "fa fa-child";
+      case "celular":
+        return "ni ni-mobile-button";
+      default:
+        return "ni ni-tag";
+    }
+  };
+
   const showContent = () => {
     return (
       <Col lg="4">
@@ -37,6 +56,9 @@ const CardItem = (props) => {
           style={{ marginBottom: "1rem" }}
         >
           <CardBody className="py-5">
+            <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
+              <i className={getIcon(props.category)}></i>
+            </div>
             {props.creatorId === props.authUserId ? (
               <h6 className="text-warning font-weight-light mb-2">
                 ¡Esta es tu publicación!
