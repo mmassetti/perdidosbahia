@@ -185,8 +185,8 @@ const NewItem = (props) => {
     } else return "encontraste";
   };
 
-  const showAlertMessage = (type) => {
-    return <AlertMessage type={type} />;
+  const showAlertMessage = (type, msg, redirectTo) => {
+    return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
   };
 
   return (
@@ -730,9 +730,19 @@ const NewItem = (props) => {
                               Publicar objeto
                             </Button>
                             {showSuccessAlert
-                              ? showAlertMessage("success")
+                              ? showAlertMessage(
+                                  "success",
+                                  "¡Objeto publicado!",
+                                  "mis-publicaciones"
+                                )
                               : ""}
-                            {showErrorAlert ? showAlertMessage("danger") : ""}
+                            {showErrorAlert
+                              ? showAlertMessage(
+                                  "danger",
+                                  "Lo sentimos, hubo un error",
+                                  "mis-publicaciones"
+                                )
+                              : ""}
                           </div>
                         </Form>
                       </CardBody>

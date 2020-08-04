@@ -27,6 +27,7 @@ import { Container, Row, Col } from "reactstrap";
 import confirm from "reactstrap-confirm";
 import CategoryFilter from "./filters/CategoryFilter.tsx";
 import ItemTypeFilter from "./filters/ItemTypeFilter.tsx";
+import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -35,6 +36,8 @@ const Items = () => {
   const context = useContext(AuthContext);
   const [selectedCategory, setSelectedCategory] = useState("todas");
   const [selectedType, setSelectedType] = useState("todos");
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   useEffect(() => {
     fetchItems();
@@ -125,7 +128,7 @@ const Items = () => {
       })
         .then((res) => {
           if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
+            setShowErrorAlert(true);
           }
           return res.json();
         })
@@ -136,9 +139,11 @@ const Items = () => {
           setItems({ items: updatedValues });
           setAllItems({ items: updatedValues });
           setIsLoading(false);
+          setShowSuccessAlert(true);
         })
         .catch((err) => {
           console.log(err);
+          setShowErrorAlert(true);
           setIsLoading(false);
         });
     }
@@ -194,6 +199,10 @@ const Items = () => {
   const filterItemsByTypeHandler = (filteredItems, selectedType) => {
     setItems({ items: filteredItems });
     setSelectedType(selectedType);
+  };
+
+  const showAlertMessage = (type, msg, redirectTo) => {
+    return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
   };
 
   return (
@@ -255,6 +264,12 @@ const Items = () => {
           </Row>
 
           {showContent()}
+          {showSuccessAlert
+            ? showAlertMessage("success", "¡Publicación eliminada!")
+            : ""}
+          {showErrorAlert
+            ? showAlertMessage("danger", "Lo sentimos, hubo un error")
+            : ""}
         </Container>
       </main>
       <SimpleFooter page={"objetos-publicados"} />
