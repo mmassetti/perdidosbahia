@@ -59,7 +59,8 @@ const NewItem = (props) => {
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
   const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
-  const [showAlert, setShowAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   let history = useHistory();
 
   const defaultValues = {
@@ -164,14 +165,16 @@ const NewItem = (props) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
+          setShowErrorAlert(true);
         }
         return res.json();
       })
       .then((resData) => {
-        setShowAlert(true);
+        setShowSuccessAlert(true);
       })
       .catch((err) => {
+        setShowErrorAlert(true);
+
         console.log(err);
       });
   };
@@ -726,7 +729,10 @@ const NewItem = (props) => {
                             >
                               Publicar objeto
                             </Button>
-                            {showAlert ? showAlertMessage("success") : ""}
+                            {showSuccessAlert
+                              ? showAlertMessage("success")
+                              : ""}
+                            {showErrorAlert ? showAlertMessage("danger") : ""}
                           </div>
                         </Form>
                       </CardBody>
