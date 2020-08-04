@@ -157,9 +157,7 @@ const UserClaims = (props) => {
       .then((resData) => {
         const claims = resData.data.claims;
         setClaims({ claims: claims });
-        if (claims.length === 0) {
-          getNotifications();
-        }
+        getNotifications();
         setIsLoading(false);
       })
       .catch((err) => {
@@ -519,19 +517,6 @@ const UserClaims = (props) => {
     if (isLoading) {
       return <Spinner />;
     } else if (
-      userItemsWithoutClaim.items.length > 0 ||
-      (claims.claims && claims.claims.length > 0)
-    ) {
-      return (
-        <Card className="shadow">
-          <CardBody>
-            <Row className="row-grid">
-              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
-            </Row>
-          </CardBody>
-        </Card>
-      );
-    } else if (
       notifications.notifications &&
       notifications.notifications.length > 0 &&
       !cleanedNotifications
@@ -549,6 +534,19 @@ const UserClaims = (props) => {
             </Button>
           </Col>
         </React.Fragment>
+      );
+    } else if (
+      userItemsWithoutClaim.items.length > 0 ||
+      (claims.claims && claims.claims.length > 0)
+    ) {
+      return (
+        <Card className="shadow">
+          <CardBody>
+            <Row className="row-grid">
+              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
+            </Row>
+          </CardBody>
+        </Card>
       );
     } else {
       return (

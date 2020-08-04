@@ -11,7 +11,6 @@ const ItemTypeFilter = (props) => {
       type: itemType,
       category: props.prevSelectedCategory,
     };
-    console.log("showFilteredItems -> filter ", filter);
 
     if (itemType !== "todos") {
       if (props.prevSelectedCategory == "todas") {
