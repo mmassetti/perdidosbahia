@@ -2,6 +2,7 @@ const express = require("express");
 const graphqlHttp = require("express-graphql");
 const moongose = require("mongoose");
 const cors = require("cors");
+let path = require("path");
 
 const graphQlSchema = require("./graphql/schema/index");
 const graphQlResolvers = require("./graphql/resolvers/index");
@@ -11,6 +12,11 @@ require("dotenv").config();
 
 express.json();
 app.use(cors());
+
+app.use(express.static(path.join(__dirname, "build")));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.use(isAuth);
 

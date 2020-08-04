@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1a2d6190.chunk.css",
+    "main.js": "/static/js/main.3154e851.chunk.js",
+    "main.js.map": "/static/js/main.3154e851.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.3d29e264.js",
+    "runtime-main.js.map": "/static/js/runtime-main.3d29e264.js.map",
+    "static/js/2.b4adc7df.chunk.js": "/static/js/2.b4adc7df.chunk.js",
+    "static/js/2.b4adc7df.chunk.js.map": "/static/js/2.b4adc7df.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.3896bfda24e2503c65b06623844f1ac3.js": "/precache-manifest.3896bfda24e2503c65b06623844f1ac3.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.1a2d6190.chunk.css.map": "/static/css/main.1a2d6190.chunk.css.map",
+    "static/js/2.b4adc7df.chunk.js.LICENSE.txt": "/static/js/2.b4adc7df.chunk.js.LICENSE.txt",
+    "static/js/main.3154e851.chunk.js.LICENSE.txt": "/static/js/main.3154e851.chunk.js.LICENSE.txt",
+    "static/media/ErrorPage.css": "/static/media/emoji.10c362f2.png",
+    "static/media/font-awesome.min.css": "/static/media/fontawesome-webfont.fee66e71.woff",
+    "static/media/logo-hamburger.jpg": "/static/media/logo-hamburger.1e45e895.jpg",
+    "static/media/logo.png": "/static/media/logo.7f8f857c.png",
+    "static/media/nucleo.css": "/static/media/nucleo-icons.f82ec6ba.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3d29e264.js",
+    "static/js/2.b4adc7df.chunk.js",
+    "static/css/main.1a2d6190.chunk.css",
+    "static/js/main.3154e851.chunk.js"
+  ]
+}
