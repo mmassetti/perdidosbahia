@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Card, Button, CardBody, Col } from "reactstrap";
-import { useHistory } from "react-router-dom";
 import useModal from "../Helpers/useModal";
 import ModalSecondStep from "../items/SingleItem/modals/ModalSecondStep";
 import ModalThirdStep from "../items/SingleItem/modals/ModalThirdStep";
 import ModalFinalStep from "../items/SingleItem/modals/ModalFinalStep";
-import ModalEditItem from "../items/SingleItem/modals/ModalEditItem";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const ClaimCard = (props) => {
-  let history = useHistory();
   const { isShowing, toggle } = useModal();
-  const [showEditModal, setShowEditModal] = useState(false);
   const [showCancelClaimOption, setCancelClaimOption] = useState(false);
 
   useEffect(() => {}, [setCancelClaimOption]);
 
   const getStateForAuthUser = () => {
-    if (props.authUserId == props.itemCreator._id) {
+    if (props.authUserId === props.itemCreator._id) {
       return props.stateForItemCreator;
-    } else if (props.authUserId == props.itemClaimer._id) {
+    } else if (props.authUserId === props.itemClaimer._id) {
       return props.stateForClaimer;
     }
   };
@@ -83,21 +79,21 @@ const ClaimCard = (props) => {
     return (
       <React.Fragment>
         {/* El creador de la publicacion (user1) recibio un mensaje de la otra persona (user2)*/}
-        {props.authUserId == props.itemCreator._id &&
+        {props.authUserId === props.itemCreator._id &&
         props.flagItemCreator == 1 &&
-        props.flagClaimer == 0
+        props.flagClaimer === 0
           ? showNotificationMessage()
           : ""}
 
         {/* El user2 recibio la respuesta del user1 */}
-        {props.authUserId == props.itemClaimer._id &&
+        {props.authUserId === props.itemClaimer._id &&
         props.flagItemCreator == 0 &&
-        props.flagClaimer == 1
+        props.flagClaimer === 1
           ? showNotificationMessage()
           : ""}
 
         {/* Ambos usuarios confirmaron el contacto*/}
-        {props.flagItemCreator == 1 && props.flagClaimer == 1
+        {props.flagItemCreator === 1 && props.flagClaimer === 1
           ? showSuccessContactMessage()
           : ""}
       </React.Fragment>
@@ -144,36 +140,6 @@ const ClaimCard = (props) => {
     );
   };
 
-  const openEditModal = () => {
-    toggle();
-    setShowEditModal(true);
-  };
-
-  const closeEditModal = () => {
-    toggle();
-    setShowEditModal(false);
-  };
-
-  const showEditButton = () => {
-    return (
-      <React.Fragment>
-        {props.item.creator._id == props.authUserId ? (
-          <Button
-            className="mt-4"
-            color="primary"
-            size="sm"
-            onClick={() => openEditModal()}
-            outline
-          >
-            Editar objeto
-          </Button>
-        ) : (
-          ""
-        )}
-      </React.Fragment>
-    );
-  };
-
   const cancelButton = () => {
     return (
       <Button
@@ -181,7 +147,9 @@ const ClaimCard = (props) => {
         className="mt-4"
         color="danger"
         size="sm"
-        onClick={() => props.onDelete(props.claimId)}
+        onClick={() =>
+          props.onDelete(props.claimId, "¡Rechazaste el contacto!")
+        }
         outline
       >
         Rechazar contacto
@@ -198,7 +166,7 @@ const ClaimCard = (props) => {
         outline
         onClick={() => props.onDeleteItem(props.item._id)}
       >
-        Eliminar objeto si soy yo
+        Eliminar publicación
       </Button>
     );
   };
@@ -226,7 +194,6 @@ const ClaimCard = (props) => {
 
             {showItemInfo()}
 
-            {showEditButton()}
             {props.item.creator._id == props.authUserId
               ? showDeleteButton()
               : ""}
@@ -236,35 +203,20 @@ const ClaimCard = (props) => {
 
       {/*Show proper modal acording flags*/}
 
-      {props.flagItemCreator == 1 &&
-      props.flagClaimer == 0 &&
-      !showEditModal ? (
+      {props.flagItemCreator == 1 && props.flagClaimer == 0 ? (
         <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""
       )}
       {/* THIRD MODAL */}
-      {props.flagItemCreator == 0 &&
-      props.flagClaimer == 1 &&
-      !showEditModal ? (
+      {props.flagItemCreator == 0 && props.flagClaimer == 1 ? (
         <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""
       )}
       {/*FINAL MODAL */}
-      {props.flagItemCreator == 1 &&
-      props.flagClaimer == 1 &&
-      !showEditModal ? (
+      {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
         <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
-      ) : (
-        ""
-      )}
-      {showEditModal ? (
-        <ModalEditItem
-          isShowing={isShowing}
-          hide={() => closeEditModal()}
-          info={props}
-        />
       ) : (
         ""
       )}

@@ -151,7 +151,7 @@ const ModalFirstStep = ({
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-cloud-upload-96 mr-2" />
+                      <i className="ni ni-bell-55 mr-2" />
                       Paso 1
                     </NavLink>
                   </NavItem>
@@ -164,7 +164,7 @@ const ModalFirstStep = ({
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-bell-55 mr-2" />
+                      <i className="ni ni-chat-round mr-2" />
                       Paso 2
                     </NavLink>
                   </NavItem>
@@ -177,7 +177,7 @@ const ModalFirstStep = ({
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-calendar-grid-58 mr-2" />
+                      <i className="ni ni-send mr-2" />
                       Paso 3
                     </NavLink>
                   </NavItem>
@@ -294,12 +294,15 @@ const ModalFirstStep = ({
                           Ya falta menos...
                         </span>
                       </div>
-                      <p className="description">
-                        Enviaremos esta información al otro usuario y te
-                        notificaremos cuando haya novedades. Si todo va bien,
-                        podrás obtener el contacto del usuario que publicó el
-                        objeto
-                      </p>
+                      <div className="text-center text-muted mb-4">
+                        <h6>
+                          Enviaremos esta información al otro usuario y te
+                          notificaremos cuando haya novedades. Si todo va bien,
+                          podrás obtener el contacto del usuario que publicó el
+                          objeto
+                        </h6>
+                      </div>
+
                       <Form role="form">
                         <div className="modal-footer">
                           <Button

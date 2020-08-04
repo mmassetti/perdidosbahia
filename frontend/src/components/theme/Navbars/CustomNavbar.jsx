@@ -56,12 +56,6 @@ const CustomNavbar = (props) => {
                 id="navbar-main"
               >
                 <Container>
-                  <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-                    <img
-                      alt="..."
-                      src={require("assets/img/brand/argon-react-white.png")}
-                    />
-                  </NavbarBrand>
                   <button className="navbar-toggler" id="navbar_global">
                     <span className="navbar-toggler-icon" />
                   </button>
@@ -72,7 +66,7 @@ const CustomNavbar = (props) => {
                           <Link to="/">
                             <img
                               alt="..."
-                              src={require("assets/img/brand/argon-react.png")}
+                              src={require("assets/img/logo-hamburger.jpg")}
                             />
                           </Link>
                         </Col>
@@ -91,7 +85,6 @@ const CustomNavbar = (props) => {
                       {/* Menu principal */}
                       <UncontrolledDropdown nav>
                         <DropdownToggle nav>
-                          <i className="ni ni-ui-04 d-lg-none mr-1" />
                           <span className="nav-link-inner--text">
                             Menu principal
                           </span>
@@ -104,7 +97,7 @@ const CustomNavbar = (props) => {
                               tag={Link}
                             >
                               <div className="icon icon-shape bg-gradient-warning rounded-circle text-white">
-                                <i className="ni ni-ui-04" />
+                                <i className="ni ni-bullet-list-67" />
                               </div>
                               <Media body className="ml-3">
                                 <h5 className="heading text-warning mb-md-1">
@@ -122,7 +115,7 @@ const CustomNavbar = (props) => {
                               tag={Link}
                             >
                               <div className="icon icon-shape bg-gradient-primary rounded-circle text-white">
-                                <i className="ni ni-spaceship" />
+                                <i className="ni ni-notification-70" />
                               </div>
                               <Media body className="ml-3">
                                 <h6 className="heading text-primary mb-md-1">
@@ -139,7 +132,7 @@ const CustomNavbar = (props) => {
                               tag={Link}
                             >
                               <div className="icon icon-shape bg-gradient-success rounded-circle text-white">
-                                <i className="ni ni-palette" />
+                                <i className="ni ni-like-2" />
                               </div>
                               <Media body className="ml-3">
                                 <h6 className="heading text-primary mb-md-1">
@@ -164,7 +157,6 @@ const CustomNavbar = (props) => {
                       {/* Ayuda */}
                       <UncontrolledDropdown nav>
                         <DropdownToggle nav>
-                          <i className="ni ni-collection d-lg-none mr-1" />
                           <span className="nav-link-inner--text">Ayuda</span>
                         </DropdownToggle>
                         <DropdownMenu>
@@ -177,7 +169,7 @@ const CustomNavbar = (props) => {
                     {/* Iniciar sesion */}
                     <Nav className="align-items-lg-center ml-lg-auto" navbar>
                       {!context.token && (
-                        <NavItem className="d-none d-lg-block ml-lg-4">
+                        <NavItem>
                           <Button
                             className="btn-neutral btn-icon"
                             color="default"
@@ -199,22 +191,27 @@ const CustomNavbar = (props) => {
                       {/* Cerrar sesion */}
                       {context.token && (
                         <React.Fragment>
-                          <i
-                            style={{ fontSize: "22px" }}
-                            className="fa fa-user-circle text-white "
-                            aria-hidden="true"
-                          ></i>
-                          <span
-                            style={{ paddingLeft: "0.5rem" }}
-                            className="text-white "
-                          >
-                            {context.firstName}
-                          </span>
-                          <NavItem className="d-none d-lg-block ml-lg-4">
+                          <NavItem>
+                            <Button
+                              className="btn-neutral btn-icon"
+                              color="default"
+                              style={{ marginBottom: "0.5rem" }}
+                            >
+                              <i
+                                style={{ fontSize: "18px" }}
+                                className="fa fa-user-circle text-primary "
+                                aria-hidden="true"
+                              ></i>
+                              <span>{context.firstName}</span>
+                            </Button>
+                          </NavItem>
+
+                          <NavItem to="/" tag={Link}>
                             <Button
                               className="btn-neutral btn-icon"
                               color="default"
                               onClick={context.logout}
+                              style={{ marginBottom: "0.5rem" }}
                             >
                               <span className="btn-inner--icon">
                                 <i

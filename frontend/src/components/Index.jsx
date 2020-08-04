@@ -41,7 +41,7 @@ const Index = (props) => {
 
         if (
           (claims && claims.length > 0) ||
-          props.hasPendingNotifications == "true"
+          props.hasPendingNotifications === "true"
         ) {
           history.push({
             pathname: "/mis-publicaciones",

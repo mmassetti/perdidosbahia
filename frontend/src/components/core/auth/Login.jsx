@@ -31,7 +31,6 @@ import {
   Col,
 } from "reactstrap";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
-import SimpleFooter from "../../theme/Footers/SimpleFooter";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";

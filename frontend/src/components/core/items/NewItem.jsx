@@ -18,7 +18,7 @@
 import React, { useState, useContext, useEffect } from "react";
 
 import ReactDatetime from "react-datetime";
-
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -46,11 +46,12 @@ import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 import { useHistory } from "react-router-dom";
 import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
+import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 var moment = require("moment");
 require("moment/locale/es");
 
-const LostItem = (props) => {
+const NewItem = (props) => {
   const context = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [category, setCategory] = useState({ categoryName: "" });
@@ -58,6 +59,8 @@ const LostItem = (props) => {
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
   const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   let history = useHistory();
 
   const defaultValues = {
@@ -121,12 +124,12 @@ const LostItem = (props) => {
 
     let requestBody = {
       query: `
-          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String!) {
+          mutation CreateItem($description: String! , $category: String!, $location:String, $date: String!, $itemCreatorQuestion: String!, $type: String!) {
             createItem(
-              itemInput: 
-                {description: $description, 
-                type: "perdido", 
-                category: $category, 
+              itemInput:
+                {description: $description,
+                type: $type,
+                category: $category,
                 location: $location,
                 date: $date,
                 itemCreatorQuestion: $itemCreatorQuestion }) {
@@ -146,6 +149,7 @@ const LostItem = (props) => {
         location: data.location,
         date: transformedDate,
         itemCreatorQuestion: itemCreatorQuestion,
+        type: props.type,
       },
     };
 
@@ -161,18 +165,28 @@ const LostItem = (props) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
+          setShowErrorAlert(true);
         }
         return res.json();
       })
       .then((resData) => {
-        history.push({
-          pathname: "/mis-publicaciones",
-        });
+        setShowSuccessAlert(true);
       })
       .catch((err) => {
+        setShowErrorAlert(true);
+
         console.log(err);
       });
+  };
+
+  const getPlaceholder = () => {
+    if (props.type === "perdido") {
+      return "perdiste";
+    } else return "encontraste";
+  };
+
+  const showAlertMessage = (type, msg, redirectTo) => {
+    return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
   };
 
   return (
@@ -180,7 +194,10 @@ const LostItem = (props) => {
       <CustomNavbar />
       <main>
         <div className="position-relative">
-          <section className="section section-sm, section-shaped">
+          <section
+            className="section section-sm, section-shaped"
+            style={{ paddingBottom: "0rem" }}
+          >
             <div className="shape shape-style-1 shape-default">
               <span />
               <span />
@@ -192,7 +209,7 @@ const LostItem = (props) => {
               <span />
               <span />
             </div>
-            <Container className="py-lg-md d-flex">
+            <Container className="py-sm-sm d-flex">
               <div className="col px-0">
                 <Row>
                   <Col lg="12">
@@ -211,12 +228,15 @@ const LostItem = (props) => {
         </div>
         {context.token ? (
           <React.Fragment>
-            <section className="section section-sm bg-gradient-default">
-              <Container className="pt-lg pb-300">
+            <section
+              className="section section-sm bg-gradient-default"
+              style={{ paddingBottom: "0rem" }}
+            >
+              <Container className="pt-sm pb-300">
                 <Row className="text-center justify-content-center">
                   <Col lg="10">
                     <h2 className="display-3 text-white">
-                      Formulario de objeto perdido
+                      Formulario de objeto {props.type}
                     </h2>
                   </Col>
                 </Row>
@@ -237,7 +257,7 @@ const LostItem = (props) => {
                 </svg>
               </div>
             </section>
-            <section className="section section-lg pt-lg-0 section-contact-us">
+            <section className="section section-sm pt-lg-0 section-contact-us">
               <Container>
                 <Row className="justify-content-center mt--300">
                   <Col lg="8">
@@ -247,18 +267,9 @@ const LostItem = (props) => {
                           <b>IMPORTANTE</b>: En la descripción del objeto{" "}
                           <b>NO</b> brindes todos los detalles de tu objeto. Más
                           abajo deberás agregar una pregunta que tendrá que
-                          contestar quien encuentre un objeto similar al tuyo.
-                          De esta forma buscamos evitar fraudes
+                          contestar quien reclame un objeto similar al tuyo. De
+                          esta forma buscamos evitar fraudes
                         </h6>
-
-                        {/* <h6 className="h6 text-primary  ">
-                          ¿Necesitás ayuda?{" "}
-                          <a href="#" className="mr-1 font-weight-bold">
-                            Acá
-                          </a>
-                          hay un ejemplo de como completar el formulario
-                        </h6>
-                        <br></br> */}
 
                         <Form
                           noValidate
@@ -282,6 +293,7 @@ const LostItem = (props) => {
                                 </span>
                               </div>
                               <Button
+                                active={!buttonGroupTouched}
                                 onClick={() => radio("documentacion")}
                                 className={
                                   category.categoryName === "documentacion"
@@ -438,7 +450,9 @@ const LostItem = (props) => {
                                     ref={register()}
                                     inputProps={{
                                       placeholder:
-                                        "Fecha en la que perdiste el objeto",
+                                        "Fecha en la que " +
+                                        getPlaceholder() +
+                                        " el objeto",
                                     }}
                                     timeFormat={false}
                                     locale="es"
@@ -471,7 +485,11 @@ const LostItem = (props) => {
                                 <Input
                                   ref={register()}
                                   autoComplete="off"
-                                  placeholder="Escribí la ubicación en donde perdiste tu objeto (calle y altura,lugar,zona,etc) "
+                                  placeholder={
+                                    "Escribí la ubicación en donde " +
+                                    getPlaceholder() +
+                                    " tu objeto (calle y altura,lugar,zona,etc)"
+                                  }
                                   className={
                                     !formState.touched.location &&
                                     (formState.submitCount === 0 ||
@@ -537,6 +555,7 @@ const LostItem = (props) => {
                             )}
                           </FormGroup>
 
+                          {/* //* Item question */}
                           {itemCreatorQuestion ? (
                             <div style={{ marginBottom: "1rem" }}>
                               <span className="h6 ">
@@ -634,11 +653,20 @@ const LostItem = (props) => {
                                           )}
                                         </FormGroup>
                                         <h6>
-                                          <span>
-                                            Si alguien dice haber encontrado tu
-                                            objeto te mostraremos su respuesta a
-                                            esta pregunta
-                                          </span>
+                                          {props.type === "perdido" ? (
+                                            <span>
+                                              Si alguien reclama haber
+                                              encontrado tu objeto te
+                                              mostraremos su respuesta a esta
+                                              pregunta
+                                            </span>
+                                          ) : (
+                                            <span>
+                                              Si alguien reclama haber perdido
+                                              tu objeto te mostraremos su
+                                              respuesta a esta pregunta
+                                            </span>
+                                          )}
 
                                           <br />
                                         </h6>
@@ -702,6 +730,20 @@ const LostItem = (props) => {
                             >
                               Publicar objeto
                             </Button>
+                            {showSuccessAlert
+                              ? showAlertMessage(
+                                  "success",
+                                  "¡Objeto publicado!",
+                                  "mis-publicaciones"
+                                )
+                              : ""}
+                            {showErrorAlert
+                              ? showAlertMessage(
+                                  "danger",
+                                  "Lo sentimos, hubo un error",
+                                  "mis-publicaciones"
+                                )
+                              : ""}
                           </div>
                         </Form>
                       </CardBody>
@@ -714,7 +756,17 @@ const LostItem = (props) => {
         ) : (
           <React.Fragment>
             <div className="text-center mt-5">
-              <h3>Todavía no se publicó ningún objeto</h3>
+              <h3>
+                {" "}
+                <Link to="/registro" className="font-weight-bold">
+                  Registrate
+                </Link>{" "}
+                o{" "}
+                <Link to="/inicio-sesion" className="font-weight-bold">
+                  inicia sesión
+                </Link>{" "}
+                para poder publicar
+              </h3>
             </div>
 
             <MustLoginModal isShowing={isShowing} hide={toggle} />
@@ -726,4 +778,4 @@ const LostItem = (props) => {
   );
 };
 
-export default LostItem;
+export default NewItem;

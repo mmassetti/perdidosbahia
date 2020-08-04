@@ -31,7 +31,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = (props) => {
-  console.log("SingleItem -> props", props);
   const { isShowing, toggle } = useModal();
   const context = useContext(AuthContext);
   let history = useHistory();
@@ -41,7 +40,7 @@ const SingleItem = (props) => {
     document.scrollingElement.scrollTop = 0;
   }, []);
 
-  const cancelAnswer = () => {
+  const goBack = () => {
     toggle();
     history.push({
       pathname: "/objetos-publicados",
@@ -57,7 +56,7 @@ const SingleItem = (props) => {
 
   const getActionForTypeOfItem = () => {
     let itemType = props.location.state.props.type;
-    if (itemType == "perdido") {
+    if (itemType === "perdido") {
       return (
         <Button
           color="primary"
@@ -70,13 +69,33 @@ const SingleItem = (props) => {
           </span>
         </Button>
       );
-    } else if (itemType == "encontrado") {
+    } else if (itemType === "encontrado") {
       return (
-        <Button color="primary" size="sm" onClick={toggle}>
+        <Button
+          color="primary"
+          size="sm"
+          onClick={toggle}
+          style={{ marginBottom: "0.5rem" }}
+        >
           <span className="btn-inner--text">¡Este objeto es mío!</span>
         </Button>
       );
     }
+  };
+
+  const showDeleteButton = () => {
+    return (
+      <Button
+        className="btn-icon ml-1"
+        color="danger"
+        // onClick={}
+        size="sm"
+        style={{ marginBottom: "0.5rem" }}
+        outline
+      >
+        Eliminar publicación
+      </Button>
+    );
   };
 
   return (
@@ -116,17 +135,7 @@ const SingleItem = (props) => {
                 <Card className="card-profile shadow mt--300">
                   <div className="px-4">
                     <Row className="justify-content-center">
-                      <Col className="order-lg-2" lg="3">
-                        <div className="card-profile-image">
-                          <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                            <img
-                              alt="..."
-                              className="rounded-circle"
-                              src={require("assets/img/theme/team-4-800x800.jpg")}
-                            />
-                          </a>
-                        </div>
-                      </Col>
+                      <Col className="order-lg-2" lg="3"></Col>
                       <Col
                         className="order-lg-3 text-lg-right align-self-lg-center"
                         lg="4"
@@ -157,7 +166,7 @@ const SingleItem = (props) => {
                               )}
                             </span>
                             <span className="description">
-                              {props.location.state.props.type == "perdido"
+                              {props.location.state.props.type === "perdido"
                                 ? "Fecha en la que se perdió "
                                 : "Fecha en la que se encontró "}
                             </span>
@@ -192,20 +201,9 @@ const SingleItem = (props) => {
                   <div className="px-lg-5 py-lg-5">
                     <CardHeader className="bg-white pb-5">
                       <div className="btn-wrapper text-center">
-                        {loggedUserIsItemCreator() ? (
-                          <Button
-                            color="primary"
-                            size="sm"
-                            onClick={toggle}
-                            style={{ marginBottom: "0.5rem" }}
-                          >
-                            <span className="btn-inner--text">
-                              Editar publicación
-                            </span>
-                          </Button>
-                        ) : (
-                          getActionForTypeOfItem()
-                        )}
+                        {!loggedUserIsItemCreator()
+                          ? getActionForTypeOfItem()
+                          : ""}
 
                         {context.token ? (
                           <ModalFirstStep
@@ -222,15 +220,14 @@ const SingleItem = (props) => {
                         )}
 
                         <Button
-                          className="btn-neutral btn-icon ml-1"
+                          type="button"
+                          size="sm"
                           color="default"
-                          onClick={cancelAnswer}
+                          onClick={goBack}
                           size="sm"
                           style={{ marginBottom: "0.5rem" }}
                         >
-                          <span className="btn-inner--text">
-                            Volver a objetos publicados
-                          </span>
+                          Volver a objetos publicados
                         </Button>
                       </div>
                     </CardHeader>

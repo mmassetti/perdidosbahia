@@ -29,6 +29,7 @@ import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
 import SimpleFooter from "components/theme/Footers/SimpleFooter";
 import confirm from "reactstrap-confirm";
 import { useHistory } from "react-router-dom";
+import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -44,6 +45,9 @@ const UserClaims = (props) => {
   const context = useContext(AuthContext);
   const { isShowing, toggle } = useModal();
   const [cleanedNotifications, setCleanedNotifications] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const fetchUserItemsWithoutClaim = () => {
     setIsLoading(true);
@@ -56,6 +60,7 @@ const UserClaims = (props) => {
               description,
               date,
               category,
+              location,
               creator {
                   _id,
                   email
@@ -156,9 +161,7 @@ const UserClaims = (props) => {
       .then((resData) => {
         const claims = resData.data.claims;
         setClaims({ claims: claims });
-        if (claims.length == 0) {
-          getNotifications();
-        }
+        getNotifications();
         setIsLoading(false);
       })
       .catch((err) => {
@@ -219,8 +222,71 @@ const UserClaims = (props) => {
       });
   };
 
-  const deleteClaimHandler = (claimId) => {
-    setIsLoading(true);
+  const deleteItemHandler = async (itemId) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de eliminar tu publicación",
+      confirmText: "Eliminar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
+    const requestBody = {
+      query: `
+         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
+            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
+          }
+        `,
+      variables: {
+        itemId: itemId,
+        notificationDescription:
+          "Lo sentimos, el otro usuario eliminó la publicación:",
+      },
+    };
+
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            setShowErrorAlert(true);
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = userItemsWithoutClaim.items.filter(
+            (item) => item._id !== itemId
+          );
+          setUserItemsWithoutClaim({ items: updatedValues });
+          setIsLoading(false);
+          setShowSuccessAlert(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+          setShowErrorAlert(true);
+        });
+    }
+  };
+
+  const deleteClaimHandler = async (claimId, alertMsg) => {
+    let result = await confirm({
+      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
+      message: "Estás a punto de rechazar el contacto",
+      confirmText: "Rechazar",
+      cancelText: "Cancelar",
+      confirmColor: "danger",
+      cancelColor: "default",
+    });
+
     const requestBody = {
       query: `
          mutation CancelClaim($id: ID!, $notificationDescription: String!) {
@@ -238,39 +304,45 @@ const UserClaims = (props) => {
       },
     };
 
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
+    if (result) {
+      setIsLoading(true);
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.token,
+        },
       })
-      .then((resData) => {
-        const updatedValues = claims.claims.filter(
-          (claim) => claim._id !== claimId
-        );
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            setShowErrorAlert(true);
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          const updatedValues = claims.claims.filter(
+            (claim) => claim._id !== claimId
+          );
 
-        setClaims({ claims: updatedValues });
+          setClaims({ claims: updatedValues });
+          setShowSuccessAlert(true);
+          setAlertMessage(alertMsg);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setShowErrorAlert(true);
 
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        console.log(err);
-      });
+          console.log(err);
+        });
+    }
   };
 
   function deleteNotifications() {
     setIsLoading(true);
 
-    notifications.notifications.map((notification, index) => {
+    notifications.notifications.forEach((notification, index) => {
       const requestBody = {
         query: `
            mutation DeleteNotification($notificationId: ID!) {
@@ -310,7 +382,7 @@ const UserClaims = (props) => {
   const notificationItemCategory = (notification) => {
     if (
       notification.itemInvolved &&
-      notification.itemInvolved.category != "otro"
+      notification.itemInvolved.category !== "otro"
     ) {
       return notification.itemInvolved.category;
     } else if (notification.itemInvolved) {
@@ -337,7 +409,7 @@ const UserClaims = (props) => {
           style={{ marginBottom: "2rem" }}
         >
           <CardBody className="py-5">
-            <h6 className="text-warning font-weight-light mb-2">
+            <h6 className="text-warning font-weight-bold mb-2">
               {notification.description}
             </h6>
 
@@ -355,62 +427,6 @@ const UserClaims = (props) => {
     });
   };
 
-  const deleteItemHandler = async (itemId) => {
-    let result = await confirm({
-      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
-      message: "Estás a punto de eliminar tu publicación",
-      confirmText: "Eliminar",
-      cancelText: "Cancelar",
-      confirmColor: "danger",
-      cancelColor: "default",
-    });
-
-    const requestBody = {
-      query: `
-         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
-            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
-          }
-        `,
-      variables: {
-        itemId: itemId,
-        notificationDescription:
-          "Lo sentimos, el otro usuario eliminó la publicación:",
-      },
-    };
-
-    if (result) {
-      setIsLoading(true);
-      fetch("http://localhost:8000/graphql", {
-        method: "POST",
-        body: JSON.stringify(requestBody),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + context.token,
-        },
-      })
-        .then((res) => {
-          if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
-          }
-          return res.json();
-        })
-        .then((resData) => {
-          const updatedValues = userItemsWithoutClaim.items.filter(
-            (item) => item._id !== itemId
-          );
-          setUserItemsWithoutClaim({ items: updatedValues });
-          setIsLoading(false);
-          history.push({
-            pathname: "/objetos-publicados",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsLoading(false);
-        });
-    }
-  };
-
   useEffect(() => {
     if (context.token) {
       fetchUserItemsWithoutClaim();
@@ -420,7 +436,12 @@ const UserClaims = (props) => {
     document.scrollingElement.scrollTop = 0;
     toggle();
     setCleanedNotifications(false);
-  }, [context, setCleanedNotifications]);
+  }, [
+    context,
+    setCleanedNotifications,
+    setShowSuccessAlert,
+    setShowErrorAlert,
+  ]);
 
   const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
     (item, key) => {
@@ -449,7 +470,7 @@ const UserClaims = (props) => {
                 <h6 className="text-default ">
                   {" "}
                   <span className="font-weight-bold"> Categoría: </span>
-                  {item.category != "otro" ? item.category : "Otros objetos"}
+                  {item.category !== "otro" ? item.category : "Otros objetos"}
                 </h6>
                 <h6 className="text-default ">
                   <span className="font-weight-bold"> Descripción: </span>{" "}
@@ -507,19 +528,6 @@ const UserClaims = (props) => {
     if (isLoading) {
       return <Spinner />;
     } else if (
-      userItemsWithoutClaim.items.length > 0 ||
-      (claims.claims && claims.claims.length > 0)
-    ) {
-      return (
-        <Card className="shadow">
-          <CardBody>
-            <Row className="row-grid">
-              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
-            </Row>
-          </CardBody>
-        </Card>
-      );
-    } else if (
       notifications.notifications &&
       notifications.notifications.length > 0 &&
       !cleanedNotifications
@@ -538,6 +546,19 @@ const UserClaims = (props) => {
           </Col>
         </React.Fragment>
       );
+    } else if (
+      userItemsWithoutClaim.items.length > 0 ||
+      (claims.claims && claims.claims.length > 0)
+    ) {
+      return (
+        <Card className="shadow">
+          <CardBody>
+            <Row className="row-grid">
+              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
+            </Row>
+          </CardBody>
+        </Card>
+      );
     } else {
       return (
         <div className="text-center mt-5">
@@ -545,6 +566,16 @@ const UserClaims = (props) => {
         </div>
       );
     }
+  };
+
+  const showAlertMessage = (type, msg, redirectTo) => {
+    return (
+      <AlertMessage
+        type={type}
+        msg={alertMessage ? alertMessage : msg}
+        redirectTo={redirectTo}
+      />
+    );
   };
 
   return (
@@ -555,7 +586,10 @@ const UserClaims = (props) => {
         <React.Fragment>
           <main>
             <div className="position-relative">
-              <section className="section section-sm, section-shaped">
+              <section
+                className="section section-sm, section-shaped"
+                style={{ paddingBottom: "0rem" }}
+              >
                 <div className="shape shape-style-1 shape-default">
                   <span />
                   <span />
@@ -568,7 +602,7 @@ const UserClaims = (props) => {
                   <span />
                 </div>
 
-                <Container className="py-lg-md d-flex">
+                <Container className="py-sm-sm d-flex">
                   <div className="col px-0">
                     <Row>
                       <Col lg="12">
@@ -586,12 +620,20 @@ const UserClaims = (props) => {
             <Container>
               <Row
                 className="justify-content-center"
-                style={{ marginTop: "2rem", marginBottom: "2rem" }}
+                style={{ marginTop: "2rem", marginBottom: "21rem" }}
               >
-                <Col lg="12">{showContent()}</Col>
+                <Col lg="6" style={{ marginTop: "2rem" }}>
+                  {" "}
+                  {showSuccessAlert
+                    ? showAlertMessage("success", "¡Publicación eliminada!")
+                    : ""}
+                  {showErrorAlert
+                    ? showAlertMessage("danger", "Lo sentimos, hubo un error")
+                    : ""}
+                </Col>
+                <Col lg="12">{showContent()} </Col>
               </Row>
             </Container>
-            {/* <Download /> */}
           </main>
         </React.Fragment>
       ) : (
@@ -600,7 +642,10 @@ const UserClaims = (props) => {
           <main>
             <div className="position-relative">
               {/* shape Hero */}
-              <section className="section section-sm, section-shaped">
+              <section
+                className="section section-sm, section-shaped"
+                style={{ paddingBottom: "0rem" }}
+              >
                 <div className="shape shape-style-1 shape-default">
                   <span />
                   <span />
@@ -613,7 +658,7 @@ const UserClaims = (props) => {
                   <span />
                 </div>
 
-                <Container className="py-lg-md d-flex">
+                <Container className="py-sm-sm d-flex">
                   <div className="col px-0"></div>
                 </Container>
               </section>

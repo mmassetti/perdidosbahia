@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Badge,
   Card,
@@ -8,71 +8,16 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import confirm from "reactstrap-confirm";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const CardItem = (props) => {
   let history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
-  const [claimAlreadyExists, setClaimAlreadyExists] = useState(false);
-
-  const fetchClaims = () => {
-    setIsLoading(true);
-    const requestBody = {
-      query: `
-          query {
-            claims {
-              _id  
-              itemClaimer {
-                _id
-              }
-              stateForClaimer
-            }
-          }
-        `,
-    };
-
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + props.token,
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
-      })
-      .then((resData) => {
-        const claims = resData.data.claims;
-
-        if (claims && claims.length > 0) {
-          claims.map((claim, index) => {
-            if (claim.itemClaimer._id == props.authUserId) {
-              setClaimAlreadyExists(true);
-            }
-          });
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        console.log(err);
-      });
-  };
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    //TODO: Revisar donde se esta haciendo el use Effect porque se esta haciendo 2 veces..
-    // if (props.token) {
-    //   fetchClaims();
-    // }
   }, []);
 
   function goToSingleItem() {
@@ -84,11 +29,24 @@ const CardItem = (props) => {
     });
   }
 
-  function goToUserClaims() {
-    history.push({
-      pathname: "/mis-publicaciones",
-    });
-  }
+  const getIcon = (category) => {
+    switch (category) {
+      case "documentacion":
+        return "fa fa-id-card";
+      case "llaves":
+        return "ni ni-key-25";
+      case "lentes":
+        return "ni ni-glasses-2";
+      case "patente":
+        return "fa fa-motorcycle";
+      case "ropa":
+        return "fa fa-child";
+      case "celular":
+        return "ni ni-mobile-button";
+      default:
+        return "ni ni-tag";
+    }
+  };
 
   const showContent = () => {
     return (
@@ -98,36 +56,18 @@ const CardItem = (props) => {
           style={{ marginBottom: "1rem" }}
         >
           <CardBody className="py-5">
-            {props.creatorId == props.authUserId ? (
+            <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
+              <i className={getIcon(props.category)}></i>
+            </div>
+            {props.creatorId === props.authUserId ? (
               <h6 className="text-warning font-weight-light mb-2">
                 ¡Esta es tu publicación!
               </h6>
             ) : (
               ""
             )}
-
-            {claimAlreadyExists ? (
-              <React.Fragment>
-                {" "}
-                <h6 className="text-warning font-weight-light mb-2">
-                  ¡Ya tenés un reclamo en marcha por este objeto!
-                </h6>
-                <Button
-                  className="mb-4 btn-round"
-                  color="primary"
-                  size="sm"
-                  outline
-                  onClick={() => goToUserClaims()}
-                >
-                  Ver reclamo
-                </Button>
-              </React.Fragment>
-            ) : (
-              ""
-            )}
-
             <h6 className="text-primary text-uppercase">
-              {props.category != "otro" ? props.category : "Otros objetos"}
+              {props.category !== "otro" ? props.category : "Otros objetos"}
             </h6>
             <p className="description mt-3">{props.description}</p>
             <div>
@@ -138,17 +78,13 @@ const CardItem = (props) => {
                 {moment(props.date).format("LL")}
               </Badge>
             </div>
-            {!claimAlreadyExists ? (
-              <Button
-                className="mt-4 btn-round"
-                color="primary"
-                onClick={() => goToSingleItem()}
-              >
-                Ver más
-              </Button>
-            ) : (
-              ""
-            )}
+            <Button
+              className="mt-4 btn-round"
+              color="primary"
+              onClick={() => goToSingleItem()}
+            >
+              Ver más
+            </Button>
 
             {props.token && props.authUserId == props.creatorId
               ? deleteItemButton()
@@ -157,41 +93,6 @@ const CardItem = (props) => {
         </Card>
       </Col>
     );
-  };
-
-  const handleDeleteItem = async (itemId) => {
-    let result = await confirm({
-      title: <span className="text-danger font-weight-bold">¡Atención!</span>,
-      message: "Estás a punto de eliminar tu publicación",
-      confirmText: "Custom confirm message",
-      confirmText: "Eliminar",
-      cancelText: "Cancelar",
-      confirmColor: "danger",
-      cancelColor: "default",
-    });
-
-    if (result) {
-      props.onDelete(itemId);
-      await confirm({
-        title: null,
-        message: "Tu objeto fue eliminado correctamente",
-        confirmText: "OK",
-        confirmColor: "primary",
-        cancelText: null,
-      });
-    }
-  };
-
-  const handleAlert = async () => {
-    let result = await confirm({
-      title: null,
-      message: "I can use this component to display alerts!",
-      confirmText: "Understood!",
-      confirmColor: "primary",
-      cancelText: null,
-    });
-
-    alert(`Confirm result: ${result}`);
   };
 
   const deleteItemButton = () => {

@@ -9,7 +9,7 @@ module.exports = {
     try {
       const existingUser = await User.findOne({ email: args.userInput.email });
       if (existingUser) {
-        throw new Error("User exists already.");
+        throw new Error("¡Ya existe un usuario con ese email!");
       }
       const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
@@ -33,11 +33,11 @@ module.exports = {
   login: async ({ email, password }) => {
     const user = await User.findOne({ email: email });
     if (!user) {
-      throw new Error("User does not exist!");
+      throw new Error("¡No existe una cuenta con ese email!");
     }
     const isEqual = await bcrypt.compare(password, user.password);
     if (!isEqual) {
-      throw new Error("Password is incorrect!");
+      throw new Error("Contraseña incorrecta");
     }
 
     const token = jwt.sign(

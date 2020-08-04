@@ -31,8 +31,8 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
   };
 
   const handleSubmitModalForm = (e) => {
-    const newStateForClaimer = "Ya estás en contacto con la otra persona";
-    const newStateForItemCreator = "Ya estás en contacto con la otra persona";
+    const newStateForClaimer = "Contacto confirmado";
+    const newStateForItemCreator = "Contacto confirmado";
     const newFlagClaimer = 1;
     const newFlagItemCreator = 1;
 
@@ -132,7 +132,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-cloud-upload-96 mr-2" />
+                      <i className="ni ni-bell-55 mr-2" />
                       Paso 1
                     </NavLink>
                   </NavItem>
@@ -145,8 +145,8 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-bell-55 mr-2" />
-                      Paso 2
+                      <i className="ni ni-like-2 mr-2" />
+                      Paso final
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -182,7 +182,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       <Form role="form">
                         <div className="modal-footer">
                           <div className="text-muted text-center mt-2 mb-3">
-                            <span className="h6 text-default font-weight-bold">
+                            <span className="h6 text-warning font-weight-bold">
                               ¿Estás de acuerdo con la respuesta?
                             </span>
                           </div>
