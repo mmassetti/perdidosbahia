@@ -25,8 +25,8 @@ import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { Container, Row, Col } from "reactstrap";
 import confirm from "reactstrap-confirm";
-import CategoryFilter from "./filters/CategoryFilter.tsx";
-import ItemTypeFilter from "./filters/ItemTypeFilter.tsx";
+import CategoryFilter from "./filters/CategoryFilter";
+import ItemTypeFilter from "./filters/ItemTypeFilter";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 const Items = () => {
@@ -263,13 +263,13 @@ const Items = () => {
             </Col>
           </Row>
 
-          {showContent()}
           {showSuccessAlert
             ? showAlertMessage("success", "¡Publicación eliminada!")
             : ""}
           {showErrorAlert
             ? showAlertMessage("danger", "Lo sentimos, hubo un error")
             : ""}
+          {showContent()}
         </Container>
       </main>
       <SimpleFooter page={"objetos-publicados"} />

@@ -36,8 +36,13 @@ import * as yup from "yup";
 import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
 
 import { useForm, Controller } from "react-hook-form";
+import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 const Register = (props) => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
 
   const defaultValues = {
@@ -89,6 +94,10 @@ const Register = (props) => {
   );
   const [data, setData] = useState(null);
 
+  const showAlertMessage = (type, msg, redirectTo) => {
+    return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
+  };
+
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -124,15 +133,20 @@ const Register = (props) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
+          setShowErrorAlert(true);
         }
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
+        if (resData.errors && resData.errors.length > 0) {
+          setErrorMsg(resData.errors[0].message);
+          setShowErrorAlert(true);
+        } else {
+          setShowSuccessAlert(true);
+        }
       })
       .catch((err) => {
-        console.log(err);
+        setShowErrorAlert(true);
       });
 
     reset({
@@ -418,6 +432,7 @@ const Register = (props) => {
                           Crear cuenta
                         </Button>
                       </div>
+
                       <br></br>
                       <small className="text-center">
                         <p>
@@ -432,6 +447,12 @@ const Register = (props) => {
                         </p>
                       </small>
                     </Form>
+                    {showSuccessAlert
+                      ? showAlertMessage("success", "¡Listo!", "inicio-sesion")
+                      : ""}
+                    {showErrorAlert
+                      ? showAlertMessage("danger", errorMsg, "registro")
+                      : ""}
                   </CardBody>
                 </Card>
               </Col>

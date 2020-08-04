@@ -26,7 +26,11 @@ const AlertMessage = (props) => {
         toggle={onDismiss}
       >
         <span className="alert-inner--icon">
-          <i className="ni ni-like-2" />
+          {type === "success" ? (
+            <i className="ni ni-like-2" />
+          ) : (
+            <i className="fa fa-exclamation-circle" />
+          )}
         </span>
         <span className="alert-inner--text ml-1">
           <strong>{props.msg}</strong>

@@ -622,7 +622,6 @@ const UserClaims = (props) => {
                 className="justify-content-center"
                 style={{ marginTop: "2rem", marginBottom: "21rem" }}
               >
-                <Col lg="12">{showContent()} </Col>
                 <Col lg="6" style={{ marginTop: "2rem" }}>
                   {" "}
                   {showSuccessAlert
@@ -632,6 +631,7 @@ const UserClaims = (props) => {
                     ? showAlertMessage("danger", "Lo sentimos, hubo un error")
                     : ""}
                 </Col>
+                <Col lg="12">{showContent()} </Col>
               </Row>
             </Container>
           </main>
