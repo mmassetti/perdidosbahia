@@ -25,14 +25,16 @@ import SimpleFooter from "../../theme/Footers/SimpleFooter";
 
 import { Container, Row, Col } from "reactstrap";
 import confirm from "reactstrap-confirm";
-import CategoryFilter from "./filters/CategoryFilter";
-import ItemTypeFilter from "./filters/ItemTypeFilter";
+import CategoryFilter from "./filters/CategoryFilter.tsx";
+import ItemTypeFilter from "./filters/ItemTypeFilter.tsx";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
   const [allItems, setAllItems] = useState({ items: [] });
   const [isLoading, setIsLoading] = useState(false);
   const context = useContext(AuthContext);
+  const [selectedCategory, setSelectedCategory] = useState("todas");
+  const [selectedType, setSelectedType] = useState("todos");
 
   useEffect(() => {
     fetchItems();
@@ -177,8 +179,14 @@ const Items = () => {
     }
   };
 
-  const filterItemsHandler = (filteredItems) => {
+  const filterItemsByCategoryHandler = (filteredItems, selectedCategory) => {
     setItems({ items: filteredItems });
+    setSelectedCategory(selectedCategory);
+  };
+
+  const filterItemsByTypeHandler = (filteredItems, selectedType) => {
+    setItems({ items: filteredItems });
+    setSelectedType(selectedType);
   };
 
   return (
@@ -224,13 +232,18 @@ const Items = () => {
             <Col xs="auto">
               {" "}
               <CategoryFilter
-                onFilter={filterItemsHandler}
+                onFilter={filterItemsByCategoryHandler}
                 allItems={allItems.items}
+                prevSelectedType={selectedType}
               />
             </Col>
             <Col xs="auto">
               {" "}
-              <ItemTypeFilter />
+              <ItemTypeFilter
+                onFilter={filterItemsByTypeHandler}
+                allItems={allItems.items}
+                prevSelectedCategory={selectedCategory}
+              />
             </Col>
           </Row>
 

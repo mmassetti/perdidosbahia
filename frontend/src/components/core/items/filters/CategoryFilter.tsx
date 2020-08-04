@@ -8,25 +8,39 @@ import {
 
 const CategoryFilter = (props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("todas");
+  const [selectedCategory, setSelectedCategory] = useState(props.prevState);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   const showFilteredItems = (category) => {
     setSelectedCategory(category);
 
+    let filter = {
+      type: props.prevSelectedType,
+      category: category,
+    };
+
     if (category !== "todas") {
-      const filteredItems = [];
-
-      props.allItems
-        .filter((item) => item.category.includes(category))
-        .map((searchedItems) => {
-          filteredItems.push(searchedItems);
-        });
-
-      props.onFilter(filteredItems);
+      if (props.prevSelectedType == "todos") {
+        let filterResult: any = props.allItems.filter(
+          (item) => item.category == filter.category
+        );
+        props.onFilter(filterResult, category);
+      } else {
+        let filterResult: any = props.allItems.filter(
+          (item) => item.type == filter.type && item.category == filter.category
+        );
+        props.onFilter(filterResult, category);
+      }
     } else {
-      props.onFilter(props.allItems);
+      if (props.prevSelectedType == "todos") {
+        props.onFilter(props.allItems, category);
+      } else {
+        let filterResult: any = props.allItems.filter(
+          (item) => item.type == filter.type
+        );
+        props.onFilter(filterResult, category);
+      }
     }
   };
 
