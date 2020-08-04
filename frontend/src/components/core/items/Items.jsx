@@ -171,10 +171,16 @@ const Items = () => {
       return <Spinner />;
     } else if (items && items.items.length > 0) {
       return <Row className="row-grid">{itemsCards}</Row>;
-    } else {
+    } else if (selectedCategory !== "todas" || selectedType !== "todos") {
       return (
         <div className="text-center mt-5">
           <h3>Todavía no se publicó ningún objeto en esta categoría</h3>
+        </div>
+      );
+    } else {
+      return (
+        <div className="text-center mt-5">
+          <h3>Todavía no se publicó ningún objeto</h3>
         </div>
       );
     }
