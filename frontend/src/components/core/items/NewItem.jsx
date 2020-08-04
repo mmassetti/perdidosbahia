@@ -46,6 +46,7 @@ import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
 import { useHistory } from "react-router-dom";
 import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
+import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -58,6 +59,7 @@ const NewItem = (props) => {
   const [buttonGroupTouched, setButtonGroupTouched] = useState(null);
   const [isToggled, setToggled] = useState(false);
   const { isShowing, toggle } = useModal();
+  const [showAlert, setShowAlert] = useState(false);
   let history = useHistory();
 
   const defaultValues = {
@@ -167,9 +169,7 @@ const NewItem = (props) => {
         return res.json();
       })
       .then((resData) => {
-        history.push({
-          pathname: "/mis-publicaciones",
-        });
+        setShowAlert(true);
       })
       .catch((err) => {
         console.log(err);
@@ -180,6 +180,10 @@ const NewItem = (props) => {
     if (props.type === "perdido") {
       return "perdiste";
     } else return "encontraste";
+  };
+
+  const showAlertMessage = (type) => {
+    return <AlertMessage type={type} />;
   };
 
   return (
@@ -722,6 +726,7 @@ const NewItem = (props) => {
                             >
                               Publicar objeto
                             </Button>
+                            {showAlert ? showAlertMessage("success") : ""}
                           </div>
                         </Form>
                       </CardBody>
