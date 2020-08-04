@@ -134,6 +134,7 @@ const Items = () => {
             (item) => item._id !== itemId
           );
           setItems({ items: updatedValues });
+          setAllItems({ items: updatedValues });
           setIsLoading(false);
         })
         .catch((err) => {
