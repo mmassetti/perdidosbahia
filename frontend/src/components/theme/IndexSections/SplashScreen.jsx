@@ -71,7 +71,10 @@ const SplashScreen = (props) => {
                     src={require("assets/img/brand/prueba.png")}
                     style={{ width: "400px" }}
                   />
-                  <p className="lead text-white">
+                  <p
+                    className="lead text-white"
+                    style={{ fontSize: "1.75rem" }}
+                  >
                     Publicá lo que hayas perdido o encontrado de forma fácil y
                     rápida
                   </p>
@@ -81,9 +84,10 @@ const SplashScreen = (props) => {
                       className="btn-white btn-icon mb-3 mb-sm-0"
                       color="default"
                       size="lg"
+                      style={{ fontSize: "1.2rem" }}
                     >
                       <span className="btn-inner--icon mr-1">
-                        <i className="ni ni-cloud-download-95" />
+                        <i className="ni ni-notification-70" />
                       </span>
                       <span className="btn-inner--text">Perdí algo</span>
                     </Button>{" "}
@@ -92,22 +96,23 @@ const SplashScreen = (props) => {
                       className="btn-white btn-icon mb-3 mb-sm-0"
                       color="default"
                       size="lg"
+                      style={{ fontSize: "1.2rem" }}
                     >
                       <span className="btn-inner--icon mr-1">
-                        <i className="ni ni-cloud-download-95" />
+                        <i className="ni ni-like-2" />{" "}
                       </span>
+
                       <span className="btn-inner--text">Encontré algo</span>
                     </Button>{" "}
                     <Button
                       onClick={() => goToListOfItems()}
-                      style={{ marginTop: "1rem" }}
                       className="btn-icon mb-3 mb-sm-0"
                       color="github"
                       size="lg"
-                      target="_blank"
+                      style={{ fontSize: "1.2rem", marginTop: "1rem" }}
                     >
                       <span className="btn-inner--icon mr-1">
-                        <i className="fa fa-github" />
+                        <i className="ni ni-bullet-list-67" />
                       </span>
                       <span className="btn-inner--text">
                         Ver{" "}
