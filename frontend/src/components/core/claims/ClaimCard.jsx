@@ -147,7 +147,9 @@ const ClaimCard = (props) => {
         className="mt-4"
         color="danger"
         size="sm"
-        onClick={() => props.onDelete(props.claimId)}
+        onClick={() =>
+          props.onDelete(props.claimId, "¡Rechazaste el contacto!")
+        }
         outline
       >
         Rechazar contacto

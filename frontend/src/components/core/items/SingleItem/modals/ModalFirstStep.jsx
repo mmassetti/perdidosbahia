@@ -294,12 +294,15 @@ const ModalFirstStep = ({
                           Ya falta menos...
                         </span>
                       </div>
-                      <p className="description">
-                        Enviaremos esta información al otro usuario y te
-                        notificaremos cuando haya novedades. Si todo va bien,
-                        podrás obtener el contacto del usuario que publicó el
-                        objeto
-                      </p>
+                      <div className="text-center text-muted mb-4">
+                        <h6>
+                          Enviaremos esta información al otro usuario y te
+                          notificaremos cuando haya novedades. Si todo va bien,
+                          podrás obtener el contacto del usuario que publicó el
+                          objeto
+                        </h6>
+                      </div>
+
                       <Form role="form">
                         <div className="modal-footer">
                           <Button

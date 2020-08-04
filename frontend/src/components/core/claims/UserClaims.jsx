@@ -47,6 +47,7 @@ const UserClaims = (props) => {
   const [cleanedNotifications, setCleanedNotifications] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const fetchUserItemsWithoutClaim = () => {
     setIsLoading(true);
@@ -276,7 +277,7 @@ const UserClaims = (props) => {
     }
   };
 
-  const deleteClaimHandler = async (claimId) => {
+  const deleteClaimHandler = async (claimId, alertMsg) => {
     let result = await confirm({
       title: <span className="text-danger font-weight-bold">¡Atención!</span>,
       message: "Estás a punto de rechazar el contacto",
@@ -326,6 +327,7 @@ const UserClaims = (props) => {
 
           setClaims({ claims: updatedValues });
           setShowSuccessAlert(true);
+          setAlertMessage(alertMsg);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -567,7 +569,13 @@ const UserClaims = (props) => {
   };
 
   const showAlertMessage = (type, msg, redirectTo) => {
-    return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
+    return (
+      <AlertMessage
+        type={type}
+        msg={alertMessage ? alertMessage : msg}
+        redirectTo={redirectTo}
+      />
+    );
   };
 
   return (
