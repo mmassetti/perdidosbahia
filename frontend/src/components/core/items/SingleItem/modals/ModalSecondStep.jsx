@@ -144,7 +144,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-cloud-upload-96 mr-2" />
+                      <i className="ni ni-bell-55 mr-2" />
                       Paso 1
                     </NavLink>
                   </NavItem>
@@ -157,7 +157,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-bell-55 mr-2" />
+                      <i className="ni ni-chat-round mr-2" />
                       Paso 2
                     </NavLink>
                   </NavItem>
@@ -170,7 +170,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-calendar-grid-58 mr-2" />
+                      <i className="ni ni-send mr-2" />
                       Paso 3
                     </NavLink>
                   </NavItem>

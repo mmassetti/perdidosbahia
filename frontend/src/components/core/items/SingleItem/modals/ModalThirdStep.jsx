@@ -132,7 +132,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-cloud-upload-96 mr-2" />
+                      <i className="ni ni-bell-55 mr-2" />
                       Paso 1
                     </NavLink>
                   </NavItem>
@@ -145,8 +145,8 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       onClick={(e) => e.preventDefault()}
                       role="tab"
                     >
-                      <i className="ni ni-bell-55 mr-2" />
-                      Paso 2
+                      <i className="ni ni-like-2 mr-2" />
+                      Paso final
                     </NavLink>
                   </NavItem>
                 </Nav>
