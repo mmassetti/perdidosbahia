@@ -124,7 +124,7 @@ const Register = (props) => {
       },
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("http://localhost:3000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

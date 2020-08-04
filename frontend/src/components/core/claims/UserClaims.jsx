@@ -72,7 +72,7 @@ const UserClaims = (props) => {
         `,
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("http://localhost:3000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -144,7 +144,7 @@ const UserClaims = (props) => {
         `,
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("http://localhost:3000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -197,7 +197,7 @@ const UserClaims = (props) => {
       `,
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("http://localhost:3000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -247,7 +247,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:8000/graphql", {
+      fetch("http://localhost:3000/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -306,7 +306,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:8000/graphql", {
+      fetch("http://localhost:3000/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -354,7 +354,7 @@ const UserClaims = (props) => {
         },
       };
 
-      fetch("http://localhost:8000/graphql", {
+      fetch("http://localhost:3000/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
