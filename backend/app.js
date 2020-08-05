@@ -29,8 +29,13 @@ app.use(
   })
 );
 
-if (process.ENV.NODE_ENV == "production") {
+if (process.env.NODE_ENV == "production") {
   app.use(express.static("../frontend/build"));
+  app.get("/*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "../frontend/", "build", "index.html")
+    );
+  });
 }
 
 moongose
@@ -43,7 +48,7 @@ moongose
   )
   .then(() => {
     // app.listen(8000);
-    app.listen(process.env.PORT || 3000, function () {
+    app.listen(process.env.PORT || 8000, function () {
       console.log(
         "Express server listening on port %d in %s mode",
         this.address().port,
