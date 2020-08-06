@@ -26,7 +26,7 @@ import AuthContext from "../../../../common/providers/AuthProvider/auth-context"
 import ModalFirstStep from "./modals/ModalFirstStep";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
-import GetActionForTypeOfItem from "./GetActionForTypeOfItem";
+import GetActionForTypeOfItem from "./modals/helpers/GetActionForTypeOfItem";
 
 var moment = require("moment");
 require("moment/locale/es");
