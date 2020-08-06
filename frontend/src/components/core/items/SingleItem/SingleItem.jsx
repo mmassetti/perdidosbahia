@@ -26,11 +26,13 @@ import AuthContext from "../../../../common/providers/AuthProvider/auth-context"
 import ModalFirstStep from "../SingleItem/modals/ModalFirstStep";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
+import GetActionForTypeOfItem from "./GetActionForTypeOfItem";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = (props) => {
+  console.log("SingleItem -> props", props);
   const { isShowing, toggle } = useModal();
   const context = useContext(AuthContext);
   let history = useHistory();
@@ -54,33 +56,70 @@ const SingleItem = (props) => {
     );
   }
 
-  const getActionForTypeOfItem = () => {
-    let itemType = props.location.state.props.type;
-    if (itemType === "perdido") {
-      return (
-        <Button
-          color="primary"
-          size="sm"
-          onClick={toggle}
-          style={{ marginBottom: "0.5rem" }}
-        >
-          <span className="btn-inner--text">
-            ¡Creo que encontré este objeto!
-          </span>
-        </Button>
-      );
-    } else if (itemType === "encontrado") {
-      return (
-        <Button
-          color="primary"
-          size="sm"
-          onClick={toggle}
-          style={{ marginBottom: "0.5rem" }}
-        >
-          <span className="btn-inner--text">¡Este objeto es mío!</span>
-        </Button>
-      );
-    }
+  // const getActionForTypeOfItem = getActionForTypeOfItem(
+  //   props.location.state.props.type
+  // );
+
+  const showItemAttributes = () => {
+    return (
+      <div className="px-4">
+        <Row className="justify-content-center">
+          <Col className="order-lg-2" lg="3"></Col>
+          <Col className="order-lg-3 text-lg-right align-self-lg-center" lg="4">
+            {" "}
+            <div className="card-profile-actions py-4 mt-lg-0 float-right">
+              <span className="h6 font-weight-bold">
+                Publicado el{" "}
+                {moment(props.location.state.props.createdAt).format("L")}
+              </span>
+            </div>
+          </Col>
+          <Col className="order-lg-1" lg="4">
+            <div className="card-profile-stats d-flex justify-content-center">
+              <div>
+                <span className="heading">
+                  {props.location.state.props.category}
+                </span>
+                <span className="description">Categoría</span>
+              </div>
+              <div>
+                <span className="heading">
+                  {" "}
+                  {moment(props.location.state.props.date).format("L")}
+                </span>
+                <span className="description">
+                  {props.location.state.props.type === "perdido"
+                    ? "Fecha en la que se perdió "
+                    : "Fecha en la que se encontró "}
+                </span>
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <div className="text-center mt-5">
+          <h3>Objeto {props.location.state.props.type}</h3>
+
+          <div>
+            <i className="ni education_hat mr-2" />
+            <span className="text-default font-weight-bold">
+              Ubicación
+            </span> : {props.location.state.props.location}
+          </div>
+        </div>
+        <div className="mt-3 py-3 border-top text-center">
+          <Row className="justify-content-center">
+            <Col lg="4">
+              <div className="text-muted text-center mt-2 mb-3">
+                <span className="h6 font-weight-bold">
+                  Descripción del objeto
+                </span>
+              </div>
+              <p>{props.location.state.props.description}</p>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -118,77 +157,19 @@ const SingleItem = (props) => {
             <section className="section">
               <Container>
                 <Card className="card-profile shadow mt--300">
-                  <div className="px-4">
-                    <Row className="justify-content-center">
-                      <Col className="order-lg-2" lg="3"></Col>
-                      <Col
-                        className="order-lg-3 text-lg-right align-self-lg-center"
-                        lg="4"
-                      >
-                        {" "}
-                        <div className="card-profile-actions py-4 mt-lg-0 float-right">
-                          <span className="h6 font-weight-bold">
-                            Publicado el{" "}
-                            {moment(
-                              props.location.state.props.createdAt
-                            ).format("L")}
-                          </span>
-                        </div>
-                      </Col>
-                      <Col className="order-lg-1" lg="4">
-                        <div className="card-profile-stats d-flex justify-content-center">
-                          <div>
-                            <span className="heading">
-                              {props.location.state.props.category}
-                            </span>
-                            <span className="description">Categoría</span>
-                          </div>
-                          <div>
-                            <span className="heading">
-                              {" "}
-                              {moment(props.location.state.props.date).format(
-                                "L"
-                              )}
-                            </span>
-                            <span className="description">
-                              {props.location.state.props.type === "perdido"
-                                ? "Fecha en la que se perdió "
-                                : "Fecha en la que se encontró "}
-                            </span>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <div className="text-center mt-5">
-                      <h3>Objeto {props.location.state.props.type}</h3>
+                  {showItemAttributes()}
 
-                      <div>
-                        <i className="ni education_hat mr-2" />
-                        <span className="text-default font-weight-bold">
-                          Ubicación
-                        </span>{" "}
-                        : {props.location.state.props.location}
-                      </div>
-                    </div>
-                    <div className="mt-3 py-3 border-top text-center">
-                      <Row className="justify-content-center">
-                        <Col lg="4">
-                          <div className="text-muted text-center mt-2 mb-3">
-                            <span className="h6 font-weight-bold">
-                              Descripción del objeto
-                            </span>
-                          </div>
-                          <p>{props.location.state.props.description}</p>
-                        </Col>
-                      </Row>
-                    </div>
-                  </div>
                   <div className="px-lg-5 py-lg-5">
                     <CardHeader className="bg-white pb-5">
                       <div className="btn-wrapper text-center">
-                        {!loggedUserIsItemCreator()
-                          ? getActionForTypeOfItem()
-                          : ""}
+                        {!loggedUserIsItemCreator() ? (
+                          <GetActionForTypeOfItem
+                            itemType={props.location.state.props.type}
+                            onToggle={toggle}
+                          />
+                        ) : (
+                          ""
+                        )}
 
                         {context.token ? (
                           <ModalFirstStep

@@ -40,7 +40,6 @@ import {
 import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 
 import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
-import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../../Helpers/MustLoginModal";
 import useModal from "../../Helpers/useModal";
