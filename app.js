@@ -3,6 +3,7 @@ const graphqlHttp = require("express-graphql");
 const moongose = require("mongoose");
 const cors = require("cors");
 let path = require("path");
+let compression = require("compression");
 
 const graphQlSchema = require("./graphql/schema/index");
 const graphQlResolvers = require("./graphql/resolvers/index");
@@ -11,6 +12,8 @@ const app = express();
 require("dotenv").config();
 
 express.json();
+
+app.use(compression);
 app.use(cors());
 
 // app.use(express.static(path.join(__dirname, "build")));
