@@ -31,14 +31,13 @@ import {
   Col,
 } from "reactstrap";
 
-import * as yup from "yup";
-
 import CustomNavbar from "../../../theme/Navbars/CustomNavbar";
 
 import { useForm, Controller } from "react-hook-form";
 import AlertMessage from "../../Helpers/Alerts/AlertMessage";
 import getRegisterQuery from "./getRegisterQuery";
 import getSignUpSchema from "./getSignupSchema";
+import fetchUrlLocal from "common/fetchUrlLocal";
 
 const Register = (props) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -54,37 +53,6 @@ const Register = (props) => {
   };
 
   const SignupSchema = getSignUpSchema();
-  // const SignupSchema = yup.object().shape({
-  //   firstName: yup.string().required("Por favor ingresa tu nombre"),
-  //   lastName: yup.string().required("Por favor ingresa tu apellido"),
-  //   email: yup.string().email().required(),
-  //   password: yup
-  //     .string()
-  //     .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
-  //     .min(8, "La contraseña debe tener al menos 8 caracteres."),
-  //   passwordCheck: yup
-  //     .string()
-  //     .required("Por favor escribe nuevamente tu contraseña.")
-  //     .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
-  //     .min(8, "La contraseña debe tener al menos 8 caracteres."),
-
-  //   phoneNumber: yup
-  //     .string()
-  //     .notRequired()
-  //     .matches(phoneRegExp, {
-  //       excludeEmptyString: true,
-  //       message: "El número contiene caracteres inválidos",
-  //     })
-  //     .test("phoneNumber", "El número debe tener al menos 7 dígitos", function (
-  //       value
-  //     ) {
-  //       if (!!value) {
-  //         const schema = yup.string().min(7);
-  //         return schema.isValidSync(value);
-  //       }
-  //       return true;
-  //     }),
-  // });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
     {
@@ -106,7 +74,7 @@ const Register = (props) => {
   const submitForm = async (data) => {
     const requestBody = getRegisterQuery(data);
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -141,8 +109,36 @@ const Register = (props) => {
     });
   };
 
+  const showButtons = () => {
+    return (
+      <React.Fragment>
+        <div className="text-center">
+          <Button
+            disabled={formState.isValid ? false : true}
+            className="mt-4"
+            color="primary"
+            type="submit"
+          >
+            Crear cuenta
+          </Button>
+        </div>
+
+        <br></br>
+        <small className="text-center">
+          <p>
+            {" "}
+            Ya tenes una cuenta?{" "}
+            <Link className="label font-weight-bold" to="/inicio-sesion">
+              Iniciar sesión
+            </Link>
+          </p>
+        </small>
+      </React.Fragment>
+    );
+  };
+
   return (
-    <>
+    <React.Fragment>
       <CustomNavbar />
       <main>
         <section className="section section-shaped section-lg">
@@ -404,30 +400,7 @@ const Register = (props) => {
                         )}
                       </FormGroup>
 
-                      <div className="text-center">
-                        <Button
-                          disabled={formState.isValid ? false : true}
-                          className="mt-4"
-                          color="primary"
-                          type="submit"
-                        >
-                          Crear cuenta
-                        </Button>
-                      </div>
-
-                      <br></br>
-                      <small className="text-center">
-                        <p>
-                          {" "}
-                          Ya tenes una cuenta?{" "}
-                          <Link
-                            className="label font-weight-bold"
-                            to="/inicio-sesion"
-                          >
-                            Iniciar sesión
-                          </Link>
-                        </p>
-                      </small>
+                      {showButtons()}
                     </Form>
                     {showSuccessAlert
                       ? showAlertMessage(
@@ -446,7 +419,7 @@ const Register = (props) => {
           </Container>
         </section>
       </main>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
 import {
@@ -31,7 +31,6 @@ import {
   Col,
 } from "reactstrap";
 import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
-import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";
 import getLoginQuery from "./getLoginQuery";
