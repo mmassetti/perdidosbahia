@@ -25,7 +25,7 @@ import MustLoginModal from "../../Helpers/MustLoginModal";
 import useModal from "../../Helpers/useModal";
 import { Link } from "react-router-dom";
 
-import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
+import { Card, Container, Row, Col, CardBody, Button } from "reactstrap";
 import SimpleFooter from "components/theme/Footers/SimpleFooter";
 import confirm from "reactstrap-confirm";
 import AlertMessage from "../../Helpers/Alerts/AlertMessage";
@@ -36,9 +36,8 @@ import getDeleteItemQuery from "./queries/getDeleteItemQuery";
 import getDeleteClaimQuery from "./queries/getDeleteClaimQuery";
 import getDeleteNotificationQuery from "./queries/getDeleteNotificationQuery";
 import ShowNotifications from "./contentShower/ShowNotifications";
-
-var moment = require("moment");
-require("moment/locale/es");
+import ShowItemsAuthUserWithoutClaims from "./contentShower/ShowItemsAuthUserWithoutClaims";
+import fetchUrlLocal from "common/fetchUrlLocal";
 
 const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +57,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserItemsWithoutClaimsQuery();
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -86,7 +85,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserClaimsQuery();
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -115,7 +114,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getNotificationsQuery();
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -153,7 +152,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:8000/graphql", {
+      fetch(fetchUrlLocal, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -196,7 +195,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch("http://localhost:8000/graphql", {
+      fetch(fetchUrlLocal, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -273,64 +272,6 @@ const UserClaims = (props) => {
     setShowErrorAlert,
   ]);
 
-  const itemsAuthUserWithoutClaims = userItemsWithoutClaim.items.map(
-    (item, key) => {
-      return (
-        <Col key={key} lg="4">
-          <Card
-            className="card-lift--hover shadow border-0"
-            style={{ marginBottom: "1rem" }}
-          >
-            <CardBody className="py-5">
-              <React.Fragment>
-                <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                  <span className="h6 font-weight-bold">Estado actual:</span>
-                  <Badge
-                    color="success"
-                    pill
-                    className="mr-1"
-                    style={{ marginLeft: "0.2rem" }}
-                  >
-                    Sin Respuestas
-                  </Badge>
-                </div>
-                <h6 className="text-primary font-weight-bold text-uppercase">
-                  Información del objeto
-                </h6>
-                <h6 className="text-default ">
-                  {" "}
-                  <span className="font-weight-bold"> Categoría: </span>
-                  {item.category !== "otro" ? item.category : "Otros objetos"}
-                </h6>
-                <h6 className="text-default ">
-                  <span className="font-weight-bold"> Descripción: </span>{" "}
-                  {item.description}
-                </h6>
-                <h6 className="text-default ">
-                  <span className="font-weight-bold"> Ubicación: </span>{" "}
-                  {item.location}
-                </h6>
-                <h6 className="text-default ">
-                  <span className="font-weight-bold"> Fecha:</span>{" "}
-                  {moment(item.date).format("LL")}{" "}
-                </h6>
-                <Button
-                  className="mt-4"
-                  color="danger"
-                  size="sm"
-                  outline
-                  onClick={() => deleteItemHandler(item._id)}
-                >
-                  Eliminar publicación
-                </Button>
-              </React.Fragment>
-            </CardBody>
-          </Card>
-        </Col>
-      );
-    }
-  );
-
   const itemsAuthUserIsParticipating = claims.claims.map((claim) => {
     return (
       <ClaimCard
@@ -374,7 +315,13 @@ const UserClaims = (props) => {
         <Card className="shadow">
           <CardBody>
             <Row className="row-grid">
-              {itemsAuthUserIsParticipating} {itemsAuthUserWithoutClaims}
+              {itemsAuthUserIsParticipating}{" "}
+              {
+                <ShowItemsAuthUserWithoutClaims
+                  items={userItemsWithoutClaim.items}
+                  onDelete={deleteItemHandler}
+                />
+              }
             </Row>
           </CardBody>
         </Card>

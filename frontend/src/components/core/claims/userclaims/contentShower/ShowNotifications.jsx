@@ -47,8 +47,6 @@ const ShowNotifications = (props) => {
       </Card>
     );
   });
-
-  return <React.Fragment></React.Fragment>;
 };
 
 export default ShowNotifications;
