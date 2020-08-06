@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useHistory } from "react-router-dom";
 
-// reactstrap components
 import {
   Button,
   Card,
@@ -21,7 +20,8 @@ import {
 
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
-import fetchUrlRemote from "../../../../../common/fetchUrlRemote";
+import getNewClaimQuery from "./queries/getNewClaimQuery";
+import fetchUrlLocal from "common/fetchUrlLocal";
 
 const ModalFirstStep = ({
   isShowing,
@@ -55,42 +55,12 @@ const ModalFirstStep = ({
   };
 
   const handleSubmitModalForm = (e) => {
-    let requestBody = {
-      query: `
-        mutation CreateClaim($id: ID!,$claimerQuestion: String!,$claimerAnswer: String!) {
-          createClaim(itemId: $id, claimerQuestion: $claimerQuestion, claimerAnswer: $claimerAnswer) {
-            _id
-            itemClaimer {
-              email
-            }
-            itemCreator {
-              email
-            }
-            item { 
-              description
-            }
-            stateForClaimer
-            stateForItemCreator
-            flagClaimer
-            flagItemCreator
-            claimerQuestion
-            claimerAnswer
-            createdAt
-            updatedAt
-          }
-        }
-      `,
-      variables: {
-        id: itemId,
-        claimerQuestion: claimerQuestion,
-        claimerAnswer: claimerAnswer,
-      },
-    };
+    let requestBody = getNewClaimQuery(itemId, claimerQuestion, claimerAnswer);
 
     setClaimerQuestion("");
     setClaimerAnswer("");
 
-    fetch(fetchUrlRemote, {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

@@ -21,7 +21,8 @@ import {
 
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
-import fetchUrlRemote from "../../../../../common/fetchUrlRemote";
+import getEditClaimSecondStepQuery from "./queries/getEditClaimSecondStepQuery";
+import fetchUrlLocal from "common/fetchUrlLocal";
 
 const ModalSecondStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -43,42 +44,18 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
     const newFlagClaimer = 1;
     const newFlagItemCreator = 0;
 
-    let requestBody = {
-      query: `
-        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!, $newItemCreatorAnswer: String!) {
-          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator, newItemCreatorAnswer: $newItemCreatorAnswer) {
-            _id
-            itemClaimer {
-              email
-            }
-            itemCreator {
-              email
-            }
-            item { 
-              description
-            }
-            stateForClaimer
-            stateForItemCreator
-            createdAt
-            updatedAt
-            claimerQuestion
-            itemCreatorAnswer
-          }
-        }
-      `,
-      variables: {
-        claimId: info.claimId,
-        newStateForClaimer: newStateForClaimer,
-        newStateForItemCreator: newStateForItemCreator,
-        newFlagClaimer: newFlagClaimer,
-        newFlagItemCreator: newFlagItemCreator,
-        newItemCreatorAnswer: itemCreatorAnswer,
-      },
-    };
+    let requestBody = getEditClaimSecondStepQuery(
+      info.claim._id,
+      newStateForClaimer,
+      newStateForItemCreator,
+      newFlagClaimer,
+      newFlagItemCreator,
+      itemCreatorAnswer
+    );
 
     setItemCreatorAnswer("");
 
-    fetch(fetchUrlRemote, {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -190,7 +167,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
 
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.item.itemCreatorQuestion}
+                          {info.claim.item.itemCreatorQuestion}
                         </span>
                       </div>
 
@@ -201,7 +178,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.claimerAnswer}
+                          {info.claim.claimerAnswer}
                         </span>
                       </div>
                       <Form role="form">
@@ -227,7 +204,6 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                           >
                             No
                           </Button>
-                          {/* TODO: BLOQUEAR CLAIM PARA EL CLAIMER*/}
                         </div>
                       </Form>
                     </TabPane>
@@ -248,7 +224,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.claimerQuestion}
+                          {info.claim.claimerQuestion}
                         </span>
                       </div>
                       <Form role="form">

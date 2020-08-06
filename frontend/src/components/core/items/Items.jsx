@@ -29,6 +29,9 @@ import CategoryFilter from "./filters/CategoryFilter";
 import ItemTypeFilter from "./filters/ItemTypeFilter";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
 import fetchUrlRemote from "../../../common/fetchUrlRemote";
+import getItemsQuery from "./getItemsQuery";
+import fetchUrlLocal from "common/fetchUrlLocal";
+import getDeleteItemQuery from "../claims/userclaims/queries/getDeleteItemQuery";
 
 const Items = () => {
   const [items, setItems] = useState({ items: [] });
@@ -48,26 +51,7 @@ const Items = () => {
 
   const fetchItems = () => {
     setIsLoading(true);
-    const requestBody = {
-      query: `
-          query {
-            items {
-              _id
-              category
-              description
-              type
-              date
-              location
-              itemCreatorQuestion
-              creator {
-                _id
-                email
-              }
-              createdAt
-            }
-          }
-        `,
-    };
+    const requestBody = getItemsQuery();
 
     fetch(fetchUrlRemote, {
       method: "POST",
@@ -104,18 +88,7 @@ const Items = () => {
       cancelColor: "default",
     });
 
-    const requestBody = {
-      query: `
-         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
-            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
-          }
-        `,
-      variables: {
-        itemId: itemId,
-        notificationDescription:
-          "Lo sentimos, el otro usuario eliminó la publicación:",
-      },
-    };
+    const requestBody = getDeleteItemQuery(itemId);
 
     if (result) {
       setIsLoading(true);
@@ -207,7 +180,7 @@ const Items = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <CustomNavbar />
       <main>
         <div className="position-relative">
@@ -274,7 +247,7 @@ const Items = () => {
         </Container>
       </main>
       <SimpleFooter page={"objetos-publicados"} />
-    </>
+    </React.Fragment>
   );
 };
 
