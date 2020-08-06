@@ -66,7 +66,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
         }
       `,
       variables: {
-        claimId: info.claimId,
+        claimId: info.claim._id,
         newStateForClaimer: newStateForClaimer,
         newStateForItemCreator: newStateForItemCreator,
         newFlagClaimer: newFlagClaimer,
@@ -189,7 +189,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
 
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.item.itemCreatorQuestion}
+                          {info.claim.item.itemCreatorQuestion}
                         </span>
                       </div>
 
@@ -200,7 +200,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.claimerAnswer}
+                          {info.claim.claimerAnswer}
                         </span>
                       </div>
                       <Form role="form">
@@ -247,7 +247,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.claimerQuestion}
+                          {info.claim.claimerQuestion}
                         </span>
                       </div>
                       <Form role="form">

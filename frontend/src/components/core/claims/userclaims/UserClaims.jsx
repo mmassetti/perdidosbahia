@@ -79,7 +79,6 @@ const UserClaims = (props) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log(err);
       });
   };
 
@@ -109,7 +108,6 @@ const UserClaims = (props) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log(err);
       });
   };
 
@@ -138,7 +136,6 @@ const UserClaims = (props) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log(err);
       });
   };
 
@@ -179,7 +176,6 @@ const UserClaims = (props) => {
           setShowSuccessAlert(true);
         })
         .catch((err) => {
-          console.log(err);
           setIsLoading(false);
           setShowErrorAlert(true);
         });
@@ -227,8 +223,6 @@ const UserClaims = (props) => {
         .catch((err) => {
           setIsLoading(false);
           setShowErrorAlert(true);
-
-          console.log(err);
         });
     }
   };
@@ -259,7 +253,6 @@ const UserClaims = (props) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          console.log(err);
         });
     });
   }
@@ -342,19 +335,9 @@ const UserClaims = (props) => {
     return (
       <ClaimCard
         key={claim._id}
-        claimId={claim._id}
-        itemCreator={claim.itemCreator}
-        itemClaimer={claim.itemClaimer}
+        claim={claim}
         authUserId={context.userId}
         token={context.token}
-        item={claim.item}
-        stateForClaimer={claim.stateForClaimer}
-        stateForItemCreator={claim.stateForItemCreator}
-        flagClaimer={claim.flagClaimer}
-        flagItemCreator={claim.flagItemCreator}
-        claimerQuestion={claim.claimerQuestion}
-        claimerAnswer={claim.claimerAnswer}
-        itemCreatorAnswer={claim.itemCreatorAnswer}
         onDelete={deleteClaimHandler}
         onDeleteItem={deleteItemHandler}
       ></ClaimCard>

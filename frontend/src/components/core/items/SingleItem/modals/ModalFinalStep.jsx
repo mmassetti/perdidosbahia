@@ -12,10 +12,10 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
   const showItemCreatorInfo = () => {
     return (
       <ContactInfo
-        firstName={info.itemCreator.firstName}
-        lastName={info.itemCreator.lastName}
-        phoneNumber={info.itemCreator.phoneNumber}
-        email={info.itemCreator.email}
+        firstName={info.claim.itemCreator.firstName}
+        lastName={info.claim.itemCreator.lastName}
+        phoneNumber={info.claim.itemCreator.phoneNumber}
+        email={info.claim.itemCreator.email}
       />
     );
   };
@@ -23,10 +23,10 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
   const showClaimerInfo = () => {
     return (
       <ContactInfo
-        firstName={info.itemClaimer.firstName}
-        lastName={info.itemClaimer.lastName}
-        phoneNumber={info.itemClaimer.phoneNumber}
-        email={info.itemClaimer.email}
+        firstName={info.claim.itemClaimer.firstName}
+        lastName={info.claim.itemClaimer.lastName}
+        phoneNumber={info.claim.itemClaimer.phoneNumber}
+        email={info.claim.itemClaimer.email}
       />
     );
   };
@@ -57,7 +57,7 @@ const ModalFinalStep = ({ isShowing, hide, info }) => {
               </div>
               {}
 
-              {info.authUserId === info.itemClaimer._id
+              {info.authUserId === info.claim.itemClaimer._id
                 ? showItemCreatorInfo()
                 : showClaimerInfo()}
 

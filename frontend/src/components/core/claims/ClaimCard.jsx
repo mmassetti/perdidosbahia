@@ -15,10 +15,10 @@ const ClaimCard = (props) => {
   useEffect(() => {}, [setCancelClaimOption]);
 
   const getStateForAuthUser = () => {
-    if (props.authUserId === props.itemCreator._id) {
-      return props.stateForItemCreator;
-    } else if (props.authUserId === props.itemClaimer._id) {
-      return props.stateForClaimer;
+    if (props.authUserId === props.claim.itemCreator._id) {
+      return props.claim.stateForItemCreator;
+    } else if (props.authUserId === props.claim.itemClaimer._id) {
+      return props.claim.stateForClaimer;
     }
   };
 
@@ -79,21 +79,21 @@ const ClaimCard = (props) => {
     return (
       <React.Fragment>
         {/* El creador de la publicacion (user1) recibio un mensaje de la otra persona (user2)*/}
-        {props.authUserId === props.itemCreator._id &&
-        props.flagItemCreator === 1 &&
-        props.flagClaimer === 0
+        {props.authUserId === props.claim.itemCreator._id &&
+        props.claim.flagItemCreator === 1 &&
+        props.claim.flagClaimer === 0
           ? showNotificationMessage()
           : ""}
 
         {/* El user2 recibio la respuesta del user1 */}
-        {props.authUserId === props.itemClaimer._id &&
-        props.flagItemCreator === 0 &&
-        props.flagClaimer === 1
+        {props.authUserId === props.claim.itemClaimer._id &&
+        props.claim.flagItemCreator === 0 &&
+        props.claim.flagClaimer === 1
           ? showNotificationMessage()
           : ""}
 
         {/* Ambos usuarios confirmaron el contacto*/}
-        {props.flagItemCreator === 1 && props.flagClaimer === 1
+        {props.claim.flagItemCreator === 1 && props.claim.flagClaimer === 1
           ? showSuccessContactMessage()
           : ""}
       </React.Fragment>
@@ -120,21 +120,21 @@ const ClaimCard = (props) => {
         <h6 className="text-default ">
           {" "}
           <span className="font-weight-bold"> Categoría: </span>
-          {props.item.category !== "otro"
-            ? props.item.category
+          {props.claim.item.category !== "otro"
+            ? props.claim.item.category
             : "Otros objetos"}
         </h6>
         <h6 className="text-default ">
           <span className="font-weight-bold"> Descripción: </span>{" "}
-          {props.item.description}
+          {props.claim.item.description}
         </h6>
         <h6 className="text-default ">
           <span className="font-weight-bold"> Ubicación: </span>{" "}
-          {props.item.location}
+          {props.claim.item.location}
         </h6>
         <h6 className="text-default ">
           <span className="font-weight-bold"> Fecha:</span>{" "}
-          {moment(props.item.date).format("LL")}{" "}
+          {moment(props.claim.item.date).format("LL")}{" "}
         </h6>
       </React.Fragment>
     );
@@ -148,7 +148,7 @@ const ClaimCard = (props) => {
         color="danger"
         size="sm"
         onClick={() =>
-          props.onDelete(props.claimId, "¡Rechazaste el contacto!")
+          props.onDelete(props.claim._id, "¡Rechazaste el contacto!")
         }
         outline
       >
@@ -164,7 +164,7 @@ const ClaimCard = (props) => {
         color="danger"
         size="sm"
         outline
-        onClick={() => props.onDeleteItem(props.item._id)}
+        onClick={() => props.onDeleteItem(props.claim.item._id)}
       >
         Eliminar publicación
       </Button>
@@ -174,7 +174,7 @@ const ClaimCard = (props) => {
   const showOptions = () => {
     return (
       <React.Fragment>
-        {(props.flagItemCreator !== 1 || props.flagClaimer !== 1) &&
+        {(props.claim.flagItemCreator !== 1 || props.claim.flagClaimer !== 1) &&
         showCancelClaimOption
           ? cancelButton()
           : ""}
@@ -183,15 +183,21 @@ const ClaimCard = (props) => {
   };
 
   const showModal = () => {
-    if (props.flagItemCreator === 1 && props.flagClaimer === 0) {
+    if (props.claim.flagItemCreator === 1 && props.claim.flagClaimer === 0) {
       return (
         <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
       );
-    } else if (props.flagItemCreator === 0 && props.flagClaimer === 1) {
+    } else if (
+      props.claim.flagItemCreator === 0 &&
+      props.claim.flagClaimer === 1
+    ) {
       return (
         <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
       );
-    } else if (props.flagItemCreator === 1 && props.flagClaimer === 1) {
+    } else if (
+      props.claim.flagItemCreator === 1 &&
+      props.claim.flagClaimer === 1
+    ) {
       return (
         <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
       );
@@ -210,7 +216,7 @@ const ClaimCard = (props) => {
 
             {showItemInfo()}
 
-            {props.item.creator._id === props.authUserId
+            {props.claim.item.creator._id === props.authUserId
               ? showDeleteButton()
               : ""}
           </CardBody>

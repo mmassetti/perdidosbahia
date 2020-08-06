@@ -59,7 +59,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
         }
       `,
       variables: {
-        claimId: info.claimId,
+        claimId: info.claim._id,
         newStateForClaimer: newStateForClaimer,
         newStateForItemCreator: newStateForItemCreator,
         newFlagClaimer: newFlagClaimer,
@@ -165,7 +165,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
 
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.claimerQuestion}
+                          {info.claim.claimerQuestion}
                         </span>
                       </div>
 
@@ -176,7 +176,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.itemCreatorAnswer}
+                          {info.claim.itemCreatorAnswer}
                         </span>
                       </div>
                       <Form role="form">
@@ -217,10 +217,10 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       </div>
 
                       <ContactInfo
-                        firstName={info.itemCreator.firstName}
-                        lastName={info.itemCreator.lastName}
-                        phoneNumber={info.itemCreator.phoneNumber}
-                        email={info.itemCreator.email}
+                        firstName={info.claim.itemCreator.firstName}
+                        lastName={info.claim.itemCreator.lastName}
+                        phoneNumber={info.claim.itemCreator.phoneNumber}
+                        email={info.claim.itemCreator.email}
                       />
 
                       <Form role="form">
