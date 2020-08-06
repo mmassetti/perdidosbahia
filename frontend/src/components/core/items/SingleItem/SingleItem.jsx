@@ -23,7 +23,7 @@ import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
-import ModalFirstStep from "../SingleItem/modals/ModalFirstStep";
+import ModalFirstStep from "./modals/ModalFirstStep";
 import MustLoginModal from "../../../core/Helpers/MustLoginModal";
 import useModal from "../../../core/Helpers/useModal";
 import GetActionForTypeOfItem from "./GetActionForTypeOfItem";
@@ -32,7 +32,6 @@ var moment = require("moment");
 require("moment/locale/es");
 
 const SingleItem = (props) => {
-  console.log("SingleItem -> props", props);
   const { isShowing, toggle } = useModal();
   const context = useContext(AuthContext);
   let history = useHistory();
@@ -55,10 +54,6 @@ const SingleItem = (props) => {
         props.location.state.props.authUserId && context.token
     );
   }
-
-  // const getActionForTypeOfItem = getActionForTypeOfItem(
-  //   props.location.state.props.type
-  // );
 
   const showItemAttributes = () => {
     return (
@@ -123,91 +118,82 @@ const SingleItem = (props) => {
   };
 
   return (
-    <>
-      {props.location.state ? (
-        <React.Fragment>
-          <CustomNavbar />
-          <main className="profile-page">
-            <section className="section-profile-cover section-shaped my-0">
-              <div className="shape shape-style-1 shape-default alpha-4">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="separator separator-bottom separator-skew">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  preserveAspectRatio="none"
-                  version="1.1"
-                  viewBox="0 0 2560 100"
-                  x="0"
-                  y="0"
-                >
-                  <polygon
-                    className="fill-white"
-                    points="2560 0 2560 100 0 100"
-                  />
-                </svg>
-              </div>
-            </section>
-            <section className="section">
-              <Container>
-                <Card className="card-profile shadow mt--300">
-                  {showItemAttributes()}
+    <React.Fragment>
+      <CustomNavbar />
+      <main className="profile-page">
+        <section className="section-profile-cover section-shaped my-0">
+          <div className="shape shape-style-1 shape-default alpha-4">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="separator separator-bottom separator-skew">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="none"
+              version="1.1"
+              viewBox="0 0 2560 100"
+              x="0"
+              y="0"
+            >
+              <polygon className="fill-white" points="2560 0 2560 100 0 100" />
+            </svg>
+          </div>
+        </section>
+        <section className="section">
+          <Container>
+            <Card className="card-profile shadow mt--300">
+              {showItemAttributes()}
 
-                  <div className="px-lg-5 py-lg-5">
-                    <CardHeader className="bg-white pb-5">
-                      <div className="btn-wrapper text-center">
-                        {!loggedUserIsItemCreator() ? (
-                          <GetActionForTypeOfItem
-                            itemType={props.location.state.props.type}
-                            onToggle={toggle}
-                          />
-                        ) : (
-                          ""
-                        )}
+              <div className="px-lg-5 py-lg-5">
+                <CardHeader className="bg-white pb-5">
+                  <div className="btn-wrapper text-center">
+                    {!loggedUserIsItemCreator() ? (
+                      <GetActionForTypeOfItem
+                        itemType={props.location.state.props.type}
+                        onToggle={toggle}
+                      />
+                    ) : (
+                      ""
+                    )}
 
-                        {context.token ? (
-                          <ModalFirstStep
-                            isShowing={isShowing}
-                            hide={toggle}
-                            itemCreatorQuestion={
-                              props.location.state.props.itemCreatorQuestion
-                            }
-                            itemId={props.location.state.props.id}
-                            token={context.token}
-                          />
-                        ) : (
-                          <MustLoginModal isShowing={isShowing} hide={toggle} />
-                        )}
+                    {context.token ? (
+                      <ModalFirstStep
+                        isShowing={isShowing}
+                        hide={toggle}
+                        itemCreatorQuestion={
+                          props.location.state.props.itemCreatorQuestion
+                        }
+                        itemId={props.location.state.props.id}
+                        token={context.token}
+                      />
+                    ) : (
+                      <MustLoginModal isShowing={isShowing} hide={toggle} />
+                    )}
 
-                        <Button
-                          type="button"
-                          size="sm"
-                          color="default"
-                          onClick={goBack}
-                          style={{ marginBottom: "0.5rem" }}
-                        >
-                          Volver a objetos publicados
-                        </Button>
-                      </div>
-                    </CardHeader>
+                    <Button
+                      type="button"
+                      size="sm"
+                      color="default"
+                      onClick={goBack}
+                      style={{ marginBottom: "0.5rem" }}
+                    >
+                      Volver a objetos publicados
+                    </Button>
                   </div>
-                </Card>
-              </Container>
-            </section>
-          </main>
+                </CardHeader>
+              </div>
+            </Card>
+          </Container>
+        </section>
+      </main>
 
-          <SimpleFooter page={"detalle"} />
-        </React.Fragment>
-      ) : (
-        <p className="text-muted text-center mb-3">llevar a 404</p>
-      )}
-    </>
+      <SimpleFooter page={"detalle"} />
+    </React.Fragment>
   );
 };
 
