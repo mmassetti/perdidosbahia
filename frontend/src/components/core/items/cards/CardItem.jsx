@@ -86,7 +86,7 @@ const CardItem = (props) => {
               Ver más
             </Button>
 
-            {props.token && props.authUserId == props.creatorId
+            {props.token && props.authUserId === props.creatorId
               ? deleteItemButton()
               : ""}
           </CardBody>

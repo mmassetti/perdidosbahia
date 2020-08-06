@@ -20,6 +20,7 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import ContactInfo from "./helpers/ContactInfo";
+import getEditClaimThirdStepQuery from "./queries/getEditClaimThirdStepQuery";
 
 const ModalThirdStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -36,36 +37,13 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
     const newFlagClaimer = 1;
     const newFlagItemCreator = 1;
 
-    let requestBody = {
-      query: `
-        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!) {
-          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator) {
-            _id
-            itemClaimer {
-              email
-            }
-            itemCreator {
-              email
-            }
-            item { 
-              description
-            }
-            stateForClaimer
-            stateForItemCreator
-            createdAt
-            updatedAt
-            claimerQuestion
-          }
-        }
-      `,
-      variables: {
-        claimId: info.claimId,
-        newStateForClaimer: newStateForClaimer,
-        newStateForItemCreator: newStateForItemCreator,
-        newFlagClaimer: newFlagClaimer,
-        newFlagItemCreator: newFlagItemCreator,
-      },
-    };
+    let requestBody = getEditClaimThirdStepQuery(
+      info.claim._id,
+      newStateForClaimer,
+      newStateForItemCreator,
+      newFlagClaimer,
+      newFlagItemCreator
+    );
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -165,7 +143,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
 
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.claimerQuestion}
+                          {info.claim.claimerQuestion}
                         </span>
                       </div>
 
@@ -176,7 +154,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       </div>
                       <div className="text-muted text-center mt-2 mb-3">
                         <span className="h6 text-primary font-weight-bold ">
-                          {info.itemCreatorAnswer}
+                          {info.claim.itemCreatorAnswer}
                         </span>
                       </div>
                       <Form role="form">
@@ -217,10 +195,10 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                       </div>
 
                       <ContactInfo
-                        firstName={info.itemCreator.firstName}
-                        lastName={info.itemCreator.lastName}
-                        phoneNumber={info.itemCreator.phoneNumber}
-                        email={info.itemCreator.email}
+                        firstName={info.claim.itemCreator.firstName}
+                        lastName={info.claim.itemCreator.lastName}
+                        phoneNumber={info.claim.itemCreator.phoneNumber}
+                        email={info.claim.itemCreator.email}
                       />
 
                       <Form role="form">

@@ -32,7 +32,6 @@ module.exports = {
     }
   },
   userItemsWithoutClaim: async (args, req) => {
-    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
@@ -65,7 +64,6 @@ module.exports = {
   },
 
   getItem: async (args, req) => {
-    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }

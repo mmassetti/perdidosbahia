@@ -6,7 +6,6 @@ const { transformClaim, transformItem } = require("./merge");
 
 module.exports = {
   claims: async (args, req) => {
-    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
@@ -66,6 +65,7 @@ module.exports = {
         const result = await claim.save();
         return transformClaim(result);
       }
+      //TODO: Agarrar excepecion en el front
       return new Error("Already exits a Claim for this Item and these Users");
     } catch (err) {
       throw err;
@@ -73,14 +73,12 @@ module.exports = {
   },
 
   editClaim: async (args, req) => {
-    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
     try {
       const fetchedClaim = await Claim.findOne({ _id: args.claimId });
       const claimerId = fetchedClaim.itemClaimer;
-
       const creatorId = fetchedClaim.itemCreator;
 
       const isUserAuthorized =
@@ -110,7 +108,6 @@ module.exports = {
   },
 
   cancelClaim: async (args, req) => {
-    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
@@ -159,7 +156,6 @@ module.exports = {
     }
   },
   getClaim: async (args, req) => {
-    //TODO: Agarrar el error en el frontend y mostrar lo MustLoginModal
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }

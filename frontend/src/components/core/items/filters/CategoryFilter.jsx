@@ -21,23 +21,24 @@ const CategoryFilter = (props) => {
     };
 
     if (category !== "todas") {
-      if (props.prevSelectedType == "todos") {
+      if (props.prevSelectedType === "todos") {
         let filterResult: any = props.allItems.filter(
-          (item) => item.category == filter.category
+          (item) => item.category === filter.category
         );
         props.onFilter(filterResult, category);
       } else {
         let filterResult: any = props.allItems.filter(
-          (item) => item.type == filter.type && item.category == filter.category
+          (item) =>
+            item.type === filter.type && item.category === filter.category
         );
         props.onFilter(filterResult, category);
       }
     } else {
-      if (props.prevSelectedType == "todos") {
+      if (props.prevSelectedType === "todos") {
         props.onFilter(props.allItems, category);
       } else {
         let filterResult: any = props.allItems.filter(
-          (item) => item.type == filter.type
+          (item) => item.type === filter.type
         );
         props.onFilter(filterResult, category);
       }
