@@ -17,7 +17,7 @@
 */
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../../common/providers/AuthProvider/auth-context";
+import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
 import {
   Button,
   Card,
@@ -30,10 +30,11 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
+import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";
+import getLoginQuery from "./getLoginQuery";
 
 const Login = (props) => {
   const context = useContext(AuthContext);
@@ -70,23 +71,8 @@ const Login = (props) => {
   const submitForm = async (data) => {
     setData(data);
 
-    let requestBody = {
-      query: `
-        query Login($email: String!, $password: String!){
-          login(email: $email, password: $password) {
-            userId
-            token
-            tokenExpiration
-            firstName
-            hasPendingNotifications
-          }
-        }
-      `,
-      variables: {
-        email: data.email,
-        password: data.password,
-      },
-    };
+    let requestBody = getLoginQuery(data.email, data.password);
+
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
@@ -119,6 +105,33 @@ const Login = (props) => {
       email: "",
       password: "",
     });
+  };
+
+  const showButtons = () => {
+    return (
+      <React.Fragment>
+        <div className="text-center">
+          <Button
+            className="my-4"
+            color="primary"
+            disabled={formState.isValid ? false : true}
+            type="submit"
+          >
+            Iniciar sesión
+          </Button>
+        </div>
+        <br></br>
+        <small className="text-center">
+          <p>
+            {" "}
+            ¿Todavía no tenés una cuenta?{" "}
+            <Link className="label font-weight-bold" to="/registro">
+              Registrate
+            </Link>
+          </p>
+        </small>
+      </React.Fragment>
+    );
   };
 
   return (
@@ -224,30 +237,7 @@ const Login = (props) => {
                           </small>
                         )}
                       </FormGroup>
-
-                      <div className="text-center">
-                        <Button
-                          className="my-4"
-                          color="primary"
-                          disabled={formState.isValid ? false : true}
-                          type="submit"
-                        >
-                          Iniciar sesión
-                        </Button>
-                      </div>
-                      <br></br>
-                      <small className="text-center">
-                        <p>
-                          {" "}
-                          ¿Todavía no tenés una cuenta?{" "}
-                          <Link
-                            className="label font-weight-bold"
-                            to="/registro"
-                          >
-                            Registrate
-                          </Link>
-                        </p>
-                      </small>
+                      {showButtons()}
                     </Form>
                   </CardBody>
                 </Card>

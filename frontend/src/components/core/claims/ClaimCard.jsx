@@ -209,13 +209,13 @@ const ClaimCard = (props) => {
         ""
       )}
       {/* THIRD MODAL */}
-      {props.flagItemCreator == 0 && props.flagClaimer == 1 ? (
+      {props.flagItemCreator === 0 && props.flagClaimer === 1 ? (
         <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""
       )}
       {/*FINAL MODAL */}
-      {props.flagItemCreator == 1 && props.flagClaimer == 1 ? (
+      {props.flagItemCreator === 1 && props.flagClaimer === 1 ? (
         <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""

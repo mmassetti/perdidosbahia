@@ -5,7 +5,7 @@ import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
 import Index from "components/Index";
-import Login from "components/core/auth/Login";
+import Login from "components/core/auth/login/Login";
 import SingleItem from "components/core/items/SingleItem/SingleItem";
 import Register from "components/core/auth/Register.jsx";
 import AuthContext from "common/providers/AuthProvider/auth-context";
@@ -80,10 +80,6 @@ const App = (props) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("firstName");
     localStorage.removeItem("hasPendingNotifications");
-    //TODO: Achive this behavior:
-    // if (!localStorage.getItem("token")) {
-    //   return <MustLoginModal isShowing="true" />;
-    // }
   };
 
   return (
