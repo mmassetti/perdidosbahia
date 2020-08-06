@@ -12,7 +12,7 @@ import AuthContext from "common/providers/AuthProvider/auth-context";
 
 import NewItem from "components/core/items/NewItem";
 import Items from "components/core/items/Items";
-import UserClaims from "components/core/claims/UserClaims";
+import UserClaims from "components/core/claims/userclaims/UserClaims";
 import ErrorPage from "components/core/Helpers/ErrorPage/ErrorPage";
 
 import APIErrorProvider from "common/providers/APIErrorProvider";

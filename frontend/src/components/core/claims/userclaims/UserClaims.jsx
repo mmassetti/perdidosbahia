@@ -17,18 +17,25 @@
 */
 import React, { useState, useEffect, useContext } from "react";
 
-import Spinner from "../../theme/Spinner/Spinner";
-import CustomNavbar from "../../theme/Navbars/CustomNavbar";
-import AuthContext from "../../../common/providers/AuthProvider/auth-context";
-import ClaimCard from "../../core/claims/ClaimCard";
-import MustLoginModal from "../Helpers/MustLoginModal";
-import useModal from "../Helpers/useModal";
+import Spinner from "../../../theme/Spinner/Spinner";
+import CustomNavbar from "../../../theme/Navbars/CustomNavbar";
+import AuthContext from "../../../../common/providers/AuthProvider/auth-context";
+import ClaimCard from "../ClaimCard";
+import MustLoginModal from "../../Helpers/MustLoginModal";
+import useModal from "../../Helpers/useModal";
 import { Link } from "react-router-dom";
 
 import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
 import SimpleFooter from "components/theme/Footers/SimpleFooter";
 import confirm from "reactstrap-confirm";
-import AlertMessage from "../Helpers/Alerts/AlertMessage";
+import AlertMessage from "../../Helpers/Alerts/AlertMessage";
+import getUserClaimsQuery from "./queries/getUserClaimsQuery";
+import getUserItemsWithoutClaimsQuery from "./queries/getUserItemsWithoutClaimQuery";
+import getNotificationsQuery from "./queries/getNotificationsQuery";
+import getDeleteItemQuery from "./queries/getDeleteItemQuery";
+import getDeleteClaimQuery from "./queries/getDeleteClaimQuery";
+import getDeleteNotificationQuery from "./queries/getDeleteNotificationQuery";
+import ShowNotifications from "./contentShower/ShowNotifications";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -49,26 +56,7 @@ const UserClaims = (props) => {
 
   const fetchUserItemsWithoutClaim = () => {
     setIsLoading(true);
-    const requestBody = {
-      query: `
-          query {
-            userItemsWithoutClaim {
-              _id,
-              type,
-              description,
-              date,
-              category,
-              location,
-              creator {
-                  _id,
-                  email
-              },
-              itemCreatorQuestion
-              createdAt
-          }    
-        }
-        `,
-    };
+    const requestBody = getUserItemsWithoutClaimsQuery();
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -97,50 +85,7 @@ const UserClaims = (props) => {
 
   const fetchClaims = () => {
     setIsLoading(true);
-    const requestBody = {
-      query: `
-          query {
-            claims {
-              _id  
-              item {
-                _id
-                description
-                category
-                description
-                type
-                date
-                location
-                itemCreatorQuestion
-                creator {
-                  _id
-                  email
-                }
-              }
-              itemCreator {
-                _id
-                email
-                firstName
-                lastName
-                phoneNumber
-              }
-              itemClaimer {
-                _id
-                email
-                firstName
-                lastName
-                phoneNumber
-              }
-              stateForClaimer
-              stateForItemCreator
-              flagClaimer
-              flagItemCreator
-              claimerQuestion
-              claimerAnswer
-              itemCreatorAnswer
-            }
-          }
-        `,
-    };
+    const requestBody = getUserClaimsQuery();
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -170,30 +115,7 @@ const UserClaims = (props) => {
 
   const getNotifications = () => {
     setIsLoading(true);
-    const requestBody = {
-      query: `
-        query {
-          userNotifications{
-            _id,
-            description,
-            itemInvolved {
-                _id,
-                description,
-                category
-            },
-            itemInfo {
-              _id,
-              description,
-              category
-            }
-            userToNotify {
-                _id,
-                email
-            }
-          }
-        }
-      `,
-    };
+    const requestBody = getNotificationsQuery();
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -230,18 +152,7 @@ const UserClaims = (props) => {
       cancelColor: "default",
     });
 
-    const requestBody = {
-      query: `
-         mutation DeleteItem($itemId: ID!, $notificationDescription: String!) {
-            deleteItem(itemId: $itemId, notificationDescription: $notificationDescription)
-          }
-        `,
-      variables: {
-        itemId: itemId,
-        notificationDescription:
-          "Lo sentimos, el otro usuario eliminó la publicación:",
-      },
-    };
+    const requestBody = getDeleteItemQuery(itemId);
 
     if (result) {
       setIsLoading(true);
@@ -285,22 +196,7 @@ const UserClaims = (props) => {
       cancelColor: "default",
     });
 
-    const requestBody = {
-      query: `
-         mutation CancelClaim($id: ID!, $notificationDescription: String!) {
-            cancelClaim(claimId: $id, notificationDescription: $notificationDescription) {
-              _id,
-              description
-              category
-            }
-          }
-        `,
-      variables: {
-        id: claimId,
-        notificationDescription:
-          "Lo sentimos, el otro usuario rechazó el contacto para este objeto:",
-      },
-    };
+    const requestBody = getDeleteClaimQuery(claimId);
 
     if (result) {
       setIsLoading(true);
@@ -341,16 +237,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
 
     notifications.notifications.forEach((notification, index) => {
-      const requestBody = {
-        query: `
-           mutation DeleteNotification($notificationId: ID!) {
-              deleteNotification(notificationId: $notificationId)
-            }
-          `,
-        variables: {
-          notificationId: notification._id,
-        },
-      };
+      const requestBody = getDeleteNotificationQuery(notification);
 
       fetch("http://localhost:8000/graphql", {
         method: "POST",
@@ -376,54 +263,6 @@ const UserClaims = (props) => {
         });
     });
   }
-
-  const notificationItemCategory = (notification) => {
-    if (
-      notification.itemInvolved &&
-      notification.itemInvolved.category !== "otro"
-    ) {
-      return notification.itemInvolved.category;
-    } else if (notification.itemInvolved) {
-      return "Otros objetos";
-    } else if (notification.itemInfo && notification.itemInfo.category) {
-      return notification.itemInfo.category;
-    } else return "Error al mostrar la categoria del objeto";
-  };
-
-  const notificationItemDescription = (notification) => {
-    if (notification.itemInvolved && notification.itemInvolved.description) {
-      return notification.itemInvolved.description;
-    } else if (notification.itemInfo && notification.itemInfo.description) {
-      return notification.itemInfo.description;
-    } else return "Error al mostrar la descripción del objeto";
-  };
-
-  const showNotifications = () => {
-    return notifications.notifications.map((notification, index) => {
-      return (
-        <Card
-          key={index}
-          className="card-lift--hover shadow border-0"
-          style={{ marginBottom: "2rem" }}
-        >
-          <CardBody className="py-5">
-            <h6 className="text-warning font-weight-bold mb-2">
-              {notification.description}
-            </h6>
-
-            <h6 className="text-default ">
-              <span className="font-weight-bold"> Categoría: </span>
-              {notificationItemCategory(notification)}
-            </h6>
-            <h6 className="text-default ">
-              <span className="font-weight-bold"> Descripción: </span>{" "}
-              {notificationItemDescription(notification)}
-            </h6>
-          </CardBody>
-        </Card>
-      );
-    });
-  };
 
   useEffect(() => {
     if (context.token) {
@@ -533,7 +372,7 @@ const UserClaims = (props) => {
       return (
         <React.Fragment>
           <Col className="text-center mt-5" lg="12">
-            {showNotifications()}
+            <ShowNotifications notifications={notifications.notifications} />
             <Button
               className="mt-4"
               color="primary"
@@ -576,6 +415,33 @@ const UserClaims = (props) => {
     );
   };
 
+  const showNavbar = () => {
+    return (
+      <div className="position-relative">
+        <section
+          className="section section-sm, section-shaped"
+          style={{ paddingBottom: "0rem" }}
+        >
+          <div className="shape shape-style-1 shape-default">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+
+          <Container className="py-sm-sm d-flex">
+            <div className="col px-0"></div>
+          </Container>
+        </section>
+      </div>
+    );
+  };
+
   return (
     <React.Fragment>
       <CustomNavbar />
@@ -583,37 +449,7 @@ const UserClaims = (props) => {
       {context.token ? (
         <React.Fragment>
           <main>
-            <div className="position-relative">
-              <section
-                className="section section-sm, section-shaped"
-                style={{ paddingBottom: "0rem" }}
-              >
-                <div className="shape shape-style-1 shape-default">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-
-                <Container className="py-sm-sm d-flex">
-                  <div className="col px-0">
-                    <Row>
-                      <Col lg="12">
-                        <h1 className="display-3 text-white">
-                          Controlá el estado de las publicaciones en las que
-                          estás participando
-                        </h1>
-                      </Col>
-                    </Row>
-                  </div>
-                </Container>
-              </section>
-            </div>
+            {showNavbar()}
 
             <Container>
               <Row
@@ -635,33 +471,9 @@ const UserClaims = (props) => {
           </main>
         </React.Fragment>
       ) : (
-        //TODO : Extrar afuera lo que esta entre <main> </main> porque tambien se usa arriba
         <React.Fragment>
-          <main>
-            <div className="position-relative">
-              {/* shape Hero */}
-              <section
-                className="section section-sm, section-shaped"
-                style={{ paddingBottom: "0rem" }}
-              >
-                <div className="shape shape-style-1 shape-default">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
+          <main>{showNavbar()}</main>
 
-                <Container className="py-sm-sm d-flex">
-                  <div className="col px-0"></div>
-                </Container>
-              </section>
-            </div>
-          </main>
           <div className="text-center mt-5">
             <h3>
               Para poder ver tus publicaciones primero tenés que{" "}

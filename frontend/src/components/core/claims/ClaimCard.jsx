@@ -182,6 +182,22 @@ const ClaimCard = (props) => {
     );
   };
 
+  const showModal = () => {
+    if (props.flagItemCreator === 1 && props.flagClaimer === 0) {
+      return (
+        <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
+      );
+    } else if (props.flagItemCreator === 0 && props.flagClaimer === 1) {
+      return (
+        <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
+      );
+    } else if (props.flagItemCreator === 1 && props.flagClaimer === 1) {
+      return (
+        <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
+      );
+    } else return "";
+  };
+
   return (
     <React.Fragment>
       <Col lg="4">
@@ -202,24 +218,7 @@ const ClaimCard = (props) => {
       </Col>
 
       {/*Show proper modal acording flags*/}
-
-      {props.flagItemCreator === 1 && props.flagClaimer === 0 ? (
-        <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
-      ) : (
-        ""
-      )}
-      {/* THIRD MODAL */}
-      {props.flagItemCreator === 0 && props.flagClaimer === 1 ? (
-        <ModalThirdStep isShowing={isShowing} hide={toggle} info={props} />
-      ) : (
-        ""
-      )}
-      {/*FINAL MODAL */}
-      {props.flagItemCreator === 1 && props.flagClaimer === 1 ? (
-        <ModalFinalStep isShowing={isShowing} hide={toggle} info={props} />
-      ) : (
-        ""
-      )}
+      {showModal()}
     </React.Fragment>
   );
 };
