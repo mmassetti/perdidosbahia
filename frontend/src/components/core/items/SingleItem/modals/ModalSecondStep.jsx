@@ -21,7 +21,7 @@ import {
 
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
-import getEditClaimQuery from "./queries/getEditClaimQuery";
+import getEditClaimSecondStepQuery from "./queries/getEditClaimSecondStepQuery";
 import fetchUrlLocal from "common/fetchUrlLocal";
 
 const ModalSecondStep = ({ isShowing, hide, info }) => {
@@ -44,7 +44,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
     const newFlagClaimer = 1;
     const newFlagItemCreator = 0;
 
-    let requestBody = getEditClaimQuery(
+    let requestBody = getEditClaimSecondStepQuery(
       info.claim._id,
       newStateForClaimer,
       newStateForItemCreator,

@@ -20,6 +20,7 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import ContactInfo from "./helpers/ContactInfo";
+import getEditClaimThirdStepQuery from "./queries/getEditClaimThirdStepQuery";
 
 const ModalThirdStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -36,36 +37,13 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
     const newFlagClaimer = 1;
     const newFlagItemCreator = 1;
 
-    let requestBody = {
-      query: `
-        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!) {
-          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator) {
-            _id
-            itemClaimer {
-              email
-            }
-            itemCreator {
-              email
-            }
-            item { 
-              description
-            }
-            stateForClaimer
-            stateForItemCreator
-            createdAt
-            updatedAt
-            claimerQuestion
-          }
-        }
-      `,
-      variables: {
-        claimId: info.claim._id,
-        newStateForClaimer: newStateForClaimer,
-        newStateForItemCreator: newStateForItemCreator,
-        newFlagClaimer: newFlagClaimer,
-        newFlagItemCreator: newFlagItemCreator,
-      },
-    };
+    let requestBody = getEditClaimThirdStepQuery(
+      info.claim._id,
+      newStateForClaimer,
+      newStateForItemCreator,
+      newFlagClaimer,
+      newFlagItemCreator
+    );
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",

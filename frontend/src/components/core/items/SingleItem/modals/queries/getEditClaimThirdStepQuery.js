@@ -1,15 +1,14 @@
-export default function getEditClaimQuery(
+export default function getEditClaimThirdStepQuery(
   claimId,
   newStateForClaimer,
   newStateForItemCreator,
   newFlagClaimer,
-  newFlagItemCreator,
-  itemCreatorAnswer
+  newFlagItemCreator
 ) {
   return {
     query: `
-        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!, $newItemCreatorAnswer: String!) {
-          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator, newItemCreatorAnswer: $newItemCreatorAnswer) {
+        mutation EditClaim($claimId: ID!, $newStateForClaimer: String!, $newStateForItemCreator: String!, $newFlagClaimer: Int!, $newFlagItemCreator: Int!) {
+          editClaim(claimId: $claimId, newStateForClaimer: $newStateForClaimer, newStateForItemCreator: $newStateForItemCreator, newFlagClaimer: $newFlagClaimer, newFlagItemCreator: $newFlagItemCreator) {
             _id
             itemClaimer {
               email
@@ -25,7 +24,6 @@ export default function getEditClaimQuery(
             createdAt
             updatedAt
             claimerQuestion
-            itemCreatorAnswer
           }
         }
       `,
@@ -35,7 +33,6 @@ export default function getEditClaimQuery(
       newStateForItemCreator: newStateForItemCreator,
       newFlagClaimer: newFlagClaimer,
       newFlagItemCreator: newFlagItemCreator,
-      newItemCreatorAnswer: itemCreatorAnswer,
     },
   };
 }
