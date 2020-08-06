@@ -36,6 +36,7 @@ import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";
 import getLoginQuery from "./getLoginQuery";
 import fetchUrlLocal from "../../../../common/fetchUrlLocal";
+import getLoginSchema from "./getLoginSchema";
 
 const Login = (props) => {
   const context = useContext(AuthContext);
@@ -46,13 +47,7 @@ const Login = (props) => {
     password: "",
   };
 
-  const SigninSchema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup
-      .string()
-      .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
-      .min(8, "La contraseña debe tener al menos 8 caracteres."),
-  });
+  const SigninSchema = getLoginSchema();
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
     {

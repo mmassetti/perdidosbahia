@@ -33,17 +33,17 @@ import {
 
 import * as yup from "yup";
 
-import CustomNavbar from "../../theme/Navbars/CustomNavbar.jsx";
+import CustomNavbar from "../../../theme/Navbars/CustomNavbar";
 
 import { useForm, Controller } from "react-hook-form";
-import AlertMessage from "../Helpers/Alerts/AlertMessage";
+import AlertMessage from "../../Helpers/Alerts/AlertMessage";
+import getRegisterQuery from "./getRegisterQuery";
+import getSignUpSchema from "./getSignupSchema";
 
 const Register = (props) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
-  const phoneRegExp = /^[\d ]*$|^[0-9]+(-[0-9]+)+$/; //Numeros con espacio entre medio  o Numeros que aceptan un guion
 
   const defaultValues = {
     firstName: "",
@@ -53,37 +53,38 @@ const Register = (props) => {
     phoneNumber: "",
   };
 
-  const SignupSchema = yup.object().shape({
-    firstName: yup.string().required("Por favor ingresa tu nombre"),
-    lastName: yup.string().required("Por favor ingresa tu apellido"),
-    email: yup.string().email().required(),
-    password: yup
-      .string()
-      .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
-      .min(8, "La contraseña debe tener al menos 8 caracteres."),
-    passwordCheck: yup
-      .string()
-      .required("Por favor escribe nuevamente tu contraseña.")
-      .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
-      .min(8, "La contraseña debe tener al menos 8 caracteres."),
+  const SignupSchema = getSignUpSchema();
+  // const SignupSchema = yup.object().shape({
+  //   firstName: yup.string().required("Por favor ingresa tu nombre"),
+  //   lastName: yup.string().required("Por favor ingresa tu apellido"),
+  //   email: yup.string().email().required(),
+  //   password: yup
+  //     .string()
+  //     .required("Por favor ingresa una contraseña de al menos 8 caracteres.")
+  //     .min(8, "La contraseña debe tener al menos 8 caracteres."),
+  //   passwordCheck: yup
+  //     .string()
+  //     .required("Por favor escribe nuevamente tu contraseña.")
+  //     .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
+  //     .min(8, "La contraseña debe tener al menos 8 caracteres."),
 
-    phoneNumber: yup
-      .string()
-      .notRequired()
-      .matches(phoneRegExp, {
-        excludeEmptyString: true,
-        message: "El número contiene caracteres inválidos",
-      })
-      .test("phoneNumber", "El número debe tener al menos 7 dígitos", function (
-        value
-      ) {
-        if (!!value) {
-          const schema = yup.string().min(7);
-          return schema.isValidSync(value);
-        }
-        return true;
-      }),
-  });
+  //   phoneNumber: yup
+  //     .string()
+  //     .notRequired()
+  //     .matches(phoneRegExp, {
+  //       excludeEmptyString: true,
+  //       message: "El número contiene caracteres inválidos",
+  //     })
+  //     .test("phoneNumber", "El número debe tener al menos 7 dígitos", function (
+  //       value
+  //     ) {
+  //       if (!!value) {
+  //         const schema = yup.string().min(7);
+  //         return schema.isValidSync(value);
+  //       }
+  //       return true;
+  //     }),
+  // });
 
   const { handleSubmit, register, reset, control, errors, formState } = useForm(
     {
@@ -92,7 +93,6 @@ const Register = (props) => {
       defaultValues,
     }
   );
-  const [data, setData] = useState(null);
 
   const showAlertMessage = (type, msg, redirectTo) => {
     return <AlertMessage type={type} msg={msg} redirectTo={redirectTo} />;
@@ -104,25 +104,7 @@ const Register = (props) => {
   }, []);
 
   const submitForm = async (data) => {
-    setData(data);
-
-    const requestBody = {
-      query: `
-        mutation CreateUser($email: String! , $password: String!, $firstName: String!, $lastName: String!, $phoneNumber: String) {
-          createUser(userInput: {email: $email, password: $password, firstName: $firstName, lastName: $lastName , phoneNumber: $phoneNumber }) {
-            _id
-            email
-          }
-        }
-      `,
-      variables: {
-        email: data.email,
-        password: data.password,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber ? data.phoneNumber : "",
-      },
-    };
+    const requestBody = getRegisterQuery(data);
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -448,7 +430,11 @@ const Register = (props) => {
                       </small>
                     </Form>
                     {showSuccessAlert
-                      ? showAlertMessage("success", "¡Listo!", "inicio-sesion")
+                      ? showAlertMessage(
+                          "success",
+                          "¡Tu cuenta fue creada!. Por favor inicia sesión",
+                          "inicio-sesion"
+                        )
                       : ""}
                     {showErrorAlert
                       ? showAlertMessage("danger", errorMsg, "registro")
