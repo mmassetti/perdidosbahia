@@ -23,6 +23,7 @@ import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import getEditClaimSecondStepQuery from "./queries/getEditClaimSecondStepQuery";
 import fetchUrlLocal from "common/fetchUrlLocal";
+import fetchUrlRemote from "common/fetchUrlRemote";
 
 const ModalSecondStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -55,7 +56,7 @@ const ModalSecondStep = ({ isShowing, hide, info }) => {
 
     setItemCreatorAnswer("");
 
-    fetch(fetchUrlLocal, {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

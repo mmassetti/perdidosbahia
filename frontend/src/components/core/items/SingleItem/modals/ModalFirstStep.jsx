@@ -22,6 +22,7 @@ import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import getNewClaimQuery from "./queries/getNewClaimQuery";
 import fetchUrlLocal from "common/fetchUrlLocal";
+import fetchUrlRemote from "common/fetchUrlRemote";
 
 const ModalFirstStep = ({
   isShowing,
@@ -60,7 +61,7 @@ const ModalFirstStep = ({
     setClaimerQuestion("");
     setClaimerAnswer("");
 
-    fetch(fetchUrlLocal, {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

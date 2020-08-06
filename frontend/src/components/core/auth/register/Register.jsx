@@ -38,6 +38,7 @@ import AlertMessage from "../../Helpers/Alerts/AlertMessage";
 import getRegisterQuery from "./getRegisterQuery";
 import getSignUpSchema from "./getSignupSchema";
 import fetchUrlLocal from "common/fetchUrlLocal";
+import fetchUrlRemote from "common/fetchUrlRemote";
 
 const Register = (props) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -74,7 +75,7 @@ const Register = (props) => {
   const submitForm = async (data) => {
     const requestBody = getRegisterQuery(data);
 
-    fetch(fetchUrlLocal, {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
