@@ -10,7 +10,7 @@ import SingleItem from "components/core/items/SingleItem/SingleItem";
 import Register from "components/core/auth/register/Register.jsx";
 import AuthContext from "common/providers/AuthProvider/auth-context";
 
-import NewItem from "components/core/items/NewItem";
+import NewItem from "components/core/items/newitem/NewItem";
 import Items from "components/core/items/Items";
 import UserClaims from "components/core/claims/userclaims/UserClaims";
 import ErrorPage from "components/core/Helpers/ErrorPage/ErrorPage";
