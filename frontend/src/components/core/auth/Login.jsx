@@ -153,7 +153,7 @@ const Login = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.email &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.email
                             ? "has-danger"
@@ -167,7 +167,7 @@ const Login = (props) => {
                               placeholder="Email"
                               className={
                                 !formState.touched.email &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.email
@@ -190,7 +190,7 @@ const Login = (props) => {
                       <FormGroup
                         className={
                           !formState.touched.pasword &&
-                          (formState.submitCount == 0 || formState.isSubmitted)
+                          (formState.submitCount === 0 || formState.isSubmitted)
                             ? ""
                             : errors.password
                             ? "has-danger"
@@ -205,7 +205,7 @@ const Login = (props) => {
                               placeholder="Contraseña"
                               className={
                                 !formState.touched.password &&
-                                (formState.submitCount == 0 ||
+                                (formState.submitCount === 0 ||
                                   formState.isSubmitted)
                                   ? ""
                                   : errors.password

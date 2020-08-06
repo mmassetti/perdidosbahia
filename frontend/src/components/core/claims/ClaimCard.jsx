@@ -80,14 +80,14 @@ const ClaimCard = (props) => {
       <React.Fragment>
         {/* El creador de la publicacion (user1) recibio un mensaje de la otra persona (user2)*/}
         {props.authUserId === props.itemCreator._id &&
-        props.flagItemCreator == 1 &&
+        props.flagItemCreator === 1 &&
         props.flagClaimer === 0
           ? showNotificationMessage()
           : ""}
 
         {/* El user2 recibio la respuesta del user1 */}
         {props.authUserId === props.itemClaimer._id &&
-        props.flagItemCreator == 0 &&
+        props.flagItemCreator === 0 &&
         props.flagClaimer === 1
           ? showNotificationMessage()
           : ""}
@@ -120,7 +120,7 @@ const ClaimCard = (props) => {
         <h6 className="text-default ">
           {" "}
           <span className="font-weight-bold"> Categoría: </span>
-          {props.item.category != "otro"
+          {props.item.category !== "otro"
             ? props.item.category
             : "Otros objetos"}
         </h6>
@@ -194,7 +194,7 @@ const ClaimCard = (props) => {
 
             {showItemInfo()}
 
-            {props.item.creator._id == props.authUserId
+            {props.item.creator._id === props.authUserId
               ? showDeleteButton()
               : ""}
           </CardBody>
@@ -203,7 +203,7 @@ const ClaimCard = (props) => {
 
       {/*Show proper modal acording flags*/}
 
-      {props.flagItemCreator == 1 && props.flagClaimer == 0 ? (
+      {props.flagItemCreator === 1 && props.flagClaimer === 0 ? (
         <ModalSecondStep isShowing={isShowing} hide={toggle} info={props} />
       ) : (
         ""

@@ -28,14 +28,12 @@ import { Link } from "react-router-dom";
 import { Card, Container, Row, Col, CardBody, Badge, Button } from "reactstrap";
 import SimpleFooter from "components/theme/Footers/SimpleFooter";
 import confirm from "reactstrap-confirm";
-import { useHistory } from "react-router-dom";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
 var moment = require("moment");
 require("moment/locale/es");
 
 const UserClaims = (props) => {
-  let history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [userItemsWithoutClaim, setUserItemsWithoutClaim] = useState({
     items: [],

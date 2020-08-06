@@ -44,7 +44,6 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import MustLoginModal from "../Helpers/MustLoginModal";
 import useModal from "../Helpers/useModal";
-import { useHistory } from "react-router-dom";
 import SimpleFooter from "components/theme/Footers/SimpleFooter.jsx";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
 
@@ -61,7 +60,6 @@ const NewItem = (props) => {
   const { isShowing, toggle } = useModal();
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
-  let history = useHistory();
 
   const defaultValues = {
     description: "",

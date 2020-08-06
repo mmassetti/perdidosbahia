@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Container, ButtonGroup } from "reactstrap";
+import { Button, ButtonGroup } from "reactstrap";
 
 const ItemTypeFilter = (props) => {
   const [selectedType, setSelectedType] = useState("todos");
@@ -13,23 +13,24 @@ const ItemTypeFilter = (props) => {
     };
 
     if (itemType !== "todos") {
-      if (props.prevSelectedCategory == "todas") {
+      if (props.prevSelectedCategory === "todas") {
         let filterResult: any = props.allItems.filter(
-          (item) => item.type == filter.type
+          (item) => item.type === filter.type
         );
         props.onFilter(filterResult, itemType);
       } else {
         let filterResult: any = props.allItems.filter(
-          (item) => item.type == filter.type && item.category == filter.category
+          (item) =>
+            item.type === filter.type && item.category === filter.category
         );
         props.onFilter(filterResult, itemType);
       }
     } else {
-      if (props.prevSelectedCategory == "todas") {
+      if (props.prevSelectedCategory === "todas") {
         props.onFilter(props.allItems, itemType);
       } else {
         let filterResult: any = props.allItems.filter(
-          (item) => item.category == filter.category
+          (item) => item.category === filter.category
         );
         props.onFilter(filterResult, itemType);
       }

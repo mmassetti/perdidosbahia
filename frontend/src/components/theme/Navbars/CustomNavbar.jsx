@@ -26,7 +26,6 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
   Media,
-  NavbarBrand,
   Navbar,
   NavItem,
   NavLink,

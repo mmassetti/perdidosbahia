@@ -83,21 +83,6 @@ const SingleItem = (props) => {
     }
   };
 
-  const showDeleteButton = () => {
-    return (
-      <Button
-        className="btn-icon ml-1"
-        color="danger"
-        // onClick={}
-        size="sm"
-        style={{ marginBottom: "0.5rem" }}
-        outline
-      >
-        Eliminar publicación
-      </Button>
-    );
-  };
-
   return (
     <>
       {props.location.state ? (
@@ -224,7 +209,6 @@ const SingleItem = (props) => {
                           size="sm"
                           color="default"
                           onClick={goBack}
-                          size="sm"
                           style={{ marginBottom: "0.5rem" }}
                         >
                           Volver a objetos publicados
