@@ -17,6 +17,8 @@ import ErrorPage from "components/core/Helpers/ErrorPage/ErrorPage";
 
 import APIErrorProvider from "common/providers/APIErrorProvider";
 import APIErrorNotification from "components/APIErrorNotification";
+import fetchUrlLocal from "common/fetchUrlLocal";
+import fetchUrlRemote from "common/fetchUrlRemote";
 
 const App = (props) => {
   const [token, setToken] = useState(null);
@@ -25,6 +27,12 @@ const App = (props) => {
   const [hasPendingNotifications, setHasPendingNotifications] = useState(null);
 
   useEffect(() => {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      localStorage.setItem("fetchUrl", fetchUrlLocal);
+    } else {
+      localStorage.setItem("fetchUrl", fetchUrlRemote);
+    }
+
     const userToken = localStorage.getItem("token");
     if (userToken) {
       const tokenExpiration = localStorage.getItem("expirationDate");
@@ -80,6 +88,7 @@ const App = (props) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("firstName");
     localStorage.removeItem("hasPendingNotifications");
+    localStorage.removeItem("fetchUrl");
   };
 
   return (

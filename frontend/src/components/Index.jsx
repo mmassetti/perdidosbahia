@@ -4,7 +4,6 @@ import CustomNavbar from "./theme/Navbars/CustomNavbar.jsx";
 import SplashScreen from "../components/theme/IndexSections/SplashScreen.jsx";
 import { useHistory } from "react-router-dom";
 import Spinner from "./theme/Spinner/Spinner";
-import fetchUrlRemote from "../common/fetchUrlRemote";
 
 const Index = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +22,7 @@ const Index = (props) => {
         `,
     };
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

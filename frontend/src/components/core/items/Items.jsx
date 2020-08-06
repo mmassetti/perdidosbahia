@@ -28,9 +28,7 @@ import confirm from "reactstrap-confirm";
 import CategoryFilter from "./filters/CategoryFilter";
 import ItemTypeFilter from "./filters/ItemTypeFilter";
 import AlertMessage from "../Helpers/Alerts/AlertMessage";
-import fetchUrlRemote from "../../../common/fetchUrlRemote";
 import getItemsQuery from "./getItemsQuery";
-import fetchUrlLocal from "common/fetchUrlLocal";
 import getDeleteItemQuery from "../claims/userclaims/queries/getDeleteItemQuery";
 
 const Items = () => {
@@ -53,7 +51,7 @@ const Items = () => {
     setIsLoading(true);
     const requestBody = getItemsQuery();
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -92,7 +90,7 @@ const Items = () => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlRemote, {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {

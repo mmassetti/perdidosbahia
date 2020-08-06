@@ -37,8 +37,6 @@ import getDeleteClaimQuery from "./queries/getDeleteClaimQuery";
 import getDeleteNotificationQuery from "./queries/getDeleteNotificationQuery";
 import ShowNotifications from "./contentShower/ShowNotifications";
 import ShowItemsAuthUserWithoutClaims from "./contentShower/ShowItemsAuthUserWithoutClaims";
-import fetchUrlLocal from "common/fetchUrlLocal";
-import fetchUrlRemote from "common/fetchUrlRemote";
 
 const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +56,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserItemsWithoutClaimsQuery();
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -86,7 +84,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserClaimsQuery();
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -115,7 +113,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getNotificationsQuery();
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -153,7 +151,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlRemote, {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -196,7 +194,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlRemote, {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -233,7 +231,7 @@ const UserClaims = (props) => {
     notifications.notifications.forEach((notification, index) => {
       const requestBody = getDeleteNotificationQuery(notification);
 
-      fetch(fetchUrlRemote, {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -271,6 +269,7 @@ const UserClaims = (props) => {
     setCleanedNotifications,
     setShowSuccessAlert,
     setShowErrorAlert,
+    setUserItemsWithoutClaim,
   ]);
 
   const itemsAuthUserIsParticipating = claims.claims.map((claim) => {

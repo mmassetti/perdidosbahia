@@ -21,7 +21,6 @@ import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import ContactInfo from "./helpers/ContactInfo";
 import getEditClaimThirdStepQuery from "./queries/getEditClaimThirdStepQuery";
-import fetchUrlRemote from "../../../../../common/fetchUrlRemote";
 
 const ModalThirdStep = ({ isShowing, hide, info }) => {
   const [tabs, setTabs] = useState({ tab: 1 });
@@ -46,7 +45,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
       newFlagItemCreator
     );
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

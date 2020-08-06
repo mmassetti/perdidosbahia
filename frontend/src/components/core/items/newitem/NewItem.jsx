@@ -47,7 +47,6 @@ import SimpleFooter from "../../../theme/Footers/SimpleFooter";
 import AlertMessage from "../../Helpers/Alerts/AlertMessage";
 import getNewItemSchema from "./getNewItemSchema.js";
 import getNewItemQuery from "./getNewItemQuery.js";
-import fetchUrlRemote from "common/fetchUrlRemote.js";
 
 var moment = require("moment");
 require("moment/locale/es");
@@ -121,7 +120,7 @@ const NewItem = (props) => {
 
     const token = context.token;
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

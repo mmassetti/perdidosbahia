@@ -34,9 +34,7 @@ import CustomNavbar from "../../../theme/Navbars/CustomNavbar.jsx";
 import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";
 import getLoginQuery from "./getLoginQuery";
-import fetchUrlLocal from "../../../../common/fetchUrlLocal";
 import getLoginSchema from "./getLoginSchema";
-import fetchUrlRemote from "common/fetchUrlRemote";
 
 const Login = (props) => {
   const context = useContext(AuthContext);
@@ -65,7 +63,7 @@ const Login = (props) => {
   const submitForm = async (data) => {
     let requestBody = getLoginQuery(data.email, data.password);
 
-    fetch(fetchUrlRemote, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
