@@ -55,8 +55,12 @@ const CustomNavbar = (props) => {
                 id="navbar-main"
               >
                 <Container>
-                  <button className="navbar-toggler" id="navbar_global">
-                    <span className="navbar-toggler-icon" />
+                  <button
+                    className="navbar-toggler"
+                    id="navbar_global"
+                    aria-label="Abrir menú"
+                  >
+                    <span className="navbar-toggler-icon" aria-hidden="true" />
                   </button>
                   <UncontrolledCollapse navbar toggler="#navbar_global">
                     <div className="navbar-collapse-header">
