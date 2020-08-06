@@ -13,7 +13,7 @@ require("dotenv").config();
 
 express.json();
 
-app.use(compression);
+app.use(compression());
 app.use(cors());
 
 // app.use(express.static(path.join(__dirname, "build")));
