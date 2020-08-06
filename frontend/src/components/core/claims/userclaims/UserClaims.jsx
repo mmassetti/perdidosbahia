@@ -38,6 +38,7 @@ import getDeleteNotificationQuery from "./queries/getDeleteNotificationQuery";
 import ShowNotifications from "./contentShower/ShowNotifications";
 import ShowItemsAuthUserWithoutClaims from "./contentShower/ShowItemsAuthUserWithoutClaims";
 import fetchUrlLocal from "common/fetchUrlLocal";
+import fetchUrlRemote from "common/fetchUrlRemote";
 
 const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +58,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserItemsWithoutClaimsQuery();
 
-    fetch(fetchUrlLocal, {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -85,7 +86,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserClaimsQuery();
 
-    fetch(fetchUrlLocal, {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -114,7 +115,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getNotificationsQuery();
 
-    fetch(fetchUrlLocal, {
+    fetch(fetchUrlRemote, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -152,7 +153,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlLocal, {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -195,7 +196,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlLocal, {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -232,7 +233,7 @@ const UserClaims = (props) => {
     notifications.notifications.forEach((notification, index) => {
       const requestBody = getDeleteNotificationQuery(notification);
 
-      fetch("http://localhost:8000/graphql", {
+      fetch(fetchUrlRemote, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
