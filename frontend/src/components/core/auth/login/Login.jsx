@@ -35,6 +35,7 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import useAPIError from "common/hooks/useAPIError";
 import getLoginQuery from "./getLoginQuery";
+import fetchUrlLocal from "../../../../common/fetchUrlLocal";
 
 const Login = (props) => {
   const context = useContext(AuthContext);
@@ -61,19 +62,15 @@ const Login = (props) => {
     }
   );
 
-  const [data, setData] = useState(null);
-
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [[addError]]);
 
   const submitForm = async (data) => {
-    setData(data);
-
     let requestBody = getLoginQuery(data.email, data.password);
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(fetchUrlLocal, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
