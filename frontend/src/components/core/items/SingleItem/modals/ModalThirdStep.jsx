@@ -180,7 +180,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                           >
                             No
                           </Button>
-                          {/* TODO: BLOQUEAR CLAIM PARA EL CLAIMER*/}
+                          {/* TODO: Bloquear Claim para el claimer*/}
                         </div>
                       </Form>
                     </TabPane>

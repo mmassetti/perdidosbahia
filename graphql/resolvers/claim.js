@@ -66,7 +66,9 @@ module.exports = {
         return transformClaim(result);
       }
       //TODO: Agarrar excepecion en el front
-      return new Error("Already exits a Claim for this Item and these Users");
+      return new Error(
+        "Ya existe un reclamo pendiente para este objeto y este usuario"
+      );
     } catch (err) {
       throw err;
     }
