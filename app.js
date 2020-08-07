@@ -16,11 +16,6 @@ express.json();
 app.use(compression());
 app.use(cors());
 
-// app.use(express.static(path.join(__dirname, "build")));
-// app.get("/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
-
 app.use(isAuth);
 
 app.use(
@@ -48,7 +43,6 @@ moongose
     }
   )
   .then(() => {
-    // app.listen(8000);
     app.listen(process.env.PORT || 8000, function () {
       console.log(
         "Express server listening on port %d in %s mode",

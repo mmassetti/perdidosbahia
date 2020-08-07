@@ -220,7 +220,7 @@ const Items = () => {
           style={
             thereAreItems
               ? { marginTop: "2rem", marginBottom: "6rem" }
-              : { marginTop: "2rem", marginBottom: "13rem" }
+              : { marginTop: "2rem", marginBottom: "14.5rem" }
           }
         >
           <Row
