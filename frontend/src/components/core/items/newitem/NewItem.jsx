@@ -545,7 +545,7 @@ const NewItem = (props) => {
                           disabled={itemCreatorQuestion ? false : true}
                           onClick={toggleTrueFalse}
                         >
-                          Guardar pregunta
+                          Guardar
                         </Button>
                         <Button
                           className="ml-auto"

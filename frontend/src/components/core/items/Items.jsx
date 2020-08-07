@@ -40,6 +40,7 @@ const Items = () => {
   const [selectedType, setSelectedType] = useState("todos");
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [thereAreItems, setThereAreItems] = useState(false);
 
   useEffect(() => {
     fetchItems();
@@ -68,6 +69,9 @@ const Items = () => {
         const items = resData.data.items;
         setItems({ items: items });
         setAllItems({ items: items });
+        if (items && items.length > 0) {
+          setThereAreItems(true);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -212,7 +216,13 @@ const Items = () => {
           </section>
         </div>
 
-        <Container style={{ marginTop: "2rem", marginBottom: "21rem" }}>
+        <Container
+          style={
+            thereAreItems
+              ? { marginTop: "2rem", marginBottom: "6rem" }
+              : { marginTop: "2rem", marginBottom: "13rem" }
+          }
+        >
           <Row
             style={{ marginBottom: "5rem" }}
             className="justify-content-md-center"
