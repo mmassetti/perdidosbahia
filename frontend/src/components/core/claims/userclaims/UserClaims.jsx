@@ -177,9 +177,6 @@ const UserClaims = (props) => {
             (item) => item._id !== itemId
           );
           setUserItemsWithoutClaim({ items: updatedValues });
-
-          // fetchClaims();
-
           setIsLoading(false);
           setShowSuccessAlert(true);
         })
