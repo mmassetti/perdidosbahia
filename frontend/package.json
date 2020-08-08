@@ -18,7 +18,7 @@
     "argon-design-system-react",
     "design-system-react"
   ],
-  "homepage": "https://perdidosbahia.herokuapp.com/",
+  "homepage": "https://perdidosbahia.com/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
