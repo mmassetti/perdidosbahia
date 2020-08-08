@@ -29,11 +29,19 @@ const MustLoginModal = ({ isShowing, hide }) =>
             <div className="modal-body">
               <p>
                 Tenés que{" "}
-                <Link to="/registro" className="font-weight-bold">
+                <Link
+                  to="/registro"
+                  style={{ color: "#172b4d" }}
+                  className="font-weight-bold"
+                >
                   Registrarte
                 </Link>{" "}
                 o
-                <Link to="/inicio-sesion" className="font-weight-bold">
+                <Link
+                  to="/inicio-sesion"
+                  style={{ color: "#172b4d" }}
+                  className="font-weight-bold"
+                >
                   {" "}
                   Iniciar sesión{" "}
                 </Link>{" "}
@@ -42,8 +50,8 @@ const MustLoginModal = ({ isShowing, hide }) =>
             </div>
             <div className="modal-footer">
               <Button
-                className="ml-auto"
-                color="link"
+                className="ml-auto font-weight-bold"
+                color="default"
                 data-dismiss="modal"
                 type="button"
                 onClick={hide}

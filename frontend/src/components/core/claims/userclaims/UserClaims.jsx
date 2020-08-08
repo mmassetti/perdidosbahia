@@ -37,7 +37,6 @@ import getDeleteClaimQuery from "./queries/getDeleteClaimQuery";
 import getDeleteNotificationQuery from "./queries/getDeleteNotificationQuery";
 import ShowNotifications from "./contentShower/ShowNotifications";
 import ShowItemsAuthUserWithoutClaims from "./contentShower/ShowItemsAuthUserWithoutClaims";
-import fetchUrlLocal from "common/fetchUrlLocal";
 
 const UserClaims = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,12 +51,13 @@ const UserClaims = (props) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [thereArePublications, setThereArePublications] = useState(false);
 
   const fetchUserItemsWithoutClaim = () => {
     setIsLoading(true);
     const requestBody = getUserItemsWithoutClaimsQuery();
 
-    fetch(fetchUrlLocal, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -74,6 +74,9 @@ const UserClaims = (props) => {
       .then((resData) => {
         const items = resData.data.userItemsWithoutClaim;
         setUserItemsWithoutClaim({ items: items });
+        if (items && items.length > 0) {
+          setThereArePublications(true);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -85,7 +88,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getUserClaimsQuery();
 
-    fetch(fetchUrlLocal, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -103,6 +106,9 @@ const UserClaims = (props) => {
         const claims = resData.data.claims;
         setClaims({ claims: claims });
         getNotifications();
+        if (claims && claims.length > 0) {
+          setThereArePublications(true);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -114,7 +120,7 @@ const UserClaims = (props) => {
     setIsLoading(true);
     const requestBody = getNotificationsQuery();
 
-    fetch(fetchUrlLocal, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -152,7 +158,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlLocal, {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -195,7 +201,7 @@ const UserClaims = (props) => {
 
     if (result) {
       setIsLoading(true);
-      fetch(fetchUrlLocal, {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -232,7 +238,7 @@ const UserClaims = (props) => {
     notifications.notifications.forEach((notification, index) => {
       const requestBody = getDeleteNotificationQuery(notification);
 
-      fetch("http://localhost:8000/graphql", {
+      fetch(localStorage.getItem("fetchUrl"), {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -261,6 +267,7 @@ const UserClaims = (props) => {
       fetchUserItemsWithoutClaim();
       fetchClaims();
     }
+
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     toggle();
@@ -270,6 +277,7 @@ const UserClaims = (props) => {
     setCleanedNotifications,
     setShowSuccessAlert,
     setShowErrorAlert,
+    showSuccessAlert,
   ]);
 
   const itemsAuthUserIsParticipating = claims.claims.map((claim) => {
@@ -308,7 +316,7 @@ const UserClaims = (props) => {
         </React.Fragment>
       );
     } else if (
-      userItemsWithoutClaim.items.length > 0 ||
+      (userItemsWithoutClaim.items && userItemsWithoutClaim.items.length > 0) ||
       (claims.claims && claims.claims.length > 0)
     ) {
       return (
@@ -384,12 +392,20 @@ const UserClaims = (props) => {
             <Container>
               <Row
                 className="justify-content-center"
-                style={{ marginTop: "2rem", marginBottom: "21rem" }}
+                style={
+                  thereArePublications
+                    ? { marginTop: "2rem", marginBottom: "6rem" }
+                    : { marginTop: "2rem", marginBottom: "26rem" }
+                }
               >
                 <Col lg="6" style={{ marginTop: "2rem" }}>
                   {" "}
                   {showSuccessAlert
-                    ? showAlertMessage("success", "¡Publicación eliminada!")
+                    ? showAlertMessage(
+                        "success",
+                        "¡Publicación eliminada!",
+                        "objetos-publicados"
+                      )
                     : ""}
                   {showErrorAlert
                     ? showAlertMessage("danger", "Lo sentimos, hubo un error")

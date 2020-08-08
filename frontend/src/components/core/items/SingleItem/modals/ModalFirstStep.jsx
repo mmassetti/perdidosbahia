@@ -21,7 +21,6 @@ import {
 import classnames from "classnames";
 import SingleItemQuestionExplain from "../../../Helpers/SingleItemQuestionExplain";
 import getNewClaimQuery from "./queries/getNewClaimQuery";
-import fetchUrlLocal from "common/fetchUrlLocal";
 
 const ModalFirstStep = ({
   isShowing,
@@ -60,7 +59,7 @@ const ModalFirstStep = ({
     setClaimerQuestion("");
     setClaimerAnswer("");
 
-    fetch(fetchUrlLocal, {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

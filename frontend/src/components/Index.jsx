@@ -22,7 +22,7 @@ const Index = (props) => {
         `,
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

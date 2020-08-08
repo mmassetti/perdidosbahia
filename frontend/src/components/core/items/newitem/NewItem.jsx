@@ -120,7 +120,7 @@ const NewItem = (props) => {
 
     const token = context.token;
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -545,7 +545,7 @@ const NewItem = (props) => {
                           disabled={itemCreatorQuestion ? false : true}
                           onClick={toggleTrueFalse}
                         >
-                          Guardar pregunta
+                          Guardar
                         </Button>
                         <Button
                           className="ml-auto"

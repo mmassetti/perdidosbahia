@@ -1,1 +1,1 @@
-export default "https://perdidos-bahia.herokuapp.com/graphql";
+export default "https://perdidosbahia.herokuapp.com/graphql";

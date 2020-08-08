@@ -1,5 +1,5 @@
 {
-  "name": "lost-and-found",
+  "name": "perdidos-bahia",
   "version": "1.0.0",
   "description": "Objetos encontrados y perdidos en Bahia Blanca",
   "main": "index.js",
@@ -18,7 +18,7 @@
     "argon-design-system-react",
     "design-system-react"
   ],
-  "homepage": "http://localhost:3000/",
+  "homepage": "https://perdidosbahia.com/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

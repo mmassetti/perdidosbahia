@@ -45,7 +45,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
       newFlagItemCreator
     );
 
-    fetch("http://localhost:8000/graphql", {
+    fetch(localStorage.getItem("fetchUrl"), {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -180,7 +180,7 @@ const ModalThirdStep = ({ isShowing, hide, info }) => {
                           >
                             No
                           </Button>
-                          {/* TODO: BLOQUEAR CLAIM PARA EL CLAIMER*/}
+                          {/* TODO: Bloquear Claim para el claimer*/}
                         </div>
                       </Form>
                     </TabPane>
