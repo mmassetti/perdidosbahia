@@ -449,7 +449,7 @@ const NewItem = (props) => {
   const showItemQuestionOptions = () => {
     return (
       <React.Fragment>
-        {itemQuestionHeader}
+        {itemQuestionHeader()}
         <Row>
           <Col md="4">
             <Button
