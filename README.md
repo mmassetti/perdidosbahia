@@ -1,6 +1,6 @@
 # Perdidos Bahía
 
-http://www.perdidosbahia.com/   
+http://www.perdidosbahia.com
 
 ## Proyecto final de la materia Ingeniería en Aplicaciones Web ##
 ### Universidad Nacional del Sur - Bahia Blanca, Argentina (2020) ###
