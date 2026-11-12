@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perdidos Bahía · Objetos perdidos y encontrados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdfaf6; --panel:#ffffff; --line:#eee4d8; --text:#2a2117; --muted:#8a7d6a;
+    --found:#1d8a5a; --found-bg:#e7f5ee; --lost:#c0472b; --lost-bg:#fbebe6; --accent:#e08a2b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 1.5rem}
+  header{padding:2.5rem 0 1.5rem;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.3rem}
+  .brand .pin{font-size:1.5rem}
+  header p{color:var(--muted);margin:.6rem 0 0;max-width:46ch}
+  .tabs{display:flex;gap:.5rem;margin:1.75rem 0 1.25rem;flex-wrap:wrap}
+  .tab{padding:.5rem 1.1rem;border-radius:999px;border:1px solid var(--line);background:var(--panel);
+       font-size:.92rem;font-weight:600;cursor:pointer;color:var(--muted);transition:.2s}
+  .tab.active{background:var(--text);color:#fff;border-color:var(--text)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;padding:0 0 3rem}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.1rem;display:flex;flex-direction:column;gap:.6rem}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+  .icon{font-size:2rem;line-height:1}
+  .badge{font-size:.72rem;font-weight:700;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+  .badge.found{background:var(--found-bg);color:var(--found)}
+  .badge.lost{background:var(--lost-bg);color:var(--lost)}
+  .card h3{margin:0;font-size:1.05rem}
+  .card p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.4}
+  .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin-top:.2rem}
+  .contact{margin-top:.4rem;align-self:flex-start;padding:.5rem 1rem;border-radius:999px;border:1px solid var(--text);
+            background:transparent;color:var(--text);font-weight:600;font-size:.85rem;cursor:pointer}
+  .contact:hover{background:var(--text);color:#fff}
+  .cta{display:flex;justify-content:center;padding:0 0 3rem}
+  .btn{padding:.9rem 1.6rem;border-radius:999px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;cursor:pointer}
+  footer{border-top:1px solid var(--line);padding:1.5rem 0 2.5rem;text-align:center;color:var(--muted);font-size:.85rem}
+  .toast{position:fixed;left:50%;bottom:1.5rem;transform:translateX(-50%) translateY(120%);
+         background:var(--text);color:#fff;padding:.75rem 1.4rem;border-radius:999px;font-size:.9rem;
+         transition:transform .3s cubic-bezier(.2,.8,.2,1);z-index:10}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="pin">📍</span> Perdidos Bahía</div>
+      <p>Objetos perdidos y encontrados en Bahía Blanca, en un solo lugar y ordenados — para que buscar lo tuyo no sea revisar 40 grupos de Facebook.</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab active" data-filter="todos">Todos</button>
+      <button class="tab" data-filter="perdido">Perdidos</button>
+      <button class="tab" data-filter="encontrado">Encontrados</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="cta"><button class="btn" id="publicar">+ Publicar un objeto</button></div>
+  </div>
+
+  <footer>
+    Demo con datos de ejemplo — ningún contacto ni publicación es real. Proyecto original: tesis de Ingeniería en Aplicaciones Web, UNS (2020).
+  </footer>
+
+  <div class="toast" id="toast">Esto es una demo — acá se abriría el contacto 👋</div>
+
+<script>
+const items = [
+  {type:'perdido', icon:'🐕', title:'Perro perdido - Salchicha marrón', desc:'Responde a "Toby", se escapó por la zona de Parque Independencia. Muy manso.', place:'Parque Independencia', date:'hace 2 días'},
+  {type:'encontrado', icon:'🔑', title:'Manojo de llaves', desc:'3 llaves y un llavero de Boca. Encontradas en la vereda de 19 de Mayo al 500.', place:'19 de Mayo y Chiclana', date:'hace 1 día'},
+  {type:'perdido', icon:'🎒', title:'Mochila azul Adidas', desc:'Quedó olvidada en un colectivo de la línea 512, tenía apuntes de la facultad adentro.', place:'Línea 512', date:'hace 4 horas'},
+  {type:'encontrado', icon:'📱', title:'Celular Samsung', desc:'Pantalla con una estrellita en la esquina. Lo encontré en una mesa del bar.', place:'Plaza Rivadavia', date:'hace 6 horas'},
+  {type:'perdido', icon:'🐈', title:'Gata perdida - Gris atigrada', desc:'Se llama "Mina", tiene collar rosa. Vive en el barrio pero no volvió hace 2 días.', place:'Barrio Palihue', date:'hace 2 días'},
+  {type:'encontrado', icon:'👓', title:'Anteojos de sol', desc:'Marco negro, se cayeron de la mesa en el patio de comidas del shopping.', place:'Shopping del Sol', date:'hace 3 días'},
+  {type:'perdido', icon:'💳', title:'Billetera de cuero', desc:'Con documentos y tarjetas a nombre de M. Fernández. Recompensa.', place:'Microcentro', date:'hace 1 día'},
+  {type:'encontrado', icon:'🧢', title:'Gorra de los Pumas', desc:'Quedó en las gradas después del partido del sábado.', place:'Estadio Norte', date:'hace 5 días'},
+];
+
+const grid = document.getElementById('grid');
+const toast = document.getElementById('toast');
+
+function render(filter){
+  grid.innerHTML = items
+    .filter(i => filter === 'todos' || i.type === filter)
+    .map(i => `
+      <article class="card">
+        <div class="top">
+          <span class="icon">${i.icon}</span>
+          <span class="badge ${i.type}">${i.type === 'perdido' ? 'Perdido' : 'Encontrado'}</span>
+        </div>
+        <h3>${i.title}</h3>
+        <p>${i.desc}</p>
+        <div class="meta"><span>📍 ${i.place}</span><span>${i.date}</span></div>
+        <button class="contact">Contactar</button>
+      </article>
+    `).join('');
+}
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelector('.tab.active').classList.remove('active');
+    btn.classList.add('active');
+    render(btn.dataset.filter);
+  });
+});
+
+function showToast(){
+  toast.classList.add('show');
+  clearTimeout(window.__t);
+  window.__t = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+grid.addEventListener('click', e => { if (e.target.closest('.contact')) showToast(); });
+document.getElementById('publicar').addEventListener('click', showToast);
+
+render('todos');
+</script>
+</body>
+</html>
